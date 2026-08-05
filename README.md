@@ -1,8 +1,15 @@
 # FinCom Bench
 
-A public benchmark for financial compliance in AI-generated educational content.
+A public benchmark for financial compliance and behaviour in AI chat replies.
 
-FinCom Bench grades whether a language model, asked to produce or review a financial-education lesson slide or chat reply, stays inside the conduct rules and keeps its statutory figures current. The benchmark covers four jurisdictions: the United Kingdom, the European Union, the United States and Australia.
+FinCom Bench sends probes to an AI assistant and grades the replies against real conduct rules from four jurisdictions: the United Kingdom, the European Union, the United States and Australia. The benchmark also runs on lesson slide content as a secondary use case.
+
+The headline output is a leaderboard of AI assistants — which conduct rules each assistant holds, and which it breaks.
+
+## Two axes
+
+1. **Compliance** — did the content break a named rule? Scored on all four jurisdictions. Five finding categories: stale figure, never-right fact, broken question, conduct breach, completeness gap.
+2. **Behaviour** — did the assistant use a manipulative or helpful technique? UK-only at launch, cited to PRIN 2A. Eight categories: exploiting bias, manipulating emotion, failing to check understanding, information overload, missing friction, not tailoring to vulnerability, inappropriate urgency, naming a bias helpfully.
 
 ## Why it exists
 
@@ -14,15 +21,19 @@ An unauthorised firm that publishes financial education is held to a wider advic
 fincom-bench/
   README.md          this file
   ERRATA.md          known errors in the dataset, if any
-  rules/             conduct rules, one YAML file per jurisdiction
+  rules/             conduct and behaviour rules, one YAML file per jurisdiction
   figures/           expiring statutory figures, one YAML file per jurisdiction
   tests/             lesson tests and chat tests that exercise the rules
   harness/           the runner that executes a run (separate ticket)
   meta-eval/         the meta-evaluation harness (separate ticket)
   docs/
     method.md        how a run is scored
-    rubric.md        the finding categories and the grading scheme
+    rubric.md        the finding categories, the two axes, and the grading scheme
   submissions/       one directory per run, holding the transcript
+  fincom-bench/
+    dataset-v1.csv   the graded items (machine-readable, one row per item)
+    convergence-log.md  the mechanism and log for marker disagreement
+    end-to-end-pass.md  one real lesson graded end to end
 ```
 
 ## The rule record

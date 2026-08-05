@@ -2,6 +2,8 @@
 
 This file holds the mechanism for the two human labellers to disagree and converge, plus the log of every disagreement and the label that survived.
 
+The dataset is `dataset-v1.csv`. Each row is one item with an `item_id`, an `expected_label`, a `bucket`, and the rubric columns. Mark the items in the CSV directly, or in a copy.
+
 ## Mechanism
 
 1. **Mark alone first.** Each marker works through `dataset-v1.md` alone. No shared discussion until both have a full set of labels.
