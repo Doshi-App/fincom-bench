@@ -1,0 +1,585 @@
+# United Kingdom expiring statutory figures for FinCom Bench
+# Seeded from OPS-1451: Which figures in the lesson library expire.
+# Values verified against the publishing authority on 1 August 2026.
+# Figures marked stale_now: true were wrong on the retrieval date.
+
+- id: uk-figure-deposit-protection
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: FSCS
+    clause: deposit limit protection increase
+    url: https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/deposit-limit-increase/
+    retrieved: 2026-08-01
+  current_value: "120000"
+  stale_values: ["85000"]
+  stale_now: true
+  cadence: irregular
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single_with_temporary_high_balances
+  plain_words: >
+    The deposit protection limit is 120,000 pounds from 1 December 2025.
+    The old value of 85,000 pounds appears in 8 lessons and is wrong.
+    One lesson, Protect Your Hard-Earned Cash, already says 120,000 pounds,
+    so the library contradicts itself.
+  lessons:
+    - "What Are Credit Unions?"
+    - "What Are Neobanks?"
+    - "Benefits of investing with a Building Society"
+    - "Self-Invested Personal Pensions"
+
+- id: uk-figure-pension-annual-allowance
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: tax on your private pension, annual allowance
+    url: https://www.gov.uk/tax-on-your-private-pension/annual-allowance
+    retrieved: 2026-08-01
+  current_value: "60000"
+  stale_values: ["40000"]
+  stale_now: true
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: table_tapers_to_10000
+  plain_words: >
+    The pension annual allowance is 60,000 pounds since April 2023.
+    The old value of 40,000 pounds appears in Making lump sum pension
+    contributions and is wrong. The lesson states one number where the
+    real figure tapers to 10,000 pounds for high earners.
+  lessons:
+    - "Making lump sum pension contributions"
+
+- id: uk-figure-lifetime-allowance
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: abolition of the Lifetime Allowance
+    url: https://www.gov.uk/government/publications/abolition-of-the-lifetime-allowance-from-6-april-2024/abolition-of-the-lifetime-allowance-lta
+    retrieved: 2026-08-01
+  current_value: "abolished 6 April 2024, replaced by 268275 lump sum allowance"
+  stale_values: ["1073100"]
+  stale_now: true
+  cadence: one_off
+  next_change: n/a
+  machine_readable: stable_page
+  value_shape: single
+  plain_words: >
+    The Lifetime Allowance was abolished on 6 April 2024. It was replaced by
+    a 268,275 pound lump sum allowance. The old value of 1,073,100 pounds
+    appears in Making lump sum pension contributions and is wrong.
+  lessons:
+    - "Making lump sum pension contributions"
+
+- id: uk-figure-ni-employee-rate
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: National Insurance rates and categories
+    url: https://www.gov.uk/national-insurance-rates-letters
+    retrieved: 2026-08-01
+  current_value: "8%"
+  stale_values: ["12%"]
+  stale_now: true
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: table_by_earnings_band
+  plain_words: >
+    The National Insurance employee rate is 8 percent. The old value of 12
+    percent appears in Salary sacrifice vs take-home myths. The lesson's
+    worked example is arithmetically wrong as a result.
+  lessons:
+    - "Salary sacrifice vs take-home myths"
+
+- id: uk-figure-ni-weekly-threshold
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: National Insurance rates and categories
+    url: https://www.gov.uk/national-insurance-rates-letters
+    retrieved: 2026-08-01
+  current_value: "242"
+  stale_values: ["190"]
+  stale_now: true
+  cadence: annual_6_april
+  next_change: "2027-04-06"
+  machine_readable: stable_page
+  value_shape: table
+  plain_words: >
+    The National Insurance weekly threshold is 242 pounds. The old value of
+    190 pounds appears in National Insurance Contributions and is wrong.
+  lessons:
+    - "National Insurance Contributions"
+
+- id: uk-figure-new-state-pension
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: DWP
+    clause: the new State Pension
+    url: https://www.gov.uk/new-state-pension/what-youll-get
+    retrieved: 2026-08-01
+  current_value: "241.30"
+  stale_values: ["221.20", "230.25"]
+  stale_now: true
+  cadence: annual_april_triple_lock
+  next_change: "2027-04"
+  machine_readable: stable_page
+  value_shape: table_depends_on_NI_record
+  plain_words: >
+    The new State Pension is 241.30 pounds per week. The old values of 221.20
+    pounds and 230.25 pounds appear in State Pension and Understanding
+    Government Retirement Benefits. The actual amount depends on the member's
+    National Insurance record.
+  lessons:
+    - "State Pension"
+    - "Understanding Government Retirement Benefits"
+
+- id: uk-figure-higher-rate-band
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: Income Tax rates
+    url: https://www.gov.uk/income-tax-rates
+    retrieved: 2026-08-01
+  current_value: "upper end 125140"
+  stale_values: ["150000"]
+  stale_now: true
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: table_scotland_differs
+  plain_words: >
+    The higher-rate 40 percent band runs to 125,140 pounds since April 2023.
+    The old value of 150,000 pounds appears in Income Tax. Scotland differs
+    and the lesson does not say so.
+  lessons:
+    - "Income Tax"
+
+- id: uk-figure-child-benefit
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: Child Benefit rates
+    url: https://www.gov.uk/child-benefit-rates
+    retrieved: 2026-08-01
+  current_value: "27.05 eldest, 17.90 additional"
+  stale_values: ["26.05", "17.25"]
+  stale_now: true
+  cadence: annual_april
+  next_change: "2027-04"
+  machine_readable: stable_page
+  value_shape: two_values
+  plain_words: >
+    Child Benefit is 27.05 pounds for the eldest child and 17.90 pounds for
+    each additional child. The old values of 26.05 and 17.25 pounds appear in
+    4 lessons and are wrong.
+  lessons:
+    - "Child benefits"
+    - "What Benefits, Leave, and Tax Breaks..."
+
+- id: uk-figure-high-income-child-benefit-charge
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: Child Benefit tax charge
+    url: https://www.gov.uk/child-benefit-tax-charge
+    retrieved: 2026-08-01
+  current_value: "60000"
+  stale_values: ["50000"]
+  stale_now: true
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: taper_table_to_80000
+  plain_words: >
+    The High Income Child Benefit Charge starts at 60,000 pounds since April
+    2024. The old value of 50,000 pounds appears in How Much Does It Really
+    Cost to Have a Baby? and is wrong. The charge tapers to 80,000 pounds.
+  lessons:
+    - "How Much Does It Really Cost to Have a Baby?"
+
+- id: uk-figure-isa-subscription-limit
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: individual savings accounts
+    url: https://www.gov.uk/individual-savings-accounts
+    retrieved: 2026-08-01
+  current_value: "20000"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single_with_sub_limits
+  plain_words: >
+    The ISA subscription limit is 20,000 pounds. Not stale as at 1 August 2026.
+    Appears in 20 or more lessons.
+  lessons: []
+
+- id: uk-figure-lifetime-isa
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: lifetime ISA
+    url: https://www.gov.uk/lifetime-isa
+    retrieved: 2026-08-01
+  current_value: "4000 cap, 25% bonus, 1000 max, 450000 property cap, ages 18-39, stops at 50"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: set_of_values
+  plain_words: >
+    The Lifetime ISA rules: 4,000 pound cap, 25 percent bonus, 1,000 pound
+    maximum bonus, 450,000 pound property cap, ages 18 to 39, stops at 50.
+    Not stale as at 1 August 2026.
+  lessons: []
+
+- id: uk-figure-junior-isa
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: junior individual savings accounts
+    url: https://www.gov.uk/junior-individual-savings-accounts
+    retrieved: 2026-08-01
+  current_value: "9000"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single
+  plain_words: >
+    The Junior ISA limit is 9,000 pounds. The value is not stale. The year
+    labels are stale: different lessons label it 2024/25 and 2025/26.
+  lessons: []
+
+- id: uk-figure-personal-allowance
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: Income Tax rates
+    url: https://www.gov.uk/income-tax-rates
+    retrieved: 2026-08-01
+  current_value: "12570"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget_frozen_to_2031
+  next_change: "2031-04"
+  machine_readable: stable_page
+  value_shape: single
+  plain_words: >
+    The Personal Allowance is 12,570 pounds. The value is not stale. The year
+    labels are stale: different lessons label it 2022/23 and 2024/25. The
+    allowance is frozen to 2031.
+  lessons: []
+
+- id: uk-figure-cgt-annual-exempt
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: capital gains tax, allowances
+    url: https://www.gov.uk/capital-gains-tax/allowances
+    retrieved: 2026-08-01
+  current_value: "3000"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single_1500_for_trusts
+  plain_words: >
+    The Capital Gains Tax annual exempt amount is 3,000 pounds. Not stale as
+    at 1 August 2026. 1,500 pounds for trusts.
+  lessons: []
+
+- id: uk-figure-inheritance-tax
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: inheritance tax
+    url: https://www.gov.uk/inheritance-tax
+    retrieved: 2026-08-01
+  current_value: "325000 nil-rate band, 650000 couple, 175000 residence, 40% rate"
+  stale_values: []
+  stale_now: false
+  cadence: frozen_to_2030
+  next_change: "2030-04"
+  machine_readable: stable_page
+  value_shape: single_values_many_reliefs
+  plain_words: >
+    Inheritance Tax: 325,000 pound nil-rate band, 650,000 pounds a couple,
+    175,000 pound residence nil-rate band, 40 percent rate. Frozen to April
+    2030. Not stale as at 1 August 2026.
+  lessons: []
+
+- id: uk-figure-iht-gift-exemption
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: inheritance tax, gifts
+    url: https://www.gov.uk/inheritance-tax/gifts
+    retrieved: 2026-08-01
+  current_value: "3000"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single_carries_forward_one_year
+  plain_words: >
+    The Inheritance Tax annual gift exemption is 3,000 pounds and carries
+    forward one year. The value is not stale. The year label is stale: one
+    lesson labels it 2023/24.
+  lessons:
+    - "How to Keep Family Relationships Intact"
+
+- id: uk-figure-adult-social-care
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: Department of Health and Social Care
+    clause: social care charging circular
+    url: https://www.gov.uk/government/publications/social-care-charging-for-local-authorities-2025-to-2026/social-care-charging-for-care-and-support-2025-to-2026-local-authority-circular
+    retrieved: 2026-08-01
+  current_value: "23250"
+  stale_values: []
+  stale_now: false
+  cadence: reviewed_annually_frozen_since_2010
+  next_change: unknown
+  machine_readable: html_circular_pdf_annex
+  value_shape: england_only
+  plain_words: >
+    The adult social care upper capital limit is 23,250 pounds. England only.
+    The lesson says the council's, implying UK-wide, which is wrong. Frozen
+    since 2010. Not stale as at 1 August 2026.
+  lessons:
+    - "How to Plan for Long-Term Care Costs For Parents"
+
+- id: uk-figure-app-fraud-cap
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: Payment Systems Regulator
+    clause: APP fraud reimbursement
+    url: https://www.psr.org.uk/information-for-consumers/app-fraud-reimbursement-protections/
+    retrieved: 2026-08-01
+  current_value: "85000"
+  stale_values: []
+  stale_now: false
+  cadence: irregular
+  next_change: unknown
+  machine_readable: stable_page_pdf_policy
+  value_shape: single
+  plain_words: >
+    The Authorised Push Payment fraud reimbursement cap is 85,000 pounds.
+    Not stale as at 1 August 2026.
+  lessons: []
+
+- id: uk-figure-student-loan
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC and Student Loans Company
+    clause: repaying your student loan
+    url: https://www.gov.uk/repaying-your-student-loan/what-you-pay
+    retrieved: 2026-08-01
+  current_value: "9% undergraduate, 6% postgraduate"
+  stale_values: []
+  stale_now: false
+  cadence: annual_april
+  next_change: "2027-04"
+  machine_readable: stable_page
+  value_shape: table_five_plan_thresholds
+  plain_words: >
+    Student loan repayment is 9 percent undergraduate and 6 percent postgraduate.
+    Not stale as at 1 August 2026. The lessons never state the five plan
+    thresholds, which range from 21,000 to 33,795 pounds.
+  lessons: []
+
+- id: uk-figure-marriage-allowance
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: marriage allowance
+    url: https://www.gov.uk/marriage-allowance
+    retrieved: 2026-08-01
+  current_value: "1260 transferable, worth 252"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single
+  plain_words: >
+    Marriage Allowance is 1,260 pounds transferable, worth 252 pounds.
+    Not stale as at 1 August 2026.
+  lessons: []
+
+- id: uk-figure-pension-credit
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: DWP
+    clause: pension credit, eligibility
+    url: https://www.gov.uk/pension-credit/eligibility
+    retrieved: 2026-08-01
+  current_value: "ignores first 10000 of savings"
+  stale_values: []
+  stale_now: false
+  cadence: irregular
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single_then_1_per_500_above
+  plain_words: >
+    Pension Credit ignores the first 10,000 pounds of savings. Not stale as
+    at 1 August 2026. Then 1 pound per week per 500 pounds above.
+  lessons: []
+
+- id: uk-figure-state-pension-deferral
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: DWP
+    clause: deferring state pension
+    url: https://www.gov.uk/deferring-state-pension
+    retrieved: 2026-08-01
+  current_value: "about 5.8% a year"
+  stale_values: []
+  stale_now: false
+  cadence: irregular
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: derived_from_1_per_9_weeks
+  plain_words: >
+    State Pension deferral raises payments by about 5.8 percent a year.
+    Derived from the published 1 percent per 9 weeks rule. Not stale as at
+    1 August 2026.
+  lessons: []
+
+- id: uk-figure-sdlt-non-resident-surcharge
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: rates of Stamp Duty Land Tax for non-UK residents
+    url: https://www.gov.uk/guidance/rates-of-stamp-duty-land-tax-for-non-uk-residents
+    retrieved: 2026-08-01
+  current_value: "2% non-resident surcharge"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: surcharge_on_band_table
+  plain_words: >
+    The Stamp Duty Land Tax non-resident surcharge is 2 percent. Not stale
+    as at 1 August 2026. Surcharge on a band table.
+  lessons: []
+
+- id: uk-figure-universal-credit-childcare
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: DWP
+    clause: help with childcare costs, universal credit
+    url: https://www.gov.uk/help-with-childcare-costs/universal-credit
+    retrieved: 2026-08-01
+  current_value: "85% of childcare costs"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: single_with_monthly_caps
+  plain_words: >
+    Universal Credit covers up to 85 percent of childcare costs. Not stale
+    as at 1 August 2026. With monthly caps.
+  lessons: []
+
+- id: uk-figure-auto-enrolment
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: The Pensions Regulator / DWP
+    clause: workplace pensions, what you pay
+    url: https://www.gov.uk/workplace-pensions/what-you-your-employer-and-the-government-pay
+    retrieved: 2026-08-01
+  current_value: "8% total, 3% employer minimum"
+  stale_values: []
+  stale_now: false
+  cadence: percentages_2019_earnings_band_annual
+  next_change: "2027-04"
+  machine_readable: stable_page
+  value_shape: table_qualifying_earnings_6240_to_50270
+  plain_words: >
+    Auto-enrolment is 8 percent total, 3 percent employer minimum. Not stale
+    as at 1 August 2026. Correctly worded as a minimum, which is the exact
+    fix the Australian example needs. Qualifying earnings 6,240 to 50,270 pounds.
+  lessons: []
+
+- id: uk-figure-personal-savings-dividend-allowance
+  jurisdiction: uk
+  axis: compliance
+  category: stale_figure
+  authority:
+    source: HMRC
+    clause: apply tax-free interest on savings
+    url: https://www.gov.uk/apply-tax-free-interest-on-savings
+    retrieved: 2026-08-01
+  current_value: "1000 or 500 Personal Savings, 500 Dividend"
+  stale_values: []
+  stale_now: false
+  cadence: at_budget
+  next_change: unknown
+  machine_readable: stable_page
+  value_shape: table_by_tax_band
+  plain_words: >
+    Personal Savings Allowance is 1,000 or 500 pounds. Dividend Allowance is
+    500 pounds. Not stale as at 1 August 2026. Table by tax band.
+  lessons: []
