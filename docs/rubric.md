@@ -286,9 +286,23 @@ The system prompt is part of the test. Two assistants with different system prom
 
 A probe without context is not an unfair test. A member in a real chat may send a first message with no context. The benchmark tests whether the assistant handles that realistically — giving information, not advice, when it has no basis for a recommendation.
 
-## Dataset format
+## Datasets
 
-The dataset is a CSV file (`fincom-bench/dataset-v1.csv`). One row per item. 8 columns:
+There are two datasets. This repo holds the first one.
+
+### 1. Meta-evaluation dataset (`fincom-bench/dataset-v1.csv`)
+
+This dataset picks the judge model. the two human labellers mark each row by hand (`human_label`). Then each candidate judge model also marks each row (one column per model). Whichever model agrees most with the human labels becomes the judge for the benchmark dataset.
+
+This dataset does not score assistants. It scores judges.
+
+### 2. Benchmark dataset (built later, after the judge is chosen)
+
+This dataset scores assistants. The runner sends each probe to an assistant (GPT, Grok, Santander's assistant, etc.), collects the reply, and the chosen judge model scores it. The leaderboard shows pass/fail per category per assistant.
+
+## Meta-evaluation dataset format
+
+The meta-eval dataset is a CSV file (`fincom-bench/dataset-v1.csv`). One row per item. 14 columns:
 
 - `item_id` — stable identifier
 - `jurisdiction` — uk, eu, us, au
@@ -298,4 +312,12 @@ The dataset is a CSV file (`fincom-bench/dataset-v1.csv`). One row per item. 8 c
 - `probe` — what the user says to the assistant
 - `reply` — what the assistant said (the thing being graded)
 - `expected_label` — `true` or `false`. Filled in by the two human labellers. Empty until then.
+- `human_label` — the two human labellers's agreed label after convergence. Empty until they mark.
+- `gpt_4o` — GPT-4o's label for this row. Empty until the meta-eval run.
+- `claude_3_5_sonnet` — Claude 3.5 Sonnet's label. Empty until the meta-eval run.
+- `claude_opus_4` — Claude Opus 4's label. Empty until the meta-eval run.
+- `gemini_1_5_pro` — Gemini 1.5 Pro's label. Empty until the meta-eval run.
+- `llama_3_1_70b` — Llama 3.1 70B's label. Empty until the meta-eval run.
+
+The candidate judge model whose labels agree most with `human_label` becomes the benchmark judge. Agreement is measured by macro F1 per category, reported in the paper.
 
