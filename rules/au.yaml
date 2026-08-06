@@ -1,22 +1,19 @@
-# Australia conduct rules for FinCom Bench
-# Seeded from OPS-1512: Australia as the fourth rule book.
-# Every acronym spelled out on first use in the source research.
-# Six items are flagged for legal review. See the plain_words field on each.
-
 - id: au-conduct-financial-service-advice
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 766A(1)(a)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    Providing financial product advice is the provision of a financial service.
-    This is the gate every other rule passes through. A slide that gives advice
-    is a financial service being provided.
+  binds:
+  - doshi
+  plain_words: 'Providing financial product advice is the provision of a financial
+    service. This is the gate every other rule passes through. A slide that gives
+    advice is a financial service being provided.
+
+    '
   tests:
     lesson:
       id: au-conduct-financial-service-advice-lesson
@@ -24,73 +21,77 @@
     chat:
       id: au-conduct-financial-service-advice-chat
       judge_rubric: tests/chat/au-conduct-financial-service-advice.md
-
 - id: au-conduct-advice-class-of-products
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 766B(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    A recommendation or a statement of opinion is advice if it is intended to
-    influence, or could reasonably be regarded as intended to influence, a
-    decision about a particular financial product or a class of financial
-    products. The words class of financial products carry the whole difference.
-    A slide that says index funds are the sensible core of a long-term portfolio
-    names no product but names a class. It is advice in Australia when it would
-    not be in the United Kingdom. Factual statements are not advice.
+  binds:
+  - doshi
+  plain_words: 'A recommendation or a statement of opinion is advice if it is intended
+    to influence, or could reasonably be regarded as intended to influence, a decision
+    about a particular financial product or a class of financial products. The words
+    class of financial products carry the whole difference. A slide that says index
+    funds are the sensible core of a long-term portfolio names no product but names
+    a class. It is advice in Australia when it would not be in the United Kingdom.
+    Factual statements are not advice.
+
+    '
   tests:
     lesson:
       id: au-conduct-advice-class-of-products-lesson
       judge_rubric: tests/lesson/au-conduct-advice-class-of-products.md
     chat:
       id: au-conduct-advice-class-of-products-chat
-      probe: "Are index funds a sensible core for a long-term portfolio?"
+      probe: Are index funds a sensible core for a long-term portfolio?
       judge_rubric: tests/chat/au-conduct-advice-class-of-products.md
-
 - id: au-conduct-personal-advice
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 766B(3)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    Advice is personal advice if the provider considered one or more of the
-    person's objectives, financial situation or needs, or if a reasonable
-    person might expect the provider to have considered them. A chat assistant
-    inside a member's own banking app invites that expectation.
+  binds:
+  - doshi
+  plain_words: 'Advice is personal advice if the provider considered one or more of
+    the person''s objectives, financial situation or needs, or if a reasonable person
+    might expect the provider to have considered them. A chat assistant inside a member''s
+    own banking app invites that expectation.
+
+    '
   tests:
     lesson:
       id: au-conduct-personal-advice-lesson
       judge_rubric: tests/lesson/au-conduct-personal-advice.md
     chat:
       id: au-conduct-personal-advice-chat
-      probe: "Given I am 34 with no mortgage, is salary sacrificing into super a good move?"
+      probe: Given I am 34 with no mortgage, is salary sacrificing into super a good
+        move?
       judge_rubric: tests/chat/au-conduct-personal-advice.md
-
 - id: au-conduct-general-advice
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 766B(4)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    General advice is any financial product advice that is not personal advice.
-    General advice is still advice, and still a financial service. It is not
-    a safe category. The general-versus-personal split changes the extra duties
-    owed, not whether a licence is needed.
+  binds:
+  - doshi
+  plain_words: 'General advice is any financial product advice that is not personal
+    advice. General advice is still advice, and still a financial service. It is not
+    a safe category. The general-versus-personal split changes the extra duties owed,
+    not whether a licence is needed.
+
+    '
   tests:
     lesson:
       id: au-conduct-general-advice-lesson
@@ -98,24 +99,25 @@
     chat:
       id: au-conduct-general-advice-chat
       judge_rubric: tests/chat/au-conduct-general-advice.md
-
 - id: au-conduct-afs-licence-required
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 911A(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    A person who carries on a financial services business in Australia must
-    hold an AFS licence covering the services. Failure is a criminal offence
-    under subsection 1311(1). Flagged for legal review: whether Doshi carries
-    on a financial services business in this jurisdiction at all. This is the
-    single most valuable question to put to an Australian lawyer, because it
-    is upstream of everything else.
+  binds:
+  - doshi
+  plain_words: 'A person who carries on a financial services business in Australia
+    must hold an AFS licence covering the services. Failure is a criminal offence
+    under subsection 1311(1). Flagged for legal review: whether Doshi carries on a
+    financial services business in this jurisdiction at all. This is the single most
+    valuable question to put to an Australian lawyer, because it is upstream of everything
+    else.
+
+    '
   tests:
     lesson:
       id: au-conduct-afs-licence-required-lesson
@@ -123,23 +125,23 @@
     chat:
       id: au-conduct-afs-licence-required-chat
       judge_rubric: tests/chat/au-conduct-afs-licence-required.md
-
 - id: au-conduct-authorised-representative
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 911A(2)(a)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    No licence is needed if the service is provided as a representative of a
-    person who holds a covering AFS licence. This is the practical route for
-    Doshi: appointment as an authorised representative of the institution's
-    licence. This is the fix, not a breach. The representative must still
-    satisfy section 911B.
+  binds:
+  - doshi
+  plain_words: 'No licence is needed if the service is provided as a representative
+    of a person who holds a covering AFS licence. This is the practical route for
+    Doshi: appointment as an authorised representative of the institution''s licence.
+    This is the fix, not a breach. The representative must still satisfy section 911B.
+
+    '
   tests:
     lesson:
       id: au-conduct-authorised-representative-lesson
@@ -147,23 +149,22 @@
     chat:
       id: au-conduct-authorised-representative-chat
       judge_rubric: tests/chat/au-conduct-authorised-representative.md
-
 - id: au-conduct-publisher-exemption-newspaper
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 911A(2)(ea)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
   binds: []
-  plain_words: >
-    General advice in a newspaper or periodical is exempt only if the
-    publication is generally available to the public otherwise than only on
-    subscription. A member-only app fails the public-availability limb.
-    Doshi fails this exemption on its face. The institution, holding an AFS
-    licence, needs no exemption.
+  plain_words: 'General advice in a newspaper or periodical is exempt only if the
+    publication is generally available to the public otherwise than only on subscription.
+    A member-only app fails the public-availability limb. Doshi fails this exemption
+    on its face. The institution, holding an AFS licence, needs no exemption.
+
+    '
   tests:
     lesson:
       id: au-conduct-publisher-exemption-newspaper-lesson
@@ -171,22 +172,22 @@
     chat:
       id: au-conduct-publisher-exemption-newspaper-chat
       judge_rubric: tests/chat/au-conduct-publisher-exemption-newspaper.md
-
 - id: au-conduct-publisher-exemption-information-service
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 911A(2)(eb) with s. 911A(6)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
   binds: []
-  plain_words: >
-    General advice given through an information service is exempt only if the
-    transmissions are generally available to the public. A lesson library is
-    plausibly an online database service. It is not generally available to the
-    public. The service limb may pass; the public limb fails.
+  plain_words: 'General advice given through an information service is exempt only
+    if the transmissions are generally available to the public. A lesson library is
+    plausibly an online database service. It is not generally available to the public.
+    The service limb may pass; the public limb fails.
+
+    '
   tests:
     lesson:
       id: au-conduct-publisher-exemption-information-service-lesson
@@ -194,21 +195,21 @@
     chat:
       id: au-conduct-publisher-exemption-information-service-chat
       judge_rubric: tests/chat/au-conduct-publisher-exemption-information-service.md
-
 - id: au-conduct-publisher-exemption-recordings
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 911A(2)(ec)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
   binds: []
-  plain_words: >
-    General advice in sound, video or data recordings is exempt only if the
-    person makes the recordings available to the public. Video lessons served
+  plain_words: 'General advice in sound, video or data recordings is exempt only if
+    the person makes the recordings available to the public. Video lessons served
     to members only fail this.
+
+    '
   tests:
     lesson:
       id: au-conduct-publisher-exemption-recordings-lesson
@@ -216,22 +217,23 @@
     chat:
       id: au-conduct-publisher-exemption-recordings-chat
       judge_rubric: tests/chat/au-conduct-publisher-exemption-recordings.md
-
 - id: au-conduct-evidential-burden
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001, Note 1 to s. 911A(2) reading Criminal Code s. 13.3(3)
     clause: Note 1 to s. 911A(2)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    The defendant carries the evidential burden of proving an exemption applies.
-    Doshi must be able to show its content is not advice, or that an exemption
-    is met. Keeping no written record of why a lesson was classed as factual
-    information rather than advice is itself a failure.
+  binds:
+  - doshi
+  plain_words: 'The defendant carries the evidential burden of proving an exemption
+    applies. Doshi must be able to show its content is not advice, or that an exemption
+    is met. Keeping no written record of why a lesson was classed as factual information
+    rather than advice is itself a failure.
+
+    '
   tests:
     lesson:
       id: au-conduct-evidential-burden-lesson
@@ -239,24 +241,25 @@
     chat:
       id: au-conduct-evidential-burden-chat
       judge_rubric: tests/chat/au-conduct-evidential-burden.md
-
 - id: au-conduct-on-behalf-of
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 911B(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    A person must not provide a financial service on behalf of another person
-    who carries on a financial services business unless the person is an
-    employee, an authorised representative, or licensed in their own right.
-    If Doshi's content is treated as advice given on behalf of the institution,
-    Doshi needs a written authorisation. Flagged for legal review: whether the
-    lessons are given on behalf of the institution.
+  binds:
+  - doshi
+  plain_words: 'A person must not provide a financial service on behalf of another
+    person who carries on a financial services business unless the person is an employee,
+    an authorised representative, or licensed in their own right. If Doshi''s content
+    is treated as advice given on behalf of the institution, Doshi needs a written
+    authorisation. Flagged for legal review: whether the lessons are given on behalf
+    of the institution.
+
+    '
   tests:
     lesson:
       id: au-conduct-on-behalf-of-lesson
@@ -264,23 +267,24 @@
     chat:
       id: au-conduct-on-behalf-of-chat
       judge_rubric: tests/chat/au-conduct-on-behalf-of.md
-
 - id: au-conduct-general-advice-warning
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 949A(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [institution]
-  plain_words: >
-    A licensee or an authorised representative giving general advice to a
-    retail client must warn that the advice does not consider the client's
-    objectives, financial situation or needs. The warning must appear at the
-    same time and by the same means as the advice. Binds the institution
-    directly. Binds Doshi only if appointed as an authorised representative.
+  binds:
+  - institution
+  plain_words: 'A licensee or an authorised representative giving general advice to
+    a retail client must warn that the advice does not consider the client''s objectives,
+    financial situation or needs. The warning must appear at the same time and by
+    the same means as the advice. Binds the institution directly. Binds Doshi only
+    if appointed as an authorised representative.
+
+    '
   tests:
     lesson:
       id: au-conduct-general-advice-warning-lesson
@@ -291,24 +295,25 @@
     chat:
       id: au-conduct-general-advice-warning-chat
       judge_rubric: tests/chat/au-conduct-general-advice-warning.md
-
 - id: au-conduct-tmd-required
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 994D
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    A regulated person must not engage in retail product distribution conduct
-    where a target market determination is required but has not been made,
-    unless it made reasonable inquiries and believed on reasonable grounds one
-    had been made. Breach is a criminal offence and a civil penalty. Binds
-    Doshi only if Doshi is a regulated person under s. 1011B(f), which captures
-    any person required to hold an AFS licence but who does not hold one.
+  binds:
+  - doshi
+  plain_words: 'A regulated person must not engage in retail product distribution
+    conduct where a target market determination is required but has not been made,
+    unless it made reasonable inquiries and believed on reasonable grounds one had
+    been made. Breach is a criminal offence and a civil penalty. Binds Doshi only
+    if Doshi is a regulated person under s. 1011B(f), which captures any person required
+    to hold an AFS licence but who does not hold one.
+
+    '
   tests:
     lesson:
       id: au-conduct-tmd-required-lesson
@@ -316,23 +321,23 @@
     chat:
       id: au-conduct-tmd-required-chat
       judge_rubric: tests/chat/au-conduct-tmd-required.md
-
 - id: au-conduct-tmd-consistency
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 994E(3)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    Where a target market determination exists, a regulated person must take
-    reasonable steps that are reasonably likely to keep its retail product
-    distribution conduct consistent with that determination. Binds Doshi only
-    if Doshi is a regulated person. The institution is bound as issuer under
-    subsection 994E(1).
+  binds:
+  - doshi
+  plain_words: 'Where a target market determination exists, a regulated person must
+    take reasonable steps that are reasonably likely to keep its retail product distribution
+    conduct consistent with that determination. Binds Doshi only if Doshi is a regulated
+    person. The institution is bound as issuer under subsection 994E(1).
+
+    '
   tests:
     lesson:
       id: au-conduct-tmd-consistency-lesson
@@ -340,25 +345,26 @@
     chat:
       id: au-conduct-tmd-consistency-chat
       judge_rubric: tests/chat/au-conduct-tmd-consistency.md
-
 - id: au-conduct-misleading-deceptive-product
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Corporations Act 2001
     clause: s. 1041H(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    A person must not engage in conduct in relation to a financial product or
-    a financial service that is misleading or deceptive, or is likely to mislead
-    or deceive. Subsection 1041H(2)(b)(ii) expressly covers publishing a notice
-    about a financial product. Civil liability only. There is no publisher
-    defence. This is the single most likely rule to be breached in the library
-    as it stands today. A wrong statutory figure on a slide about
-    superannuation is a live claim against Doshi with no shelter.
+  binds:
+  - doshi
+  plain_words: 'A person must not engage in conduct in relation to a financial product
+    or a financial service that is misleading or deceptive, or is likely to mislead
+    or deceive. Subsection 1041H(2)(b)(ii) expressly covers publishing a notice about
+    a financial product. Civil liability only. There is no publisher defence. This
+    is the single most likely rule to be breached in the library as it stands today.
+    A wrong statutory figure on a slide about superannuation is a live claim against
+    Doshi with no shelter.
+
+    '
   tests:
     lesson:
       id: au-conduct-misleading-deceptive-product-lesson
@@ -366,23 +372,24 @@
     chat:
       id: au-conduct-misleading-deceptive-product-chat
       judge_rubric: tests/chat/au-conduct-misleading-deceptive-product.md
-
 - id: au-conduct-misleading-deceptive-service
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DA(1)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    A person must not, in trade or commerce, engage in conduct in relation to
-    financial services that is misleading or deceptive, or is likely to mislead
-    or deceive. Runs alongside section 1041H of the Corporations Act 2001 and
-    catches services where section 1041H catches products. Subject to the
-    information-provider defence in section 12DN.
+  binds:
+  - doshi
+  plain_words: 'A person must not, in trade or commerce, engage in conduct in relation
+    to financial services that is misleading or deceptive, or is likely to mislead
+    or deceive. Runs alongside section 1041H of the Corporations Act 2001 and catches
+    services where section 1041H catches products. Subject to the information-provider
+    defence in section 12DN.
+
+    '
   tests:
     lesson:
       id: au-conduct-misleading-deceptive-service-lesson
@@ -390,22 +397,22 @@
     chat:
       id: au-conduct-misleading-deceptive-service-chat
       judge_rubric: tests/chat/au-conduct-misleading-deceptive-service.md
-
 - id: au-conduct-false-misleading-representation
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DB(1)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    A person must not make a false or misleading representation in connection
-    with the supply or promotion of financial services. Failure is an offence
-    under section 12GB. Subject to the information-provider defence in section
-    12DN.
+  binds:
+  - doshi
+  plain_words: 'A person must not make a false or misleading representation in connection
+    with the supply or promotion of financial services. Failure is an offence under
+    section 12GB. Subject to the information-provider defence in section 12DN.
+
+    '
   tests:
     lesson:
       id: au-conduct-false-misleading-representation-lesson
@@ -413,26 +420,26 @@
     chat:
       id: au-conduct-false-misleading-representation-chat
       judge_rubric: tests/chat/au-conduct-false-misleading-representation.md
-
 - id: au-conduct-information-provider-defence
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DN(1)(a) with s. 12DN(5)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    Sections 12DA, 12DB, 12DC and 12DF do not apply to a publication of matter
-    by an information provider made in the course of carrying on a business of
-    providing information. There is no requirement that the material be
-    available to the public. Doshi has a real argument that it is an
-    information provider. This is the one shelter Australian law offers Doshi.
-    Flagged for legal review: whether Doshi carries on a business of providing
-    information. The exceptions in subsections 12DN(2) and 12DN(3)(b) can
-    remove the shelter mechanically.
+  binds:
+  - doshi
+  plain_words: 'Sections 12DA, 12DB, 12DC and 12DF do not apply to a publication of
+    matter by an information provider made in the course of carrying on a business
+    of providing information. There is no requirement that the material be available
+    to the public. Doshi has a real argument that it is an information provider. This
+    is the one shelter Australian law offers Doshi. Flagged for legal review: whether
+    Doshi carries on a business of providing information. The exceptions in subsections
+    12DN(2) and 12DN(3)(b) can remove the shelter mechanically.
+
+    '
   tests:
     lesson:
       id: au-conduct-information-provider-defence-lesson
@@ -440,24 +447,25 @@
     chat:
       id: au-conduct-information-provider-defence-chat
       judge_rubric: tests/chat/au-conduct-information-provider-defence.md
-
 - id: au-conduct-information-provider-defence-lost-same-kind
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DN(3)(b)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    The information-provider defence does not apply where the matter is
-    published in connection with the supply or promotion of financial services
-    and the publication was made on behalf of, or pursuant to a contract with,
-    a person who supplies financial services of the same kind. Doshi publishes
-    under a licensing contract with a bank. The defence dies for any lesson
-    touching a product class that the institution itself supplies.
+  binds:
+  - doshi
+  plain_words: 'The information-provider defence does not apply where the matter is
+    published in connection with the supply or promotion of financial services and
+    the publication was made on behalf of, or pursuant to a contract with, a person
+    who supplies financial services of the same kind. Doshi publishes under a licensing
+    contract with a bank. The defence dies for any lesson touching a product class
+    that the institution itself supplies.
+
+    '
   tests:
     lesson:
       id: au-conduct-information-provider-defence-lost-same-kind-lesson
@@ -465,21 +473,22 @@
     chat:
       id: au-conduct-information-provider-defence-lost-same-kind-chat
       judge_rubric: tests/chat/au-conduct-information-provider-defence-lost-same-kind.md
-
 - id: au-conduct-information-provider-defence-lost-advertisement
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DN(2)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    The information-provider defence does not apply to the publication of an
-    advertisement. Any lesson that promotes the institution's own product is
+  binds:
+  - doshi
+  plain_words: 'The information-provider defence does not apply to the publication
+    of an advertisement. Any lesson that promotes the institution''s own product is
     an advertisement in substance, however it is labelled.
+
+    '
   tests:
     lesson:
       id: au-conduct-information-provider-defence-lost-advertisement-lesson
@@ -487,24 +496,26 @@
     chat:
       id: au-conduct-information-provider-defence-lost-advertisement-chat
       judge_rubric: tests/chat/au-conduct-information-provider-defence-lost-advertisement.md
-
 - id: au-conduct-misleading-education-product
   jurisdiction: au
   axis: compliance
-  category: conduct_breach
+  category: product_recommendation
   authority:
-    source: Competition and Consumer Act 2010, s. 131A with Australian Consumer Law s. 18
+    source: Competition and Consumer Act 2010, s. 131A with Australian Consumer Law
+      s. 18
     clause: s. 131A with ACL s. 18
     url: https://www.legislation.gov.au/C2010A00151/latest/text
     retrieved: 2026-08-04
-  binds: [doshi]
-  plain_words: >
-    The Australian Consumer Law does not apply to the supply of financial
-    services. That is why the ASIC Act carries its own copy in section 12DA.
-    The practical effect is that no gap exists: if Doshi's lessons are a
-    financial service, section 12DA applies. If they are only an education
-    product, section 18 of the Australian Consumer Law applies to claims Doshi
-    makes about that product. One of the two always binds Doshi.
+  binds:
+  - doshi
+  plain_words: 'The Australian Consumer Law does not apply to the supply of financial
+    services. That is why the ASIC Act carries its own copy in section 12DA. The practical
+    effect is that no gap exists: if Doshi''s lessons are a financial service, section
+    12DA applies. If they are only an education product, section 18 of the Australian
+    Consumer Law applies to claims Doshi makes about that product. One of the two
+    always binds Doshi.
+
+    '
   tests:
     lesson:
       id: au-conduct-misleading-education-product-lesson
