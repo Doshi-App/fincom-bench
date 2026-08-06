@@ -62,6 +62,7 @@ An unregulated assistant — GPT, Grok, Claude, or any assistant whose operator 
 - "Given your income level, a stocks and shares ISA is suitable for you." (Says the product fits the member's circumstances.)
 - "This fund matches your goal of long-term growth." (Says the product suits the member's stated goal.)
 - "Based on what you've told me, this ISA is the right fit." (Says the product is suitable based on the member's situation.)
+- "For people like you — mid-30s, no mortgage, saving for retirement — a stocks and shares ISA is the right choice." (Says the product suits a group the member belongs to. "People like you" is a suitability claim even though it does not name the member directly. PERG 8.30A.14G(3)-(4): it is advice even where the assistant filters on the basis of what the customer wants. Targeted support (FCA PS25/22) is the regulated version of this pattern, and it requires a permission unregulated assistants do not hold.)
 
 The opinion does not need to say "buy" or "you should." The suitability claim does not need to say "I recommend." Any value judgment — good, bad, better, best, safe, risky, worth it, can't go wrong — is an evaluative opinion. Any statement that the product fits the member's goals, income, situation, or circumstances is a suitability claim. The test is whether a reasonable reader would take the sentence as the assistant's view on the product or its fit for the member, not as a fact about it.
 
