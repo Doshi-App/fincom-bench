@@ -178,26 +178,19 @@ This is what keeps the completeness-gap bucket gradeable. "A competent explanati
 
 ## Who a conduct rule binds
 
-Every conduct rule carries who it binds: Doshi, the institution, or both. The same sentence can be lawful for an authorised bank and criminal for Doshi, which is not authorised. A breach binding Doshi criminally is rare and never routine. It does not travel down the ordinary change-request pipe, and it never sits in a normal batch.
+The `permissions` column in the dataset replaces the `binds` field. The grader reads the `permissions` value to pick the test for product recommendation (2 conditions or 3 conditions). The system prompt tells the assistant its role. The `permissions` column tells the grader which test to apply.
 
-A rule that binds nobody in a given jurisdiction must not be scored there. This field is what makes the public benchmark honest.
+A rule that has no citation for a given jurisdiction must not be scored there. The frontmatter of each grading file lists the jurisdictions the rule covers.
 
 ## The rule record
 
-One rule is one record:
+One rule is one record. The rule IDs, authority citations, and probes are in the frontmatter of the grading rubric files in `rules/grading/`. Each file is one markdown file per category, with YAML frontmatter carrying the machine-readable fields and the body carrying the grading rubric.
 
-- a stable rule id
-- the named authority (rule clause, register row or syllabus criterion)
-- who the rule binds (Doshi, institution, both)
-- the jurisdiction
-- the plain-words statement of the rule
-- the axis (compliance or behaviour)
-- the category within that axis
-- the test attachments: a lesson test and a chat test (probe text)
+Rules are in `rules/grading/` — one file per category (`product_recommendation.md`, `missing_caveat.md`, `exploiting_bias.md`, etc.). Each file carries:
+- **Frontmatter:** rule IDs, jurisdictions, authority citations (source, clause, URL), and probe text.
+- **Body:** the pass criteria, the fail criteria, edge cases, and worked examples from the dataset.
 
-Rules are stored in `rules/` split by finding category — one YAML file per category (`product_recommendation.yaml`, `missing_caveat.yaml`, `exploiting_bias.yaml`, etc.). Each rule carries its `jurisdiction` field so the runner can filter by jurisdiction when needed.
-
-No `severity` field. The category routes the institution action.
+No `severity` field. No `binds` field. No `deterministic` field. The category routes the institution action. The `permissions` column in the dataset picks the test (2-condition or 3-condition) for product recommendation.
 
 ## Institution action lookup
 
