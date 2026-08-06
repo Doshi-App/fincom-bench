@@ -32,7 +32,6 @@ fincom-bench/
   submissions/       one directory per run, holding the transcript
   fincom-bench/
     dataset-v1.csv   the graded items (machine-readable, one row per item)
-    convergence-log.md  the mechanism and log for marker disagreement
     end-to-end-pass.md  one real lesson graded end to end
 ```
 

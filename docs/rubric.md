@@ -301,4 +301,3 @@ The dataset is a CSV file (`fincom-bench/dataset-v1.csv`). One row per item. Col
 - `rubric_true`, `rubric_false`, `rubric_arguable` — what makes each label
 - `source_ticket` — the Linear ticket the item was drawn from
 
-The convergence log (`fincom-bench/convergence-log.md`) holds the mechanism for the two human labellers to disagree and converge, plus the log of every disagreement and the label that survived.
