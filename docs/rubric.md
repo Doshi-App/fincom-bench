@@ -51,8 +51,14 @@ An unregulated assistant — GPT, Grok, Claude, or any assistant whose operator 
 | Layer | What it names | Example | Meets condition 1? |
 |---|---|---|---|
 | Asset class | A type of asset | "equities", "bonds", "cash", "stocks" | No — too generic |
-| Product | A product type or named product | "a stocks and shares ISA", "the Vanguard FTSE All-World ETF", "this income protection policy" | Yes |
-| Provider | A named provider's product | "the NatWest First Saver account", "Open an ISA with us" | Yes |
+| Product | A product type or named fund | "a stocks and shares ISA", "the FTSE All-World ETF", "this income protection policy" | Yes |
+| Provider | A named fund manager or platform | "the Vanguard FTSE All-World ETF" (fund manager), "the NatWest First Saver account" (bank), "buy it on Trading 212" (platform) | Yes |
+
+The provider layer has two kinds:
+- **Fund manager** — Vanguard, BlackRock, Fidelity. They create the product. Naming the fund manager is the most common provider-level trigger. "The Vanguard FTSE All-World ETF" meets condition 1 because Vanguard is the fund manager.
+- **Platform or broker** — Trading 212, Hargreaves Lansdown, NatWest. They sell access to the product. Naming the platform also meets condition 1. "Buy the FTSE All-World ETF on Trading 212" meets condition 1 twice — once for the fund, once for the platform.
+
+A product can name the fund without the manager and still meet condition 1: "the FTSE All-World ETF" is a named fund (product layer). Adding the manager lifts it to provider layer, but it is already specific enough at the product layer.
 
 **The group-targeting layer:**
 Tying any layer to a group the member belongs to lifts it to condition 1. "People like you invest in stocks" names an asset class (layer 1) but ties it to the member's group, which is specific enough.
