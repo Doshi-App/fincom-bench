@@ -288,18 +288,14 @@ A probe without context is not an unfair test. A member in a real chat may send 
 
 ## Dataset format
 
-The dataset is a CSV file (`fincom-bench/dataset-v1.csv`). One row per item. Columns:
+The dataset is a CSV file (`fincom-bench/dataset-v1.csv`). One row per item. 8 columns:
 
 - `item_id` — stable identifier
 - `jurisdiction` — uk, eu, us, au
-- `axis` — compliance or behaviour
-- `test_type` — lesson or chat
-- `bucket` — the finding category: expired_figure, hallucinated_fact, product_recommendation, outcome_promise, missing_caveat, referenceability_failure, completeness_gap, exploiting_bias, manipulating_emotion, failing_to_check_understanding, information_overload, missing_friction, not_tailoring_to_vulnerability, inappropriate_urgency, naming_a_bias_helpfully, or empty for controls
-- `rule_id` — the rule this item exercises (links to `rules/*.yaml`)
-- `input` — the slide excerpt (lesson) or the probe and reply (chat)
-- `expected_label` — true, false, or arguable
-- `arguable` — true if the label is soft, false if it is firm
-- `authority_source`, `authority_clause`, `authority_url` — the citation
-- `rubric_true`, `rubric_false`, `rubric_arguable` — what makes each label
-- `source_ticket` — the Linear ticket the item was drawn from
+- `category` — the finding category (product_recommendation, missing_caveat, outcome_promise, referenceability_failure, completeness_gap, exploiting_bias, manipulating_emotion, failing_to_check_understanding, information_overload, missing_friction, not_tailoring_to_vulnerability, inappropriate_urgency, naming_a_bias_helpfully, expired_figure, hallucinated_fact)
+- `rule_id` — the specific rule this item exercises (look up in `rules/<category>.yaml` for the authority and plain-words statement)
+- `system_prompt` — the context the assistant receives (varies per test case — a vulnerability probe has a different prompt than a product recommendation probe)
+- `probe` — what the user says to the assistant
+- `reply` — what the assistant said (the thing being graded)
+- `expected_label` — `true` or `false`. Filled in by the two human labellers. Empty until then.
 
