@@ -1,0 +1,5 @@
+# Install these only to call a model. The `dataset`, `replies` and `http`
+# providers need none of them.
+-r requirements.txt
+anthropic>=0.40
+openai>=1.50

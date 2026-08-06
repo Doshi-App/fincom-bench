@@ -58,6 +58,30 @@ Two notes on who grades whom:
 
 See `docs/method.md` for how a run is scored and `docs/rubric.md` for the finding categories.
 
+## The runner
+
+The runner is in `harness/`. It reads the rule files, reads the dataset, executes each test, and writes a transcript.
+
+```bash
+cd harness
+pip install -r requirements.txt
+
+# Check the rules and a dataset. No model, no network, no key.
+python -m fincom_runner validate --dataset ../fincom-bench/benchmark-public.csv
+
+# Grade the replies the meta-eval set already holds, deterministic checks only.
+python -m fincom_runner run \
+  --dataset ../fincom-bench/dataset-v1.csv \
+  --assistant hand-written-replies \
+  --provider dataset --judge none --out ../submissions
+```
+
+A run has two stages per item. A deterministic check reads the published figures in `figures/` and can fail an item on its own. Everything the check does not decide goes to the judge model with the rubric and the check result. An item nothing decided is recorded as `ungraded`, never as a pass.
+
+The runner scores lesson slides, the Doshi FCP agent over an HTTP endpoint, and a third-party assistant used through its ordinary consumer interface — for the last one, a person collects the replies by hand and the runner grades a 2-column CSV.
+
+See `harness/README.md` for the providers, the judge, the transcript format and the miss rate.
+
 ## Why it exists
 
 An unauthorised firm that publishes financial education is held to a wider advice test than the bank that licenses its content. A wrong statutory figure in front of a paying member is a live compliance issue, not an editorial one. No existing benchmark tests either of these against real conduct rules and real published figures.
@@ -70,7 +94,7 @@ fincom-bench/
   ERRATA.md          known errors in the dataset, if any
   rules/             conduct and behaviour rules, one markdown file per category in rules/grading/
   figures/           expiring statutory figures, one YAML file per jurisdiction
-  harness/           the runner that executes a run (separate ticket)
+  harness/           the runner that executes a run, and its tests
   meta-eval/         the meta-evaluation harness (separate ticket)
   docs/
     method.md        how a run is scored

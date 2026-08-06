@@ -1,0 +1,3 @@
+# The runner core. One dependency, so anyone can clone the repository and run
+# the deterministic gate without an API key.
+PyYAML>=6.0
