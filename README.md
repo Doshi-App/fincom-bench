@@ -11,6 +11,53 @@ The headline output is a leaderboard of AI assistants — which conduct rules ea
 1. **Compliance** — did the content break a named rule? Scored on all four jurisdictions. Seven finding categories: expired figure, hallucinated fact, product recommendation, outcome promise, missing caveat, referenceability failure, completeness gap.
 2. **Behaviour** — did the assistant use a manipulative or helpful technique? Covers all 4 jurisdictions. UK cited to PRIN 2A, EU to AI Act / DSA, US to FTC Act / CFPB, AU to ASIC. Eight categories: exploiting bias, manipulating emotion, failing to check understanding, information overload, missing friction, not tailoring to vulnerability, inappropriate urgency, naming a bias helpfully.
 
+## How a run works
+
+Two passes over two datasets. The first pass has the replies already written and asks which model marks them the way a person does. The second pass leaves the replies blank, lets every assistant write its own, and has the winning judge mark them.
+
+```mermaid
+flowchart TB
+  subgraph P1["PASS 1 — choose the judge (the replies already exist)"]
+    direction LR
+    R["Rules<br/>15 categories x 4 jurisdictions<br/>each cites a clause"]
+    D["Meta-eval set<br/>274 rows, written by hand<br/>probe filled, reply filled, label blank"]
+    H["Human labellers<br/>2 people read the rule<br/>and mark pass or fail"]
+    M["Candidate judges<br/>5 models mark the same rows<br/>with no sight of the labels"]
+    J["THE JUDGE<br/>the model that agrees most<br/>with the two people"]
+    R -->|"define a breach"| D
+    D -->|"all 274 rows"| H
+    D -->|"all 274 rows"| M
+    H -->|"gold labels"| J
+    M -->|"5 label sets"| J
+  end
+
+  subgraph P2["PASS 2 — score the assistants (the replies do not exist yet)"]
+    direction LR
+    B["Benchmark set<br/>the same probes<br/>REPLY COLUMN EMPTY"]
+    A["Assistants under test<br/>GPT / Grok / Claude / Doshi FCP<br/>+ a regulated bank assistant"]
+    JB["THE JUDGE<br/>the pass 1 winner marks every<br/>reply against the same rules"]
+    L["Leaderboard<br/>fail = a finding that cites its clause<br/>pass = no record"]
+    B -->|"the same probe"| A
+    A -->|"each writes its own reply"| JB
+    JB -->|"pass / fail"| L
+  end
+
+  D -.->|"probes reused, replies dropped"| B
+  J ==>|"the winner carries over"| JB
+
+  classDef human stroke:#2f6fd0,stroke-width:2.5px;
+  class R,D,H,J,B,JB human;
+```
+
+A thick blue border marks a step a person does. Everything else is a model. Nothing downstream is better than the human labels in pass 1, so the three jobs that need outside help are writing the rules, writing the dataset, and labelling it.
+
+Two notes on who grades whom:
+
+- **Doshi FCP is a contestant, never the judge.** Doshi holds no advice permission, so Doshi FCP is scored against the stricter 2-condition test, the same as GPT, Grok and Claude. Only the bank assistant gets the 3-condition test, and only because it holds the permission.
+- **Pass 1 cannot detect self-preference.** Every reply in the meta-eval set is written by a person, so no candidate judge has anything of its own to recognise. A judge can win pass 1 cleanly and still be soft on its own replies in pass 2. No assistant grades its own leaderboard row.
+
+See `docs/method.md` for how a run is scored and `docs/rubric.md` for the finding categories.
+
 ## Why it exists
 
 An unauthorised firm that publishes financial education is held to a wider advice test than the bank that licenses its content. A wrong statutory figure in front of a paying member is a live compliance issue, not an editorial one. No existing benchmark tests either of these against real conduct rules and real published figures.
