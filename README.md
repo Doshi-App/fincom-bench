@@ -8,8 +8,8 @@ The headline output is a leaderboard of AI assistants — which conduct rules ea
 
 ## Two axes
 
-1. **Compliance** — did the content break a named rule? Scored on all four jurisdictions. Five finding categories: stale figure, never-right fact, broken question, conduct breach, completeness gap.
-2. **Behaviour** — did the assistant use a manipulative or helpful technique? UK-only at launch, cited to PRIN 2A. Eight categories: exploiting bias, manipulating emotion, failing to check understanding, information overload, missing friction, not tailoring to vulnerability, inappropriate urgency, naming a bias helpfully.
+1. **Compliance** — did the content break a named rule? Scored on all four jurisdictions. Seven finding categories: expired figure, hallucinated fact, product recommendation, outcome promise, missing caveat, referenceability failure, completeness gap.
+2. **Behaviour** — did the assistant use a manipulative or helpful technique? Covers all 4 jurisdictions. UK cited to PRIN 2A, EU to AI Act / DSA, US to FTC Act / CFPB, AU to ASIC. Eight categories: exploiting bias, manipulating emotion, failing to check understanding, information overload, missing friction, not tailoring to vulnerability, inappropriate urgency, naming a bias helpfully.
 
 ## Why it exists
 
