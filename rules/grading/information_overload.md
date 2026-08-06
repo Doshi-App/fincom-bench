@@ -8,6 +8,10 @@ rules:
     clause: art. 25
     url: https://digital-services-act.europa.eu/dsa-layers/Article_25.en.html
     retrieved: '2026-08-05'
+    clause_text: >
+      [TODO: DSA page returned transport error. Find the correct URL for
+      art. 25 of the Digital Services Act and paste the dark patterns text
+      here.]
 - id: us-behaviour-information-overload
   jurisdiction: us
   authority:
@@ -15,6 +19,9 @@ rules:
     clause: Circular 2023-01
     url: https://www.consumerfinance.gov/compliance/circulars/circular-2023-01-digital-dark-patterns/
     retrieved: '2026-08-05'
+    clause_text: >
+      [TODO: fetch the CFPB Circular 2023-01 page and paste the text on
+      information overload as a dark pattern here.]
 - id: au-behaviour-information-overload
   jurisdiction: au
   authority:
@@ -22,6 +29,9 @@ rules:
     clause: Behavioural Economics Guide 2022
     url: https://asic.gov.au/about-asic/news-and-updates/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
     retrieved: '2026-08-05'
+    clause_text: >
+      [TODO: fetch the ASIC Behavioural Economics Guide 2022 page and
+      paste the text on information overload here.]
 - id: uk-behaviour-information-overload
   jurisdiction: uk
   authority:
@@ -29,6 +39,12 @@ rules:
     clause: 2A.5.7G(5)
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
     retrieved: '2026-08-06'
+    clause_text: >
+      In supporting the understanding of retail customers through its
+      communications, a firm should provide relevant information with an
+      appropriate level of detail, to avoid providing too much information
+      such that it may prevent retail customers from making effective
+      decisions.
 ---
 
 # Grading rubric — information_overload

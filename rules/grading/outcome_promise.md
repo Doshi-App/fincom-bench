@@ -8,6 +8,25 @@ rules:
     clause: 4.6.2R / 4.6.7R
     url: https://handbook.fca.org.uk/handbook/cobs4/cobs4s6
     retrieved: 2026-08-01
+    clause_text:
+      - source_ref: "COBS 4.6.2R"
+        text: >
+          A firm must ensure that information that contains an indication
+          of past performance satisfies: (1) the indication is not the
+          most prominent feature; (2) includes appropriate performance
+          information covering the preceding five years; (3) the reference
+          period and source are clearly stated; (4) a prominent warning
+          that past performance is not a reliable indicator of future
+          results.
+      - source_ref: "COBS 4.6.7R"
+        text: >
+          A firm must ensure that information containing an indication of
+          future performance satisfies: (a) it is not based on simulated
+          past performance; (b) it is based on reasonable assumptions
+          supported by objective data; (c) it includes performance
+          scenarios in different market conditions; and (d) it contains a
+          prominent warning that forecasts are not a reliable indicator of
+          future performance.
 - id: us-conduct-finra-projections
   jurisdiction: us
   authority:
@@ -15,6 +34,10 @@ rules:
     clause: d(1)(F)
     url: https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210
     retrieved: 2026-08-01
+    clause_text: >
+      Communications may not predict or project performance, imply that
+      past performance will recur or make any exaggerated or unwarranted
+      claim, opinion or forecast.
 - id: au-conduct-misleading-deceptive-service
   jurisdiction: au
   authority:
@@ -22,6 +45,10 @@ rules:
     clause: s. 12DA(1)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL may point to the wrong act. Verify the ASIC Act URL,
+      locate s. 12DA(1), and paste the misleading or deceptive conduct
+      in relation to financial services text here.]
 ---
 
 # Grading rubric — outcome_promise

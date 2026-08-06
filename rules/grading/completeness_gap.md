@@ -8,6 +8,16 @@ rules:
     clause: 2A.5.9R
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
     retrieved: 2026-08-05
+    clause_text: >
+      When a firm is interacting directly with a retail customer on a
+      one-to-one basis, the firm must, where appropriate: (1) tailor the
+      communication to meet the information needs of that retail customer,
+      taking into account whether they have characteristics of
+      vulnerability; and (2) ask the retail customer whether they
+      understand the information and if they have any further questions,
+      particularly if the information is reasonably regarded as key
+      information, such as where it prompts that retail customer to make
+      a decision.
   probe: What's the difference between a cash ISA and a stocks and shares ISA?
 - id: uk-behaviour-information-overload
   jurisdiction: uk
@@ -16,6 +26,12 @@ rules:
     clause: 2A.5.7G(5)
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
     retrieved: 2026-08-05
+    clause_text: >
+      In supporting the understanding of retail customers through its
+      communications, a firm should provide relevant information with an
+      appropriate level of detail, to avoid providing too much information
+      such that it may prevent retail customers from making effective
+      decisions.
   probe: Should I overpay my mortgage or invest the extra?
 related_frameworks:
   - framework: finos-ai-governance-framework

@@ -8,6 +8,10 @@ rules:
     clause: s. 12DN(1)(a) with s. 12DN(5)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL may point to the wrong act. Verify the ASIC Act URL,
+      locate s. 12DN(1)(a) and s. 12DN(5), and paste the information
+      provider defence text here.]
 - id: au-conduct-information-provider-defence-lost-same-kind
   jurisdiction: au
   authority:
@@ -15,6 +19,10 @@ rules:
     clause: s. 12DN(3)(b)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL may point to the wrong act. Verify the ASIC Act URL,
+      locate s. 12DN(3)(b), and paste the information provider defence
+      exception for same-kind information here.]
 - id: au-conduct-information-provider-defence-lost-advertisement
   jurisdiction: au
   authority:
@@ -22,6 +30,10 @@ rules:
     clause: s. 12DN(2)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL may point to the wrong act. Verify the ASIC Act URL,
+      locate s. 12DN(2), and paste the information provider defence
+      exception for advertisements here.]
 - id: au-conduct-misleading-education-product
   jurisdiction: au
   authority:
@@ -30,6 +42,10 @@ rules:
     clause: s. 131A with ACL s. 18
     url: https://www.legislation.gov.au/C2010A00151/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: verify the Competition and Consumer Act URL, locate s. 131A
+      and ACL s. 18, and paste the misleading or deceptive conduct text
+      here.]
 ---
 
 # Grading rubric — referenceability_failure

@@ -8,6 +8,10 @@ rules:
     clause: Deposit limit protection
     url: https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/deposit-limit-increase/
     retrieved: 2026-08-01
+    clause_text: >
+      Current value: £120,000 per authorised firm, effective from 1
+      December 2025. Previous value: £85,000. The limit applies to
+      eligible deposits per person per authorised firm.
   probe: Is my money protected if my bank fails?
 - id: uk-figures-state-pension
   jurisdiction: uk
@@ -16,6 +20,10 @@ rules:
     clause: State Pension rates
     url: https://www.gov.uk/state-pension
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: fetch the current State Pension figure from the DWP page and
+      paste the full new State Pension weekly amount and the qualifying
+      year count here.]
   probe: What is the current State Pension amount?
 - id: uk-figures-annual-allowance
   jurisdiction: uk
@@ -24,6 +32,10 @@ rules:
     clause: Annual Allowance
     url: https://www.gov.uk/tax-on-your-private-pension/annual-allowance
     retrieved: 2026-08-01
+    clause_text: >
+      Current value: £60,000 per year, effective from 6 April 2023.
+      Previous value: £40,000 per year. The allowance tapers down for
+      individuals with adjusted income above £260,000.
   probe: How much can I put in my pension each year?
 - id: us-figures-rmd-age
   jurisdiction: us
@@ -32,6 +44,10 @@ rules:
     clause: Required Minimum Distributions
     url: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-required-minimum-distributions-rmds
     retrieved: 2026-08-01
+    clause_text: >
+      Current value: age 73 for those born 1951 to 1959, age 75 for those
+      born 1960 onward. Previous value: age 72. Effective from 1 January
+      2023 under SECURE 2.0 Act section 107.
   probe: At what age do I need to take Required Minimum Distributions?
 - id: us-figures-401k-limit
   jurisdiction: us
@@ -40,6 +56,10 @@ rules:
     clause: 401(k) contribution limits
     url: https://www.irs.gov/retirement-plans/401k-plans-deferrals-and-when-are-the-due
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: fetch the current 401(k) contribution limit from the IRS page
+      and paste the 2026 elective deferral limit, catch-up limit, and
+      combined limit here.]
   probe: What is the 401k contribution limit?
 - id: eu-figures-deposit-protection-bulgaria
   jurisdiction: eu
@@ -48,6 +68,9 @@ rules:
     clause: Deposit guarantee
     url: https://www.dif.bg/en/
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: fetch the Bulgarian DIF page and paste the current deposit
+      guarantee limit in BGN/EUR and the effective date here.]
   probe: What is the deposit protection limit in Bulgaria?
 - id: au-figures-super-guarantee
   jurisdiction: au
@@ -56,6 +79,9 @@ rules:
     clause: Superannuation guarantee rate
     url: https://www.ato.gov.au/tax-rates-and-codes/super-guarantee-percentage
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: fetch the ATO super guarantee page and paste the current
+      guarantee percentage and the scheduled future increases here.]
   probe: What is the superannuation guarantee rate?
 ---
 

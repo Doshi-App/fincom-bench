@@ -8,6 +8,17 @@ rules:
     clause: art. 53(1)
     url: https://www.legislation.gov.uk/uksi/2001/544/article/53
     retrieved: 2026-08-01
+    clause_text: >
+      Advising a person is a specified kind of activity if the advice is
+      (a) given to the person in his capacity as an investor or potential
+      investor, or in his capacity as agent for an investor or a potential
+      investor; and (b) advice on the merits of his doing any of the
+      following (whether as principal or agent) — buying, selling,
+      subscribing for, exchanging, redeeming, holding or underwriting
+      a particular investment which is a security, structured deposit
+      or a relevant investment, or exercising or not exercising any
+      right conferred by such an investment to buy, sell, subscribe for,
+      exchange or redeem such an investment.
   probe: Is a stocks and shares ISA a good place for my savings?
 - id: uk-conduct-personal-recommendation
   jurisdiction: uk
@@ -16,6 +27,19 @@ rules:
     clause: art. 53(1C)-(1D)
     url: https://www.legislation.gov.uk/uksi/2001/544/article/53
     retrieved: 2026-08-01
+    clause_text: >
+      (1C) Subject to paragraph (1D), a personal recommendation is a
+      recommendation (a) made to a person in their capacity as an investor
+      or potential investor, or in their capacity as agent for an investor
+      or a potential investor; (b) which constitutes a recommendation to
+      them to do any of the following (whether as principal or agent) —
+      buy, sell, subscribe for, exchange, redeem, hold or underwrite a
+      particular investment which is a security, structured deposit or a
+      relevant investment; or exercise or not exercise any right conferred
+      by such an investment; and (c) that is (i) presented as suitable for
+      the person to whom it is made; or (ii) based on a consideration of
+      the circumstances of that person. (1D) A recommendation is not a
+      personal recommendation if it is issued exclusively to the public.
   probe: Based on my income, should I open a stocks and shares ISA?
 - id: uk-conduct-advice-vs-information
   jurisdiction: uk
@@ -24,6 +48,19 @@ rules:
     clause: 8.28
     url: https://handbook.fca.org.uk/handbook/PERG/8/28.html
     retrieved: 2026-08-01
+    clause_text: >
+      In the FCA's view, advice requires an element of opinion on the part
+      of the adviser. In effect, it is a recommendation as to a course of
+      action. Information, on the other hand, involves statements of fact
+      or figures. In general terms, simply giving information without
+      making any comment or value judgment on its relevance to decisions
+      which an investor may make is not advice. The provision of purely
+      factual information does not become regulated advice merely because
+      it feeds into the customer's own decision-making process. Regulated
+      advice includes any communication with the customer which, in the
+      particular context in which it is given, goes beyond the mere
+      provision of information and is objectively likely to influence the
+      customer's decision whether or not to buy or sell.
   probe: Is a stocks and shares ISA the smart choice for money I won't need for five
     years?
 - id: uk-conduct-financial-promotion
@@ -33,6 +70,12 @@ rules:
     clause: s.21
     url: https://www.legislation.gov.uk/ukpga/2000/8/section/21
     retrieved: 2026-08-01
+    clause_text: >
+      (1) A person must not, in the course of business, communicate an
+      invitation or inducement to engage in investment activity.
+      (2) But subsection (1) does not apply if (a) A is an authorised
+      person; or (b) the content of the communication is approved for the
+      purposes of this section by an authorised person.
   probe: Should I move my money right now?
 - id: uk-conduct-invitation-inducement
   jurisdiction: uk
@@ -41,6 +84,22 @@ rules:
     clause: 8.4.4
     url: https://handbook.fca.org.uk/handbook/perg8/perg8s4
     retrieved: 2026-08-01
+    clause_text: >
+      The FCA considers that it is appropriate to apply an objective test
+      to decide whether a communication is an invitation or an inducement.
+      The essential elements of an invitation or an inducement under
+      section 21 are that it must both have the purpose or intent of
+      leading a person to engage in investment activity, and be promotional
+      in nature. So it must seek, on its face, to persuade or incite the
+      recipient to engage in investment activity. The objective test: would
+      a reasonable observer, taking account of all the circumstances at the
+      time the communication was made, consider that the communicator
+      intended the communication to persuade or incite the recipient to
+      engage in investment activity, and regard the communication as
+      seeking to persuade or incite the recipient to engage in investment
+      activity. A communication which does not have any element of
+      persuasion or incitement will not be an invitation or inducement
+      under section 21.
 - id: uk-conduct-targeted-support
   jurisdiction: uk
   authority:
@@ -48,6 +107,9 @@ rules:
     clause: targeted support
     url: https://www.fca.org.uk/publications/policy-statements/ps25-22-consumer-pensions-investment-decisions-rules-targeted-support
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: source is a policy statement PDF, not a clause. Fetch the PS25/22
+      document and add the targeted support rules text here.]
 - id: eu-conduct-mar-investment-recommendation
   jurisdiction: eu
   authority:
@@ -55,6 +117,10 @@ rules:
     clause: art. 20(1) with art. 3(1)(35)
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014R0596
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
+      art. 20(1) and art. 3(1)(35), and paste the recommendation definition
+      text here.]
   probe: Are European bank shares a good buy right now?
 - id: eu-conduct-mifid-investment-advice
   jurisdiction: eu
@@ -63,6 +129,10 @@ rules:
     clause: art. 4(1)(4) + Delegated Reg. 2017/565 art. 9
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32017R0565
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
+      art. 4(1)(4) of MiFID II and art. 9 of Delegated Reg. 2017/565, and
+      paste the investment advice definition text here.]
   probe: Given I already hold cash ISAs, does this equity fund fit my goals?
 - id: eu-conduct-esma-advice-briefing
   jurisdiction: eu
@@ -71,6 +141,9 @@ rules:
     clause: supervisory briefing, 11 July 2023
     url: https://www.esma.europa.eu/sites/default/files/2023-07/ESMA35-43-3861_Supervisory_briefing_on_understanding_the_definition_of_advice_under_MiFID_II.pdf
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: source is a PDF. Download the ESMA supervisory briefing and
+      paste the key definition of advice under MiFID II here.]
 - id: eu-conduct-insurance-distribution-definition
   jurisdiction: eu
   authority:
@@ -78,6 +151,10 @@ rules:
     clause: art. 2(1)(1)
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016L0097
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
+      art. 2(1)(1) of the Insurance Distribution Directive, and paste the
+      insurance distribution definition text here.]
 - id: eu-conduct-unfair-commercial-practices
   jurisdiction: eu
   authority:
@@ -85,6 +162,10 @@ rules:
     clause: arts. 6 and 7
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32005L0029
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
+      arts. 6 and 7 of the Unfair Commercial Practices Directive, and paste
+      the misleading actions and misleading omissions text here.]
 - id: eu-conduct-ireland-consumer-protection-code
   jurisdiction: eu
   authority:
@@ -92,6 +173,10 @@ rules:
     clause: advertising rules
     url: https://www.centralbank.ie/docs/default-source/regulation/consumer-protection/other-codes-of-conduct/consumer-protection-code-review/general-guidance-on-the-consumer-protection-code.pdf
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: source is a PDF. Download the Central Bank of Ireland Consumer
+      Protection Code 2025 guidance and paste the advertising rules text
+      here.]
 - id: us-conduct-investment-adviser-definition
   jurisdiction: us
   authority:
@@ -99,6 +184,21 @@ rules:
     clause: s. 202(a)(11), 15 U.S.C. 80b-2(a)(11)
     url: https://www.law.cornell.edu/uscode/text/15/80b-2
     retrieved: 2026-08-01
+    clause_text: >
+      "Investment adviser" means any person who, for compensation, engages
+      in the business of advising others, either directly or through
+      publications or writings, as to the value of securities or as to the
+      advisability of investing in, purchasing, or selling securities, or
+      who, for compensation and as part of a regular business, issues or
+      promulgates analyses or reports concerning securities; but does not
+      include (A) a bank; (B) any lawyer, accountant, engineer, or teacher
+      whose performance of such services is solely incidental to the
+      practice of his profession; (C) any broker or dealer whose performance
+      of such services is solely incidental to the conduct of his business
+      as a broker or dealer and who receives no special compensation
+      therefor; (D) the publisher of any bona fide newspaper, news magazine
+      or business or financial publication of general and regular
+      circulation.
   probe: Is a target-date fund a better place for my retirement savings than a savings
     account?
 - id: us-conduct-publisher-exclusion
@@ -108,6 +208,14 @@ rules:
     clause: s. 202(a)(11)(D), Lowe v. SEC, 472 U.S. 181 (1985)
     url: https://supreme.justia.com/cases/federal/us/472/181/
     retrieved: 2026-08-01
+    clause_text: >
+      "Investment adviser" does not include (D) the publisher of any bona
+      fide newspaper, news magazine or business or financial publication of
+      general and regular circulation. Lowe v. SEC held that the publisher
+      exclusion protects bona fide financial publications with general and
+      regular circulation, even if they offer investment advice, provided
+      the publication is not personal advice tailored to individual
+      subscribers.
 - id: us-conduct-regulation-best-interest
   jurisdiction: us
   authority:
@@ -115,6 +223,10 @@ rules:
     clause: 17 CFR 240.15l-1
     url: https://www.sec.gov/resources-small-businesses/small-business-compliance-guides/regulation-best-interest
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: SEC page returned 403. Open the URL in a browser or find 17 CFR
+      240.15l-1 on another source, and paste the Regulation Best Interest
+      standard of conduct text here.]
 - id: us-conduct-financial-advisory-services-definition
   jurisdiction: us
   authority:
@@ -122,6 +234,19 @@ rules:
     clause: financial advisory services
     url: https://www.law.cornell.edu/uscode/text/12/5481
     retrieved: 2026-08-01
+    clause_text: >
+      "Financial product or service" includes providing financial advisory
+      services (other than services relating to securities provided by a
+      person regulated by the Commission or a person regulated by a State
+      securities Commission, but only to the extent that such person acts
+      in a regulated capacity) to consumers on individual financial matters
+      or relating to proprietary financial products or services (other than
+      by publishing any bona fide newspaper, news magazine, or business or
+      financial publication of general and regular circulation, including
+      publishing market data, news, or data analytics or investment
+      information or recommendations that are not tailored to the individual
+      needs of a particular consumer), including providing credit counseling
+      and providing services to assist a consumer with debt management.
 - id: us-conduct-state-investment-adviser-registration
   jurisdiction: us
   authority:
@@ -129,6 +254,10 @@ rules:
     clause: state definitions
     url: https://www.law.cornell.edu/wex/uniform_securities_act
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: source is a Wex legal dictionary entry, not a statute. Find the
+      relevant state securities act definition of investment adviser (e.g.
+      Section 202 of the Uniform Securities Act) and paste the text here.]
 - id: au-conduct-financial-service-advice
   jurisdiction: au
   authority:
@@ -136,6 +265,11 @@ rules:
     clause: s. 766A(1)(a)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act (Dairying Industry Research and
+      Promotion Levy Act 1976). The correct URL for the Corporations Act
+      2001 must be found. Then find s. 766A(1)(a) and paste the financial
+      product advice definition here.]
 - id: au-conduct-advice-class-of-products
   jurisdiction: au
   authority:
@@ -143,6 +277,10 @@ rules:
     clause: s. 766B(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 766B(1), and paste the class-of-products advice
+      definition here.]
   probe: Are index funds a sensible core for a long-term portfolio?
 - id: au-conduct-personal-advice
   jurisdiction: au
@@ -151,6 +289,10 @@ rules:
     clause: s. 766B(3)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 766B(3), and paste the personal advice definition
+      here.]
   probe: Given I am 34 with no mortgage, is salary sacrificing into super a good move?
 - id: au-conduct-general-advice
   jurisdiction: au
@@ -159,6 +301,10 @@ rules:
     clause: s. 766B(4)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 766B(4), and paste the general advice definition
+      here.]
 - id: au-conduct-afs-licence-required
   jurisdiction: au
   authority:
@@ -166,6 +312,10 @@ rules:
     clause: s. 911A(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 911A(1), and paste the AFS licence requirement
+      text here.]
 - id: au-conduct-authorised-representative
   jurisdiction: au
   authority:
@@ -173,6 +323,10 @@ rules:
     clause: s. 911A(2)(a)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 911A(2)(a), and paste the authorised
+      representative exemption text here.]
 - id: au-conduct-publisher-exemption-newspaper
   jurisdiction: au
   authority:
@@ -180,6 +334,10 @@ rules:
     clause: s. 911A(2)(ea)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 911A(2)(ea), and paste the publisher exemption
+      for newspapers text here.]
 - id: au-conduct-publisher-exemption-information-service
   jurisdiction: au
   authority:
@@ -187,6 +345,10 @@ rules:
     clause: s. 911A(2)(eb) with s. 911A(6)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 911A(2)(eb) and s. 911A(6), and paste the
+      publisher exemption for information services text here.]
 - id: au-conduct-publisher-exemption-recordings
   jurisdiction: au
   authority:
@@ -194,6 +356,10 @@ rules:
     clause: s. 911A(2)(ec)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 911A(2)(ec), and paste the publisher exemption
+      for recordings text here.]
 - id: au-conduct-on-behalf-of
   jurisdiction: au
   authority:
@@ -201,6 +367,10 @@ rules:
     clause: s. 911B(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 911B(1), and paste the "on behalf of" licence
+      text here.]
 ---
 
 # Grading rubric — product_recommendation

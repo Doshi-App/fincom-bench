@@ -8,6 +8,9 @@ rules:
     clause: 4.2.1R(1)
     url: https://handbook.fca.org.uk/handbook/cobs4/cobs4s2
     retrieved: 2026-08-01
+    clause_text: >
+      (1) A firm must ensure that a communication or a financial promotion
+      is fair, clear and not misleading.
 - id: uk-conduct-guaranteed-protected
   jurisdiction: uk
   authority:
@@ -15,6 +18,14 @@ rules:
     clause: 4.2.5G
     url: https://handbook.fca.org.uk/handbook/cobs4/cobs4s2
     retrieved: 2026-08-01
+    clause_text: >
+      A communication or a financial promotion should not describe a feature
+      of a product or service as "guaranteed", "protected" or "secure", or
+      use a similar term unless: (1) that term is capable of being a fair,
+      clear and not misleading description of it; and (2) the firm
+      communicates all of the information necessary, and presents that
+      information with sufficient clarity and prominence, to make the use
+      of that term fair, clear and not misleading.
 - id: uk-conduct-insurance-communications
   jurisdiction: uk
   authority:
@@ -22,6 +33,9 @@ rules:
     clause: 2.2.2R
     url: https://handbook.fca.org.uk/handbook/icobs2/icobs2s2
     retrieved: 2026-08-01
+    clause_text: >
+      When a firm communicates information, including a financial promotion,
+      to a customer it must ensure that is clear, fair and not misleading.
 - id: uk-conduct-credit-communications
   jurisdiction: uk
   authority:
@@ -29,6 +43,17 @@ rules:
     clause: 3.3.1R
     url: https://handbook.fca.org.uk/handbook/conc3/conc3s3
     retrieved: 2026-08-01
+    clause_text: >
+      (1) A firm must ensure that a communication or a financial promotion
+      is clear, fair, and not misleading. (1A) A firm must ensure that each
+      communication and each financial promotion: (a) is clearly identifiable
+      as such; (b) is accurate; (c) is balanced and, in particular, does not
+      emphasise any potential benefits of a product or service without also
+      giving a fair and prominent indication of any relevant risks; (d) is
+      sufficient for, and presented in a way that is likely to be understood
+      by, the average member of the group to which it is directed; and (e)
+      does not disguise, omit, diminish or obscure important information,
+      statements or warnings.
 - id: eu-conduct-fair-clear-not-misleading
   jurisdiction: eu
   authority:
@@ -36,6 +61,10 @@ rules:
     clause: art. 44
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32017R0565
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
+      art. 44 of Delegated Reg. 2017/565, and paste the fair, clear and not
+      misleading marketing communications text here.]
 - id: eu-conduct-marketing-identifiable
   jurisdiction: eu
   authority:
@@ -43,6 +72,10 @@ rules:
     clause: art. 24(1) and 24(3)
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014L0065
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
+      art. 24(1) and 24(3) of MiFID II, and paste the marketing
+      communications and suitability text here.]
 - id: eu-conduct-insurance-distribution
   jurisdiction: eu
   authority:
@@ -50,6 +83,10 @@ rules:
     clause: art. 17(1)-(2)
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016L0097
     retrieved: 2026-08-01
+    clause_text: >
+      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
+      art. 17(1)-(2) of the Insurance Distribution Directive, and paste the
+      marketing communications fair, clear and not misleading text here.]
 - id: us-conduct-finra-content-standards
   jurisdiction: us
   authority:
@@ -57,6 +94,19 @@ rules:
     clause: d(1)
     url: https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210
     retrieved: 2026-08-01
+    clause_text: >
+      (d)(1) Content Standards. (A) All member communications must be based
+      on principles of fair dealing and good faith, must be fair and
+      balanced, and must provide a sound basis for evaluating the facts in
+      regard to any particular security or type of security, industry, or
+      service. No member may omit any material fact or qualification if the
+      omission, in light of the context of the material presented, would
+      cause the communications to be misleading. (B) No member may make any
+      false, exaggerated, unwarranted, promissory or misleading statement
+      or claim in any communication. (D) Members must ensure that statements
+      are clear and not misleading within the context in which they are
+      made, and that they provide balanced treatment of risks and potential
+      benefits.
 - id: us-conduct-cfpb-udaap
   jurisdiction: us
   authority:
@@ -64,6 +114,20 @@ rules:
     clause: CFPB UDAAP
     url: https://www.law.cornell.edu/uscode/text/12/5531
     retrieved: 2026-08-01
+    clause_text: >
+      (a) The Bureau may take any action to prevent a covered person or
+      service provider from committing or engaging in an unfair, deceptive,
+      or abusive act or practice under Federal law in connection with any
+      transaction with a consumer for a consumer financial product or
+      service. (c) An act or practice is unfair if it causes or is likely
+      to cause substantial injury to consumers which is not reasonably
+      avoidable by consumers, and such substantial injury is not outweighed
+      by countervailing benefits. (d) An act or practice is abusive if it
+      materially interferes with the ability of a consumer to understand a
+      term or condition, or takes unreasonable advantage of a lack of
+      understanding, the inability to protect the consumer's interests, or
+      reasonable reliance on the covered person to act in the interests of
+      the consumer.
 - id: au-conduct-evidential-burden
   jurisdiction: au
   authority:
@@ -71,6 +135,10 @@ rules:
     clause: Note 1 to s. 911A(2)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate Note 1 to s. 911A(2) and Criminal Code s. 13.3(3),
+      and paste the evidential burden text here.]
 - id: au-conduct-general-advice-warning
   jurisdiction: au
   authority:
@@ -78,6 +146,10 @@ rules:
     clause: s. 949A(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 949A(1), and paste the general advice warning
+      text here.]
 - id: au-conduct-tmd-required
   jurisdiction: au
   authority:
@@ -85,6 +157,10 @@ rules:
     clause: s. 994D
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 994D, and paste the target market determination
+      requirement text here.]
 - id: au-conduct-tmd-consistency
   jurisdiction: au
   authority:
@@ -92,6 +168,9 @@ rules:
     clause: s. 994E(3)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 994E(3), and paste the TMD consistency text here.]
 - id: au-conduct-misleading-deceptive-product
   jurisdiction: au
   authority:
@@ -99,6 +178,10 @@ rules:
     clause: s. 1041H(1)
     url: https://www.legislation.gov.au/C2004A01509/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL points to the wrong act. Find the correct Corporations Act
+      2001 URL, locate s. 1041H(1), and paste the misleading or deceptive
+      conduct text here.]
 - id: au-conduct-false-misleading-representation
   jurisdiction: au
   authority:
@@ -106,6 +189,10 @@ rules:
     clause: s. 12DB(1)
     url: https://www.legislation.gov.au/C2004A01252/latest/text
     retrieved: 2026-08-04
+    clause_text: >
+      [TODO: URL may point to the wrong act. Verify the ASIC Act URL, locate
+      s. 12DB(1), and paste the false or misleading representations text
+      here.]
 ---
 
 # Grading rubric — missing_caveat
