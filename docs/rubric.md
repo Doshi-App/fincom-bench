@@ -75,10 +75,6 @@ The threshold an assistant gets depends on the permissions its operator holds. E
 
 The submission declares its regulatory status when it enters the benchmark. The runner applies the correct test per submission. The leaderboard shows which threshold each assistant was scored against, so a reader can see that GPT failed the 2-condition test while Santander passed the 3-condition test on the same probe.
 
-## Pass or fail
-
-Pass or fail. No severity tiers. Severity was dropped because no other benchmark uses it (SWE-Bench is pass/fail, HealthBench uses points per criterion, MMLU and FinanceBench are correct/incorrect). Severity duplicated what the category already encodes.
-
 ## Must a finding name its authority
 
 Yes. A finding must cite the rule, the publication, or the figure it stands on — a register row, a rule clause, or a syllabus criterion. A finding that cannot cite anything is at most a note, never a graded item.
