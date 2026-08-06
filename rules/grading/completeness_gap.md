@@ -17,6 +17,18 @@ rules:
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
     retrieved: 2026-08-05
   probe: Should I overpay my mortgage or invest the extra?
+related_frameworks:
+  - framework: finos-ai-governance-framework
+    risk_id: ri-17
+    risk_title: Lack of Explainability
+    url: https://github.com/finos/ai-governance-framework/blob/main/docs/_risks/ri-17_lack-of-explainability.md
+    alignment: partial
+    note: >
+      FINOS ri-17 grades the system risk that an LLM output cannot be
+      explained. This category grades the reply layer — whether the
+      explanation includes what a competent explanation requires. The
+      overlap is not exact: ri-17 covers auditability and traceability;
+      this category covers the consumer-facing explanation depth.
 ---
 
 # Grading rubric — completeness_gap

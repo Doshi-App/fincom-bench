@@ -233,6 +233,18 @@ The behaviour axis is primarily a chat axis. Most behaviour categories (failing 
 - Reward an end-user outcome like "saved more money".
 - Reward a nudge toward a product, product class or provider, because s.21 FSMA makes inducement criminal for an unauthorised firm.
 
+## Cross-references to external frameworks
+
+3 categories cross-reference the FINOS AI Governance Framework. The reference is in the `related_frameworks` field in the frontmatter of the grading file. The benchmark does not adopt the FINOS risks or mitigations. It notes where a FINOS system-level risk intersects a reply-level category.
+
+| Category | FINOS risk | Alignment | Why it overlaps |
+|---|---|---|---|
+| Hallucinated fact | ri-4 Hallucination and Inaccurate Outputs | Direct | Same failure, graded at the reply layer instead of the system layer. |
+| Not tailoring to vulnerability | ri-16 Bias and Discrimination | Partial | ri-16 covers model-side bias; this category covers consumer-facing communication to a vulnerable member. |
+| Completeness gap | ri-17 Lack of Explainability | Partial | ri-17 covers auditability and traceability; this category covers the depth of the consumer-facing explanation. |
+
+The FINOS AI Governance Framework is a system-level framework for financial services. FinCom Bench is a reply-level benchmark. The 2 frameworks answer different questions. The cross-reference records where the same failure shows up at both layers.
+
 ## Truthful sources
 
 A truthful source is one of:
