@@ -21,9 +21,8 @@ An unauthorised firm that publishes financial education is held to a wider advic
 fincom-bench/
   README.md          this file
   ERRATA.md          known errors in the dataset, if any
-  rules/             conduct and behaviour rules, one YAML file per jurisdiction
+  rules/             conduct and behaviour rules, one YAML file per finding category
   figures/           expiring statutory figures, one YAML file per jurisdiction
-  tests/             lesson tests and chat tests that exercise the rules
   harness/           the runner that executes a run (separate ticket)
   meta-eval/         the meta-evaluation harness (separate ticket)
   docs/
@@ -31,7 +30,7 @@ fincom-bench/
     rubric.md        the finding categories, the two axes, and the grading scheme
   submissions/       one directory per run, holding the transcript
   fincom-bench/
-    dataset-v1.csv   the graded items (machine-readable, one row per item)
+    dataset-v1.csv   the graded items with system prompts (machine-readable)
     end-to-end-pass.md  one real lesson graded end to end
 ```
 

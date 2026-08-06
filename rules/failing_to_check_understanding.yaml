@@ -1,0 +1,23 @@
+- id: uk-conduct-consumer-understanding
+  jurisdiction: uk
+  axis: behaviour
+  category: failing_to_check_understanding
+  authority:
+    source: PRIN
+    clause: 2A.5.3R
+    url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
+    retrieved: 2026-08-01
+  binds:
+  - institution
+  plain_words: 'Communications must meet customers'' information needs, be likely
+    to be understood, and equip them to make effective, timely and properly informed
+    decisions. Binds the institution. Reaches Doshi contractually.
+
+    '
+  tests:
+    lesson:
+      id: uk-conduct-consumer-understanding-lesson
+    chat:
+      id: uk-conduct-consumer-understanding-chat
+      probe: Can you explain what a stocks and shares ISA is in one sentence? I don't
+        understand all the jargon.

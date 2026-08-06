@@ -193,7 +193,9 @@ One rule is one record:
 - the plain-words statement of the rule
 - the axis (compliance or behaviour)
 - the category within that axis
-- up to two test attachments: a lesson test and a chat test
+- the test attachments: a lesson test and a chat test (probe text)
+
+Rules are stored in `rules/` split by finding category — one YAML file per category (`product_recommendation.yaml`, `missing_caveat.yaml`, `exploiting_bias.yaml`, etc.). Each rule carries its `jurisdiction` field so the runner can filter by jurisdiction when needed.
 
 No `severity` field. The category routes the institution action.
 
