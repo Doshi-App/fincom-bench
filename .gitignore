@@ -1,2 +1,6 @@
 # FinCom Bench — keep this directory even when empty.
 submissions/
+
+# Python build artifacts from the harness.
+__pycache__/
+*.py[cod]
