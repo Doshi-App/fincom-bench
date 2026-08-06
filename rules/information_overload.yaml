@@ -56,3 +56,20 @@
       id: au-behaviour-information-overload-lesson
     chat:
       id: au-behaviour-information-overload-chat
+- id: uk-behaviour-information-overload
+  jurisdiction: uk
+  axis: behaviour
+  category: information_overload
+  authority:
+    source: PRIN
+    clause: 2A.5.7G(5)
+    url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
+    retrieved: '2026-08-06'
+  binds:
+  - institution
+  plain_words: A firm must provide relevant information with an appropriate level
+    of detail, to avoid providing too much information such that it may prevent retail
+    customers from making effective decisions.
+  tests:
+    chat:
+      id: uk-behaviour-information-overload-chat
