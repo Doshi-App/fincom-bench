@@ -28,7 +28,7 @@ Every finding carries one of fifteen categories. The category decides what happe
 |---|---|---|
 | Expired figure | The figure was right once and has expired. | Automatic |
 | Hallucinated fact | The figure was wrong from the day it was written. | Automatic |
-| Product recommendation | The content names a particular investment and gives an opinion on it. | Notify |
+| Product recommendation | The content names a particular investment and gives an opinion on it. What counts depends on whether the speaker is regulated (2 conditions) or unregulated (3 conditions). See rubric.md. | Notify |
 | Outcome promise | The content promises or projects a specific outcome. | Notify |
 | Missing caveat | The content omits a required warning. | Notify |
 | Referenceability failure | The content cites a source that is not a truthful source. | Notify |
