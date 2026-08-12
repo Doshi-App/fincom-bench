@@ -6,32 +6,53 @@ rules:
   authority:
     source: DSA
     clause: art. 25
-    url: https://digital-services-act.europa.eu/dsa-layers/Article_25.en.html
-    retrieved: '2026-08-05'
+    url: https://www.eu-digital-services-act.com/Digital_Services_Act_Article_25.html
+    retrieved: '2026-08-12'
+    citation_strength: approximate
     clause_text: >
-      [TODO: DSA page returned transport error. Find the correct URL for
-      art. 25 of the Digital Services Act and paste the dark patterns text
-      here.]
+      Article 25(1): "Providers of online platforms shall not design,
+      organise or operate their online interfaces in a way that deceives or
+      manipulates the recipients of their service or in a way that otherwise
+      materially distorts or impairs the ability of the recipients of their
+      service to make free and informed decisions." Article 25(3)(a) names
+      "giving more prominence to certain choices when asking the recipient of
+      the service for a decision" as a practice the Commission may issue
+      guidelines on. Scope note: article 25 does not name information
+      overload. It is the general prohibition that overload can fall under.
 - id: us-behaviour-information-overload
   jurisdiction: us
   authority:
     source: CFPB
     clause: Circular 2023-01
-    url: https://www.consumerfinance.gov/compliance/circulars/circular-2023-01-digital-dark-patterns/
-    retrieved: '2026-08-05'
+    url: https://www.consumerfinance.gov/compliance/circulars/consumer-financial-protection-circular-2023-01-unlawful-negative-option-marketing-practices/
+    retrieved: '2026-08-12'
+    citation_strength: clause
     clause_text: >
-      [TODO: fetch the CFPB Circular 2023-01 page and paste the text on
-      information overload as a dark pattern here.]
+      CFPB Circular 2023-01, Analysis (Disclosure): "disclosures about the
+      negative option feature were often displayed in fine print, in low
+      contrast, and were generally placed in a less prominent location, such
+      as the bottom of a web page, grouped with other disclosures. Thus, the
+      disclosures were neither clear nor conspicuous." The Circular also
+      states that the CFPB "looks to the overall, net impression of the
+      communication". Scope note: the Circular addresses burying a material
+      term among other disclosures. It does not name information overload as
+      a dark pattern.
 - id: au-behaviour-information-overload
   jurisdiction: au
   authority:
     source: ASIC
     clause: Behavioural Economics Guide 2022
-    url: https://asic.gov.au/about-asic/news-and-updates/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
-    retrieved: '2026-08-05'
+    url: https://www.asic.gov.au/about-asic/news-centre/news-items/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
+    retrieved: '2026-08-12'
+    citation_strength: conceptual
     clause_text: >
-      [TODO: fetch the ASIC Behavioural Economics Guide 2022 page and
-      paste the text on information overload here.]
+      Closest conceptual match, not a rule. ASIC news item, 14 June 2022:
+      "The article revealed how some firms have exploited or ignored
+      consumers' behavioural vulnerabilities in the choice architecture of
+      their products. We remind firms to design and distribute their products
+      appropriately to meet consumer needs." Scope note: this news item does
+      not mention information overload. ASIC publishes no rule on it. Cite
+      this as concept support only.
 - id: uk-behaviour-information-overload
   jurisdiction: uk
   authority:
@@ -39,6 +60,7 @@ rules:
     clause: 2A.5.7G(5)
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
     retrieved: '2026-08-06'
+    citation_strength: clause
     clause_text: >
       In supporting the understanding of retail customers through its
       communications, a firm should provide relevant information with an

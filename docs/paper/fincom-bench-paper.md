@@ -257,7 +257,7 @@ The benchmark grades the assistant. The paper names the bound party. Both are ne
 
 The behaviour axis was originally settled as United Kingdom-only, because all seven usable hooks were in PRIN 2A. A subsequent validation pass supplied citations for the other three jurisdictions, and the register now carries a European Union, United States and Australian citation for each of the eight behaviour categories: European Union to Artificial Intelligence Act article 5(1)(a) and (b) and Digital Services Act article 25, United States to Federal Trade Commission Act section 5 and Consumer Financial Protection Bureau Circular 2023-01, Australia to the ASIC Behavioural Economics Guide 2022.
 
-The strength of those citations is not uniform, and the register says so per cell rather than averaging it away. Four cells are marked approximate or conceptual: failing to check understanding has no explicit Australian rule and is a conceptual match only; its European Union citation rests on the Digital Services Act obstruction-of-free-choice provision and its United States citation on the hidden-information limb of the Circular. Missing friction is conceptual in Australia and approximate in the European Union. Not tailoring to vulnerability is conceptual in Australia. Naming a bias helpfully has no equivalent outside the United Kingdom and is United Kingdom-only.
+The strength of those citations is not uniform, and the register says so per cell rather than averaging it away. Three class-level downgrades apply. Every citation to Artificial Intelligence Act article 5 is approximate, because the article bans manipulation only where it materially distorts behaviour and causes significant harm — a threshold a framing technique does not reach on its own. Every citation to Digital Services Act article 25 is approximate, because the article binds providers of online platforms, and a bank's chat assistant may fall outside that definition. Every citation to the ASIC Behavioural Economics Guide is conceptual, because a guide is not a rule. On top of those, failing to check understanding has no explicit Australian rule at all, and naming a bias helpfully has no equivalent outside the United Kingdom and is United Kingdom-only. Clause-level authority on the behaviour axis therefore exists only in the United Kingdom.
 
 Version v1 therefore reports the behaviour axis per jurisdiction with the citation strength visible, and does not claim clause-level authority where the register records a conceptual match. Section 9.3 carries this as a limitation.
 
@@ -333,7 +333,7 @@ Four defences, in descending strength.
 
 **The set carries passes as well as fails.** A benchmark of breaches only measures how easily a judge says "fail", not whether it can tell a compliant reply from a non-compliant one. Items whose correct label is "pass" are included in every category, and the `naming_a_bias_helpfully` category is scored inversely — the presence of helpful bias-naming is a pass, its absence is neutral, and exploiting the same bias fails under a different category.
 
-**The split is stratified, not random.** The 70/30 split is stratified by category so both halves cover all 15 categories: 191 rows public, 83 rows held out. Random sampling at this set size would leave categories with zero rows in one half, and a stratified sample is standard practice for exactly that reason.
+**The split is stratified, not random.** The 70/30 split is stratified by category so both halves cover all 15 categories: 191 rows in the primary file, 83 in the reserve file. Both files are published — see section 9.2; the benchmark claims no contamination resistance. Random sampling at this set size would leave categories with zero rows in one half, and a stratified sample is standard practice for exactly that reason.
 
 We can also state what we did **not** do, which is where FinanceBench's example is instructive and where we fall short of it. FinanceBench recruited 20 annotators, discarded the work of five for quality, and published that discard rate. Our probes were written by a small internal team with no attrition to report, so there is no discard rate to publish, and the credibility that FinanceBench buys with that number is not available to us. Section 9.2 says what would fix it.
 
@@ -542,17 +542,15 @@ What this does not fix, stated plainly. Princeton wrote SWE-Bench and Princeton 
 
 We should also expect the norm applied elsewhere to be applied to us: in November 2025 SWE-Bench restricted two splits to academic submissions with an arXiv preprint, naming three commercial submitters as no longer eligible. If a comparable rule were applied to a benchmark we authored, we would have no answer to it beyond this section.
 
-### 9.2 The held-out split is not actually held out
+### 9.2 There is no held-out split, by decision
 
-The repository tracks `benchmark-private.csv`, the 83-row held-out split, alongside the 191-row public file and a 274-row combined file. When the repository goes public, all three go public. The private split is therefore private in name only, and any claim that it prevents training on the test set is false as the repository currently stands.
+The repository tracks `benchmark-private.csv`, the 83-row split, alongside the 191-row public file and a 274-row combined file. All three are published. Earlier drafts claimed the 83 rows were held out to prevent training on the test set. That claim was false as the repository stood, and the decision taken for v1 is to publish everything and drop the claim, rather than to remove the file and become the gatekeeper of every outside score. The held-out splits that survive elsewhere do so by social gating rather than secrecy.
 
-This is a defect in v1 rather than a subtlety. It has two possible fixes and they are not equivalent. Remove the file from the repository and serve the held-out rows only through a run we execute — which makes the split real and makes us the gatekeeper of every outside score. Or publish everything and drop the claim — which is honest, and which the comparable evidence suggests is what actually works, since the held-out splits that survive do so by social gating rather than secrecy.
-
-Until that is decided, this paper does not claim a contamination-resistant split. Section 9.3 covers the related exposure: the probes are written from public rule books in ordinary English, and a model may well have seen text resembling them.
+This paper therefore claims no contamination resistance anywhere. The 83-row file is kept only as the seed of a possible future gated split, and submissions report the two halves separately. The related exposure stands: the probes are written from public rule books in ordinary English, and a model may well have seen text resembling them.
 
 ### 9.3 Citation strength is not uniform, and four cells are conceptual
 
-The register carries a citation for every one of the 15 categories in all four jurisdictions, and four behaviour cells rest on a conceptual match rather than a clause that names the conduct: failing to check understanding in Australia, missing friction in Australia, not tailoring to vulnerability in Australia, and failing to check understanding in the European Union and the United States by approximation from adjacent provisions. Naming a bias helpfully has no non-United Kingdom equivalent at all and is United Kingdom-only.
+The register carries a citation for every one of the 15 categories in all four jurisdictions, and outside the United Kingdom no behaviour citation names the conduct in binding rule text. Every Artificial Intelligence Act article 5 citation and every Digital Services Act article 25 citation is approximate — the first because of the article's significant-harm threshold, the second because the article binds online platforms and a bank assistant may not be one. Every ASIC Behavioural Economics Guide citation is conceptual, because a guide is not a rule. Naming a bias helpfully has no non-United Kingdom equivalent at all and is United Kingdom-only. Section 4.5 gives the full breakdown.
 
 A finding in one of those cells is weaker than a finding under PRIN 2A.5.9R, which names the conduct in the rule text. The leaderboard shows the citation, so a reader can weigh it. We do not average the strong and weak citations into a single behaviour score without that breakdown.
 
@@ -627,7 +625,7 @@ Version v1 of this paper is reproducible in the sense that the method can be che
 2. Macro F1 per category for all five candidate judges, with confidence intervals.
 3. The first full run, and the four baselines in section 8.1.
 4. Recall against the 254 compliance-relevant filed corrections, per filed category, and a re-derived recall bar.
-5. A decision on the held-out split — real or dropped — per section 9.2.
+5. Decided in v1: the split claim is dropped and everything is published — section 9.2. v2 revisits only if a gated split is built.
 6. A lawyer's read on section 9.7 before anything in this paper is published outside the company.
 
 ---
@@ -643,16 +641,16 @@ Version v1 of this paper is reproducible in the sense that the method can be che
 | 5 | Missing caveat | Compliance | COBS 4.2.5G | Delegated Reg. 2017/565 art. 44 | FINRA 2210(d)(1) | Corporations Act s.1041H(1) |
 | 6 | Referenceability failure | Compliance | COBS 4.2.1R | MAR art. 20(1) | FINRA 2210(d)(1) | ASIC Act s.12DA(1) |
 | 7 | Completeness gap | Compliance | PRIN 2A.5.3R + syllabus criterion | Delegated Reg. 2017/565 art. 44 | FINRA 2210(d)(1) | RG 244.26 |
-| 8 | Exploiting bias | Behaviour | PRIN 2A.2.10G / 2A.2.3G | AI Act art. 5(1)(a) | FTC Act s.5; CFPB 2023-01 | ASIC BE Guide 2022 |
-| 9 | Manipulating emotion | Behaviour | PRIN 2A.2.3G | AI Act art. 5(1)(a); DSA art. 25 | FTC Act s.5; CFPB 2023-01 | ASIC BE Guide 2022 |
+| 8 | Exploiting bias | Behaviour | PRIN 2A.2.10G / 2A.2.3G | AI Act art. 5(1)(a) *(approximate)* | FTC Act s.5; CFPB 2023-01 | ASIC BE Guide 2022 *(conceptual)* |
+| 9 | Manipulating emotion | Behaviour | PRIN 2A.2.3G | AI Act art. 5(1)(a); DSA art. 25 *(approximate)* | FTC Act s.5; CFPB 2023-01 | ASIC BE Guide 2022 *(conceptual)* |
 | 10 | Failing to check understanding | Behaviour | PRIN 2A.5.9R | DSA art. 25 *(approximate)* | CFPB 2023-01 *(approximate)* | *No explicit rule — conceptual* |
-| 11 | Information overload | Behaviour | PRIN 2A.5.7G(5) | DSA art. 25 | CFPB 2023-01 | ASIC BE Guide 2022 |
+| 11 | Information overload | Behaviour | PRIN 2A.5.7G(5) | DSA art. 25 *(approximate)* | CFPB 2023-01 | ASIC BE Guide 2022 *(conceptual)* |
 | 12 | Missing friction | Behaviour | PRIN 2A.6.2R | DSA art. 25 *(approximate)* | CFPB 2023-01; FTC 2022 report | ASIC BE Guide 2022 *(conceptual)* |
-| 13 | Not tailoring to vulnerability | Behaviour | PRIN 2A.5.8R | AI Act art. 5(1)(b) | FTC Act s.5; CFPB 2023-01 | ASIC BE Guide 2022 *(conceptual)* |
-| 14 | Inappropriate urgency | Behaviour | PRIN 2A.2.3G / 2A.5.9R | DSA art. 25 | CFPB 2023-01; FTC 2022 report | ASIC BE Guide 2022 |
+| 13 | Not tailoring to vulnerability | Behaviour | PRIN 2A.5.8R | AI Act art. 5(1)(b) *(approximate)* | FTC Act s.5; CFPB 2023-01 | ASIC BE Guide 2022 *(conceptual)* |
+| 14 | Inappropriate urgency | Behaviour | PRIN 2A.2.3G / 2A.5.9R | DSA art. 25 *(approximate)* | CFPB 2023-01; FTC 2022 report | ASIC BE Guide 2022 *(conceptual)* |
 | 15 | Naming a bias helpfully | Behaviour | PRIN 2A.2.20G | *None* | *None* | *None* |
 
-Italics mark a cell where the register records an approximate or conceptual match rather than a clause naming the conduct. Section 9.3 covers what that means for a finding.
+Italics mark a cell where the register records an approximate or conceptual match rather than a clause naming the conduct. On the behaviour axis, only the United Kingdom column is free of them. Section 9.3 covers what that means for a finding.
 
 ## Appendix B — Cross-references to the FINOS AI Governance Framework
 
@@ -677,5 +675,5 @@ Collected in one place so a reader does not have to assemble it from nine sectio
 | Any assistant score | None | The first full run |
 | Recall against filed corrections | None | The first full run |
 | Recall bar per category | Not derived | Re-derivation over the 254-request denominator |
-| Held-out split integrity | **Broken — see 9.2** | A decision to remove the file or drop the claim |
+| Held-out split integrity | Claim dropped — all probes published, see 9.2 | Nothing — decided in v1 |
 | Legal sign-off | Not obtained | A lawyer's read of section 9.7 |

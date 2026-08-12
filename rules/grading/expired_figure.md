@@ -18,12 +18,15 @@ rules:
   authority:
     source: DWP
     clause: State Pension rates
-    url: https://www.gov.uk/state-pension
-    retrieved: 2026-08-01
+    url: https://www.gov.uk/new-state-pension/what-youll-get
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: fetch the current State Pension figure from the DWP page and
-      paste the full new State Pension weekly amount and the qualifying
-      year count here.]
+      Current value: "The full rate of new State Pension is £241.30 a
+      week." You need 35 qualifying years on your National Insurance record
+      to get the full new State Pension. You need 10 qualifying years to
+      get any new State Pension. People whose record started before April
+      2016 may have been contracted out and can need more than 35 years.
+      The page does not name the tax year for the £241.30 rate.
   probe: What is the current State Pension amount?
 - id: uk-figures-annual-allowance
   jurisdiction: uk
@@ -54,34 +57,49 @@ rules:
   authority:
     source: IRS
     clause: 401(k) contribution limits
-    url: https://www.irs.gov/retirement-plans/401k-plans-deferrals-and-when-are-the-due
-    retrieved: 2026-08-01
+    url: https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-401k-and-profit-sharing-plan-contribution-limits
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: fetch the current 401(k) contribution limit from the IRS page
-      and paste the 2026 elective deferral limit, catch-up limit, and
-      combined limit here.]
+      Current values for 2026: elective deferral limit $24,500. Catch-up
+      contribution for employees aged 50 and over: $8,000. Higher catch-up
+      for employees aged 60, 61, 62 or 63 under the SECURE 2.0 Act:
+      $11,250. Overall limit under Internal Revenue Code section 415(c):
+      $72,000, or $80,000 including catch-up contributions, or up to
+      $83,250 for those aged 60 to 63. All limits are subject to
+      cost-of-living adjustments.
   probe: What is the 401k contribution limit?
 - id: eu-figures-deposit-protection-bulgaria
   jurisdiction: eu
   authority:
     source: Bulgarian Deposit Insurance Fund
     clause: Deposit guarantee
-    url: https://www.dif.bg/en/
-    retrieved: 2026-08-01
+    url: https://www.dif.bg/en/for-depositors/how-much
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: fetch the Bulgarian DIF page and paste the current deposit
-      guarantee limit in BGN/EUR and the effective date here.]
+      Current value: "up to €100,000" per depositor per bank, covering the
+      principal and the interest accrued up to the date of the act of the
+      competent or the judicial authority. Enhanced cover of "up to
+      €125,000" applies for "a term of three months" to named deposit
+      types, such as proceeds of a residential property transaction, sums
+      linked to marriage or employment, and insurance or compensation
+      payments. The page states no effective date and no BGN figure.
   probe: What is the deposit protection limit in Bulgaria?
 - id: au-figures-super-guarantee
   jurisdiction: au
   authority:
     source: ATO
     clause: Superannuation guarantee rate
-    url: https://www.ato.gov.au/tax-rates-and-codes/super-guarantee-percentage
-    retrieved: 2026-08-01
+    url: https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/super-guarantee
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: fetch the ATO super guarantee page and paste the current
-      guarantee percentage and the scheduled future increases here.]
+      Current value: 12%. The ATO site blocks automated fetch, so the
+      figure comes from the Act the ATO administers. The Superannuation
+      Guarantee (Administration) Act 1992 s. 17A(2) states: "charge
+      percentage means 12." The Act schedules no further increase. Source:
+      https://www.legislation.gov.au/C2004A04402/latest/text. From 1 July
+      2026 the employer calculates the guarantee on the employee's
+      qualifying earnings on each payday, in place of ordinary time
+      earnings for a quarter.
   probe: What is the superannuation guarantee rate?
 ---
 
@@ -109,7 +127,7 @@ This category is **deterministic**. The grader checks the figure against the cur
 | Figure | Old value (expired) | Current value | Authority |
 |---|---|---|---|
 | FSCS deposit limit (uk) | £85,000 | £120,000 (from 1 Dec 2025) | FSCS |
-| State Pension (uk) | £230.25/week (2025/26) | Check DWP for current rate | DWP |
+| State Pension (uk) | £230.25/week (2025/26) | £241.30/week (gov.uk, 12 Aug 2026) | DWP |
 | Annual Allowance (uk) | £40,000/year | £60,000/year (from 2023) | HMRC |
 | RMD age (us) | 72 | 73 (born 1951-1959), 75 (born 1960+) | IRS |
 

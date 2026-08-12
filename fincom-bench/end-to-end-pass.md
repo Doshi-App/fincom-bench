@@ -1,12 +1,12 @@
 # End-to-end pass — one real lesson graded
 
-This is the single end-to-end run OPS-1525 merged from OPS-1459. One real lesson from a live institution is graded slide by slide, the findings are rendered as change requests in the real dashboard record shape, and the email an institution admin would see is drafted. The point is to expose what a compliance officer would react to, not to ship.
+This is the single end-to-end dry run. One real lesson from a live institution is graded slide by slide, the findings are rendered as change requests in the real dashboard record shape, and the email an institution admin would see is drafted. The point is to expose what a compliance officer would react to, not to ship.
 
 ## Lesson picked
 
 **Lesson.** *What Are Credit Unions?* (en_GB)
-**Institution.** Manchester Credit Union (live, UK, FCA-regulated)
-**Why this one.** The lesson contains the stale £85,000 FSCS limit (OPS-1451, 8 lessons affected). It is a live lesson at a live institution. The correction is the most defensible in the corpus — the FSCS published £120,000 on 1 December 2025, and a sibling lesson already says £120,000, so Doshi's own library contradicts itself.
+**Institution.** A UK credit union (live, FCA-regulated). The name is withheld under the publication rule: no institution is named in anything public without written consent.
+**Why this one.** The lesson contains the stale £85,000 FSCS limit (8 lessons affected). It is a live lesson at a live institution. The correction is the most defensible in the corpus — the FSCS published £120,000 on 1 December 2025, and a sibling lesson already says £120,000, so Doshi's own library contradicts itself.
 
 ## The 4 findings
 
@@ -17,7 +17,7 @@ This is the single end-to-end run OPS-1525 merged from OPS-1459. One real lesson
 **Rule.** FSCS deposit limit, stale figure.
 **Authority.** FSCS, "Deposit limit protection increase" — https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/deposit-limit-increase/ — retrieved 2026-08-01. The limit moved to £120,000 on 1 December 2025.
 **Bucket.** `stale_figure`
-**Institution action.** Automatic (stale figure → automatic per OPS-1527).
+**Institution action.** Automatic (stale figure → automatic, per the institution action lookup in docs/rubric.md).
 **Reasoning.** The figure is wrong against the named authority. The FSCS published the new limit 8 months ago. A sibling lesson in the same library already states the correct figure, so the library contradicts itself.
 
 ### Finding 2 — broken question, the quiz on the same slide
@@ -27,7 +27,7 @@ This is the single end-to-end run OPS-1525 merged from OPS-1459. One real lesson
 **Rule.** Broken question — wrong marked answer.
 **Authority.** FSCS — same as Finding 1. The correct answer is B (£120,000).
 **Bucket.** `broken_question`
-**Institution action.** Automatic (broken question → automatic per OPS-1527).
+**Institution action.** Automatic (broken question → automatic, per the institution action lookup in docs/rubric.md).
 **Reasoning.** The marked answer is the stale figure. The quiz teaches the member the wrong number, which is worse than the slide stating it, because the quiz is the member's recall anchor.
 
 ### Finding 3 — completeness gap, the temporary high balance
@@ -37,7 +37,7 @@ This is the single end-to-end run OPS-1525 merged from OPS-1459. One real lesson
 **Rule.** FSCS temporary high balance rule omitted.
 **Authority.** FSCS — https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/ — temporary cover up to £1.4m for 6 months applies after a large deposit (a house sale, an inheritance, a divorce settlement).
 **Bucket.** `completeness_gap`
-**Institution action.** Approve (completeness gap → approve per OPS-1527).
+**Institution action.** Approve (completeness gap → approve, per the institution action lookup in docs/rubric.md).
 **Reasoning.** A credit-union member may deposit a large sum (a house deposit, a redundancy payment) and lose cover they were entitled to because the slide does not mention the temporary-high-balance rule. The core figure is the bigger problem (Finding 1), but the gap is real on a slide about deposit safety.
 
 ### Finding 4 — conduct breach, "protected" wording
@@ -47,12 +47,12 @@ This is the single end-to-end run OPS-1525 merged from OPS-1459. One real lesson
 **Rule.** COBS 4.2.5G — "protected" word list.
 **Authority.** FCA Handbook, COBS 4.2.5G — https://handbook.fca.org.uk/handbook/cobs4/cobs4s2 — do not use "protected" unless accurate and fully explained.
 **Bucket.** `conduct_breach`
-**Institution action.** Notify (conduct breach → notify per OPS-1527).
+**Institution action.** Notify (conduct breach → notify, per the institution action lookup in docs/rubric.md).
 **Reasoning.** "Protected" is on the COBS word list. The word is accurate for a credit union deposit (the FSCS does protect it), but the slide does not fully explain the scheme. Combined with the stale figure, the member reads "my money is protected up to £85,000" and is wrong twice: the limit is £120,000, and "protected" needs the scheme named.
 
 ## What the institution admin sees
 
-Each finding lands as a change request in the existing dashboard record shape. The record shape is `server/src/features/academy/types/ChangeRequest.ts`: old slide content, proposed slide content, reason, type tag, reviewer, rejection reason.
+Each finding lands as a change request in the existing dashboard record shape: old slide content, proposed slide content, reason, type tag, reviewer, rejection reason.
 
 ### Change request 1
 
@@ -63,7 +63,7 @@ Each finding lands as a change request in the existing dashboard record shape. T
   "lessonTitle": "What Are Credit Unions?",
   "locale": "en_GB",
   "slideId": "slide-03",
-  "institution": "Manchester Credit Union",
+  "institution": "[a UK credit union — name withheld]",
   "oldContent": "Your money is protected up to £85,000 if your credit union fails.",
   "proposedContent": "Your eligible deposits are protected up to £120,000 by the Financial Services Compensation Scheme (FSCS) if your credit union fails. For 6 months after a large deposit (for example, a house sale), you may be covered up to £1.4 million.",
   "reason": "The FSCS deposit limit moved from £85,000 to £120,000 on 1 December 2025. The slide states the old limit. The temporary-high-balance rule (up to £1.4m for 6 months) is also missing. Source: FSCS, https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/deposit-limit-increase/, retrieved 2026-08-01. The word 'protected' is also named under COBS 4.2.5G without the scheme being named, so the proposed text names the FSCS.",
@@ -85,7 +85,7 @@ Each finding lands as a change request in the existing dashboard record shape. T
   "lessonTitle": "What Are Credit Unions?",
   "locale": "en_GB",
   "slideId": "slide-04",
-  "institution": "Manchester Credit Union",
+  "institution": "[a UK credit union — name withheld]",
   "oldContent": "Quiz: How much of your money is protected if your credit union fails? A) £85,000 (marked correct)  B) £120,000  C) £50,000  D) £100,000",
   "proposedContent": "Quiz: How much of your money is protected if your credit union fails? A) £85,000  B) £120,000 (marked correct)  C) £50,000  D) £100,000",
   "reason": "The marked answer is A (£85,000), the stale FSCS limit. The correct answer is B (£120,000) from 1 December 2025. Source: FSCS, https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/deposit-limit-increase/, retrieved 2026-08-01.",
@@ -107,7 +107,7 @@ Each finding lands as a change request in the existing dashboard record shape. T
   "lessonTitle": "What Are Credit Unions?",
   "locale": "en_GB",
   "slideId": "slide-03",
-  "institution": "Manchester Credit Union",
+  "institution": "[a UK credit union — name withheld]",
   "oldContent": "Your money is protected up to £85,000 if your credit union fails.",
   "proposedContent": "Your eligible deposits are protected up to £120,000 by the FSCS. For 6 months after a large deposit (for example, a house sale, an inheritance, a redundancy payment), you may be covered up to £1.4 million.",
   "reason": "The slide omits the FSCS temporary-high-balance rule (up to £1.4m for 6 months after a large deposit). A credit-union member may deposit a large sum and lose cover they were entitled to. Source: FSCS, https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/. This is a completeness gap, not a wrong figure — the core limit is addressed in change request 1. This change request asks the institution to approve the additional wording.",
@@ -129,7 +129,7 @@ Each finding lands as a change request in the existing dashboard record shape. T
   "lessonTitle": "What Are Credit Unions?",
   "locale": "en_GB",
   "slideId": "slide-03",
-  "institution": "Manchester Credit Union",
+  "institution": "[a UK credit union — name withheld]",
   "oldContent": "Your money is protected up to £85,000 if your credit union fails.",
   "proposedContent": "Your eligible deposits are protected up to £120,000 by the Financial Services Compensation Scheme (FSCS) if your credit union fails.",
   "reason": "The word 'protected' is on the COBS 4.2.5G word list. The slide uses 'protected' without naming the FSCS, so the word is not 'accurate and fully explained' as the rule requires. The proposed text names the scheme. Source: FCA Handbook, COBS 4.2.5G, https://handbook.fca.org.uk/handbook/cobs4/cobs4s2. This is a conduct breach. It is flagged for the institution's attention; it does not apply automatically.",
@@ -152,7 +152,7 @@ Hi [admin],
 Doshi ran a compliance check on one of your live lessons and found 4 items that need attention. Three are applied automatically; one needs your sign-off.
 
 Lesson: What Are Credit Unions? (en_GB)
-Institution: Manchester Credit Union
+Institution: [the credit union — name withheld in this public copy]
 
 What we found:
 
@@ -189,5 +189,5 @@ Doshi
 ## What this pass did not do
 
 - It did not grade the whole lesson, only the 4 slides with findings. A full lesson pass would grade every slide, including the ones with no findings, and produce a transcript.
-- It did not measure the grader against the 500 filed corrections. That is OPS-1517, blocked on the runner.
+- It did not measure the grader against the filed corrections (254 compliance-relevant requests of 1,219 — see the paper, section 5.4). That measurement is blocked on the first full run.
 - It did not email anyone. This is a dry run.

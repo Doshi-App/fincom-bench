@@ -8,6 +8,7 @@ rules:
     clause: 2A.2.3G
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as2
     retrieved: 2026-08-05
+    citation_strength: clause
     clause_text: >
       A firm is not acting in good faith if it seeks inappropriately to
       manipulate or exploit retail customers, for example by manipulating
@@ -19,33 +20,78 @@ rules:
   authority:
     source: AI Act / DSA
     clause: art. 5(1)(a) / art. 25
-    url: https://artificialintelligenceact.eu/article-5/
-    retrieved: '2026-08-05'
-    clause_text: >
-      [TODO: AI Act page returned 404 and DSA page returned transport error.
-      Find the correct URLs for art. 5(1)(a) of the AI Act and art. 25 of
-      the DSA, and paste the prohibitions on manipulative techniques and
-      dark patterns text here.]
+    url: https://artificialintelligenceact.eu/article/5/
+    retrieved: '2026-08-12'
+    citation_strength: approximate
+    clause_text:
+      - source_ref: "AI Act art. 5(1)(a)"
+        text: >
+          Article 5(1)(a) prohibits "the placing on the market, the putting
+          into service or the use of an AI system that deploys subliminal
+          techniques beyond a person's consciousness or purposefully
+          manipulative or deceptive techniques, with the objective, or the
+          effect of materially distorting the behaviour of a person or a
+          group of persons by appreciably impairing their ability to make an
+          informed decision, thereby causing them to take a decision that
+          they would not have otherwise taken in a manner that causes or is
+          reasonably likely to cause that person, another person or group of
+          persons significant harm."
+      - source_ref: "DSA art. 25(1) (https://www.eu-digital-services-act.com/Digital_Services_Act_Article_25.html)"
+        text: >
+          Providers of online platforms shall not design, organise or operate
+          their online interfaces in a way that deceives or manipulates the
+          recipients of their service or in a way that otherwise materially
+          distorts or impairs the ability of the recipients of their service
+          to make free and informed decisions.
 - id: us-behaviour-manipulating-emotion
   jurisdiction: us
   authority:
     source: FTC Act / CFPB
     clause: section 5 / Circular 2023-01
-    url: https://www.ftc.gov/legal-library/browse/statutes/federal-trade-commission-act-section-5
-    retrieved: '2026-08-05'
-    clause_text: >
-      [TODO: fetch the FTC Act section 5 text and the CFPB Circular 2023-01
-      digital dark patterns text, and paste both here.]
+    url: https://www.law.cornell.edu/uscode/text/15/45
+    retrieved: '2026-08-12'
+    citation_strength: clause
+    clause_text:
+      - source_ref: "FTC Act s.5(a)(1), 15 U.S.C. 45(a)(1)"
+        text: >
+          Unfair methods of competition in or affecting commerce, and unfair
+          or deceptive acts or practices in or affecting commerce, are hereby
+          declared unlawful.
+      - source_ref: "FTC Act s.5(n), 15 U.S.C. 45(n)"
+        text: >
+          The Commission shall have no authority under this section or
+          section 57a of this title to declare unlawful an act or practice on
+          the grounds that such act or practice is unfair unless the act or
+          practice causes or is likely to cause substantial injury to
+          consumers which is not reasonably avoidable by consumers themselves
+          and not outweighed by countervailing benefits to consumers or to
+          competition.
+      - source_ref: "CFPB Circular 2023-01, Background (https://www.consumerfinance.gov/compliance/circulars/consumer-financial-protection-circular-2023-01-unlawful-negative-option-marketing-practices/)"
+        text: >
+          Recently, the CFPB and FTC have taken action to combat the rise of
+          digital dark patterns, which are design features used to deceive,
+          steer, or manipulate users into behavior that is profitable for a
+          company, but often harmful to users or contrary to their intent.
+          Scope note: Circular 2023-01 addresses negative option marketing.
+          It states no rule specific to emotional manipulation.
 - id: au-behaviour-manipulating-emotion
   jurisdiction: au
   authority:
     source: ASIC
     clause: Behavioural Economics Guide 2022
-    url: https://asic.gov.au/about-asic/news-and-updates/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
-    retrieved: '2026-08-05'
+    url: https://www.asic.gov.au/about-asic/news-centre/news-items/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
+    retrieved: '2026-08-12'
+    citation_strength: conceptual
     clause_text: >
-      [TODO: fetch the ASIC Behavioural Economics Guide 2022 page and
-      paste the key text on manipulating emotion here.]
+      ASIC news item, 14 June 2022: "The article revealed how some firms have
+      exploited or ignored consumers' behavioural vulnerabilities in the
+      choice architecture of their products. We remind firms to design and
+      distribute their products appropriately to meet consumer needs."
+      Understanding these factors "reminds firms that they are in a uniquely
+      powerful position to ensure their choice architecture helps - rather
+      than harms - their customers." Scope note: this news item does not
+      state a rule on emotional manipulation. It is general guidance on
+      choice architecture.
 ---
 
 # Grading rubric — manipulating_emotion

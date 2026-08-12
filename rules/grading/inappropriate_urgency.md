@@ -8,6 +8,7 @@ rules:
     clause: 2A.2.3G / 2A.5.9R
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as2
     retrieved: 2026-08-05
+    citation_strength: clause
     clause_text:
       - source_ref: "PRIN 2A.2.3G(b)"
         text: >
@@ -29,32 +30,60 @@ rules:
   authority:
     source: DSA
     clause: art. 25
-    url: https://digital-services-act.europa.eu/dsa-layers/Article_25.en.html
-    retrieved: '2026-08-05'
+    url: https://www.eu-digital-services-act.com/Digital_Services_Act_Article_25.html
+    retrieved: '2026-08-12'
+    citation_strength: approximate
     clause_text: >
-      [TODO: DSA page returned transport error. Find the correct URL for
-      art. 25 of the Digital Services Act and paste the text on false
-      scarcity and countdown timers here.]
+      Article 25(1): "Providers of online platforms shall not design,
+      organise or operate their online interfaces in a way that deceives or
+      manipulates the recipients of their service or in a way that otherwise
+      materially distorts or impairs the ability of the recipients of their
+      service to make free and informed decisions." Article 25(3) lists
+      practices for Commission guidelines, including "(b) repeatedly
+      requesting that the recipient of the service make a choice where that
+      choice has already been made". Scope note: article 25 does not name
+      false scarcity or countdown timers. Only the general prohibition in
+      article 25(1) applies.
 - id: us-behaviour-inappropriate-urgency
   jurisdiction: us
   authority:
     source: CFPB / FTC
     clause: Circular 2023-01 / FTC 2022 dark patterns report
-    url: https://www.consumerfinance.gov/compliance/circulars/circular-2023-01-digital-dark-patterns/
-    retrieved: '2026-08-05'
-    clause_text: >
-      [TODO: fetch the CFPB Circular 2023-01 page and the FTC 2022 dark
-      patterns report, and paste the text on false urgency here.]
+    url: https://www.consumerfinance.gov/compliance/circulars/consumer-financial-protection-circular-2023-01-unlawful-negative-option-marketing-practices/
+    retrieved: '2026-08-12'
+    citation_strength: clause
+    clause_text:
+      - source_ref: "CFPB Circular 2023-01, Background"
+        text: >
+          Recently, the CFPB and FTC have taken action to combat the rise of
+          digital dark patterns, which are design features used to deceive,
+          steer, or manipulate users into behavior that is profitable for a
+          company, but often harmful to users or contrary to their intent.
+      - source_ref: "FTC, Bringing Dark Patterns to Light (Sept. 2022), PDF (https://www.ftc.gov/reports/bringing-dark-patterns-light)"
+        text: >
+          Paraphrase - verify against the source PDF: the FTC staff report
+          collects design practices that induce false urgency or scarcity,
+          such as countdown clocks and low-stock claims, and treats them as
+          practices that can be deceptive or unfair under section 5 of the
+          FTC Act. Scope note: neither source states a rule on urgency in a
+          conversation. Circular 2023-01 covers negative option marketing and
+          does not use the words false urgency.
 - id: au-behaviour-inappropriate-urgency
   jurisdiction: au
   authority:
     source: ASIC
     clause: Behavioural Economics Guide 2022
-    url: https://asic.gov.au/about-asic/news-and-updates/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
-    retrieved: '2026-08-05'
+    url: https://www.asic.gov.au/about-asic/news-centre/news-items/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
+    retrieved: '2026-08-12'
+    citation_strength: conceptual
     clause_text: >
-      [TODO: fetch the ASIC Behavioural Economics Guide 2022 page and
-      paste the text on urgency and pressure here.]
+      Closest conceptual match, not a rule. ASIC news item, 14 June 2022:
+      "The article revealed how some firms have exploited or ignored
+      consumers' behavioural vulnerabilities in the choice architecture of
+      their products. We remind firms to design and distribute their products
+      appropriately to meet consumer needs." Scope note: this news item does
+      not mention urgency or time pressure. ASIC publishes no rule on
+      manufactured urgency. Cite as concept support only.
 ---
 
 # Grading rubric — inappropriate_urgency

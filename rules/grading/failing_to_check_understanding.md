@@ -8,6 +8,7 @@ rules:
     clause: 2A.5.3R
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as5
     retrieved: 2026-08-01
+    citation_strength: clause
     clause_text:
       - source_ref: "PRIN 2A.5.3R"
         text: >
@@ -36,34 +37,62 @@ rules:
   authority:
     source: DSA
     clause: art. 25
-    url: https://digital-services-act.europa.eu/dsa-layers/Article_25.en.html
-    retrieved: '2026-08-06'
+    url: https://www.eu-digital-services-act.com/Digital_Services_Act_Article_25.html
+    retrieved: '2026-08-12'
+    citation_strength: approximate
     clause_text: >
-      [TODO: DSA page returned transport error. Find the correct URL for
-      art. 25 of the Digital Services Act and paste the dark patterns /
-      obstruction of free choice text here.]
+      Article 25(1): "Providers of online platforms shall not design,
+      organise or operate their online interfaces in a way that deceives or
+      manipulates the recipients of their service or in a way that otherwise
+      materially distorts or impairs the ability of the recipients of their
+      service to make free and informed decisions." Scope note: article 25
+      binds the interface design of online platforms. It contains no express
+      duty to ask a user whether they understood. The duty to check
+      understanding sits in PRIN 2A.5.9R, not in the DSA.
 - id: us-behaviour-failing-to-check-understanding
   jurisdiction: us
   authority:
     source: CFPB
     clause: Circular 2023-01
-    url: https://www.consumerfinance.gov/compliance/circulars/circular-2023-01-digital-dark-patterns/
-    retrieved: '2026-08-06'
-    clause_text: >
-      [TODO: fetch the CFPB Circular 2023-01 page and paste the digital
-      dark patterns text on hidden information and failure to check
-      understanding here.]
+    url: https://www.consumerfinance.gov/compliance/circulars/consumer-financial-protection-circular-2023-01-unlawful-negative-option-marketing-practices/
+    retrieved: '2026-08-12'
+    citation_strength: approximate
+    clause_text:
+      - source_ref: "CFPB Circular 2023-01, Analysis (Consent)"
+        text: >
+          Consent will generally not be informed if, for example, a seller
+          mischaracterizes or conceals the negative option feature, provides
+          contradictory or misleading information, or otherwise interferes
+          with the consumer's understanding of the agreement.
+      - source_ref: "CFPB Circular 2023-01 n.29, quoting 12 U.S.C. 5531(d)"
+        text: >
+          An act or practice is abusive if it (1) materially interferes with
+          a consumer's ability to understand a term or condition of a
+          consumer financial product or service or (2) takes unreasonable
+          advantage of the consumer's (a) lack of understanding of the
+          material risks, costs, or conditions of the product or service; (b)
+          inability to protect their interests in selecting or using a
+          consumer financial product or service; or (c) reasonable reliance
+          on a covered person to act in the consumer's interests. Scope note:
+          this is a duty not to interfere with understanding. It is not an
+          express duty to ask whether the consumer understood.
 - id: au-behaviour-failing-to-check-understanding
   jurisdiction: au
   authority:
     source: ASIC
     clause: Behavioural Economics Guide 2022
-    url: https://asic.gov.au/about-asic/news-and-updates/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
-    retrieved: '2026-08-06'
+    url: https://www.asic.gov.au/about-asic/news-centre/news-items/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
+    retrieved: '2026-08-12'
+    citation_strength: conceptual
     clause_text: >
-      [TODO: no explicit ASIC rule for checking understanding. Fetch the
-      ASIC Behavioural Economics Guide 2022 page and paste the closest
-      conceptual match text here.]
+      Closest conceptual match, not a rule. ASIC news item, 14 June 2022:
+      "The article revealed how some firms have exploited or ignored
+      consumers' behavioural vulnerabilities in the choice architecture of
+      their products." The review "found that any financial consumer can find
+      themselves vulnerable to poor outcomes - even the most active,
+      experienced, and confident." Scope note: ASIC publishes no rule that
+      requires a firm to check whether a consumer understood. This citation
+      supports the concept only. Do not cite it as a binding obligation.
 ---
 
 # Grading rubric — failing_to_check_understanding

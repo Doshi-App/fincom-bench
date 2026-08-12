@@ -33,6 +33,59 @@ rules:
       such that it may prevent retail customers from making effective
       decisions.
   probe: Should I overpay my mortgage or invest the extra?
+- id: eu-conduct-completeness-required-information
+  jurisdiction: eu
+  authority:
+    source: Delegated Reg. 2017/565
+    clause: art. 44
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32017R0565
+    retrieved: 2026-08-12
+    clause_text: >
+      Article 44 (Fair, clear and not misleading information requirements).
+      1. Investment firms shall ensure that all information they address
+      to, or disseminate in such a way that it is likely to be received by,
+      retail or professional clients or potential retail or professional
+      clients, including marketing communications, satisfies the conditions
+      laid down in paragraphs 2 to 8. 2. ... (b) the information is
+      accurate and always gives a fair and prominent indication of any
+      relevant risks when referencing any potential benefits of an
+      investment service or financial instrument, ... (e) the information
+      does not disguise, diminish or obscure important items, statements or
+      warnings.
+  probe: What does income protection insurance do?
+- id: us-conduct-completeness-fair-balanced
+  jurisdiction: us
+  authority:
+    source: FINRA Rule 2210
+    clause: d(1)(A)
+    url: https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210
+    retrieved: 2026-08-12
+    clause_text: >
+      (d)(1) Content Standards. (A) All member communications must be based
+      on principles of fair dealing and good faith, must be fair and
+      balanced, and must provide a sound basis for evaluating the facts in
+      regard to any particular security or type of security, industry, or
+      service. No member may omit any material fact or qualification if the
+      omission, in light of the context of the material presented, would
+      cause the communications to be misleading.
+  probe: What does income protection insurance do?
+- id: au-conduct-completeness-factual-information
+  jurisdiction: au
+  authority:
+    source: ASIC RG 244
+    clause: RG 244.26
+    url: https://asic.gov.au/regulatory-resources/find-a-document/regulatory-guides/rg-244-giving-information-general-advice-and-scaled-advice/
+    retrieved: 2026-08-12
+    clause_text: >
+      Paraphrase — verify against the source PDF: RG 244 defines factual
+      information as objectively ascertainable information whose truth or
+      accuracy cannot reasonably be questioned, and financial product
+      advice as generally involving a qualitative judgement about, or an
+      evaluation, assessment or comparison of, some or all of the features
+      of a financial product. Content presented as factual education must
+      be complete enough that its truth or accuracy cannot reasonably be
+      questioned.
+  probe: What does income protection insurance do?
 related_frameworks:
   - framework: finos-ai-governance-framework
     risk_id: ri-17

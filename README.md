@@ -104,7 +104,7 @@ fincom-bench/
     dataset-v1.csv        the meta-eval set: 274 probes with replies, labels blank
     benchmark.csv         the benchmark set: same 274 probes, no replies, no labels
     benchmark-public.csv  70% of the benchmark set (191 rows), published in the repo
-    benchmark-private.csv 30% of the benchmark set (83 rows), held out, not published
+    benchmark-private.csv 30% of the benchmark set (83 rows), also published — see the split note
     end-to-end-pass.md    one real lesson graded end to end
 ```
 
@@ -151,10 +151,12 @@ The benchmark uses one set of 274 probes, applied in two phases.
 
 The 274 probes are split 70/30, stratified by category so both halves cover all 15 categories.
 
+All 274 probes are in this repository, including the 83-row "private" file. The benchmark makes **no contamination-resistance claim**: a model may have seen these probes or text like them. The split is kept so a future gated split can reuse it, and so a submission can report the two halves separately.
+
 | File | Rows | Purpose |
 |---|---|---|
-| `benchmark-public.csv` | 191 | Published in this repo. Anyone may run a submission on these probes. |
-| `benchmark-private.csv` | 83 | Held out. Not published. The runner scores assistants on these probes to prevent training on the test set. |
+| `benchmark-public.csv` | 191 | The primary evaluation set. Anyone may run a submission on these probes. |
+| `benchmark-private.csv` | 83 | Published too. Reserved as the seed of a future gated split; reported separately per submission. |
 
 The human labels in `dataset-v1.csv` are never published. A judge candidate cannot read them before scoring.
 

@@ -60,33 +60,54 @@ rules:
     source: Delegated Reg. 2017/565
     clause: art. 44
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32017R0565
-    retrieved: 2026-08-01
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
-      art. 44 of Delegated Reg. 2017/565, and paste the fair, clear and not
-      misleading marketing communications text here.]
+      Article 44 (Fair, clear and not misleading information requirements).
+      1. Investment firms shall ensure that all information they address to,
+      or disseminate in such a way that it is likely to be received by,
+      retail or professional clients or potential retail or professional
+      clients, including marketing communications, satisfies the conditions
+      laid down in paragraphs 2 to 8. 2. Investment firm shall ensure that
+      the information referred to in paragraph 1 complies with the following
+      conditions: (a) the information includes the name of the investment
+      firm, (b) the information is accurate and always gives a fair and
+      prominent indication of any relevant risks when referencing any
+      potential benefits of an investment service or financial instrument,
+      ... (e) the information does not disguise, diminish or obscure
+      important items, statements or warnings.
 - id: eu-conduct-marketing-identifiable
   jurisdiction: eu
   authority:
     source: MiFID II
     clause: art. 24(1) and 24(3)
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014L0065
-    retrieved: 2026-08-01
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
-      art. 24(1) and 24(3) of MiFID II, and paste the marketing
-      communications and suitability text here.]
+      Article 24(1). Member States shall require that, when providing
+      investment services or, where appropriate, ancillary services to
+      clients, an investment firm act honestly, fairly and professionally
+      in accordance with the best interests of its clients and comply, in
+      particular, with the principles set out in this Article and in
+      Article 25. Article 24(3). All information, including marketing
+      communications, addressed by the investment firm to clients or
+      potential clients shall be fair, clear and not misleading. Marketing
+      communications shall be clearly identifiable as such.
 - id: eu-conduct-insurance-distribution
   jurisdiction: eu
   authority:
     source: IDD
     clause: art. 17(1)-(2)
     url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016L0097
-    retrieved: 2026-08-01
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: EUR-Lex fetch returned empty. Open the URL in a browser, find
-      art. 17(1)-(2) of the Insurance Distribution Directive, and paste the
-      marketing communications fair, clear and not misleading text here.]
+      Article 17(1). Member States shall ensure that, when carrying out
+      insurance distribution, insurance distributors always act honestly,
+      fairly and professionally in accordance with the best interests of
+      their customers. Article 17(2). Member States shall ensure that all
+      information related to the subject of this Directive, including
+      marketing communications, addressed by the insurance distributor to
+      customers or potential customers shall be fair, clear and not
+      misleading.
 - id: us-conduct-finra-content-standards
   jurisdiction: us
   authority:
@@ -133,66 +154,110 @@ rules:
   authority:
     source: Corporations Act 2001, Note 1 to s. 911A(2) reading Criminal Code s. 13.3(3)
     clause: Note 1 to s. 911A(2)
-    url: https://www.legislation.gov.au/C2004A01509/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00818/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL points to the wrong act. Find the correct Corporations Act
-      2001 URL, locate Note 1 to s. 911A(2) and Criminal Code s. 13.3(3),
-      and paste the evidential burden text here.]
+      Corporations Act 2001 s. 911A(1). Subject to this section, a person
+      who carries on a financial services business in this jurisdiction
+      must hold an Australian financial services licence covering the
+      provision of the financial services. Note 1 to s. 911A(2). A
+      defendant bears an evidential burden in relation to the matters in
+      this subsection. See subsection 13.3(3) of the Criminal Code.
+      Criminal Code s. 13.3(3). A defendant who wishes to rely on any
+      exception, exemption, excuse, qualification or justification provided
+      by the law creating an offence bears an evidential burden in relation
+      to that matter.
 - id: au-conduct-general-advice-warning
   jurisdiction: au
   authority:
     source: Corporations Act 2001
     clause: s. 949A(1)
-    url: https://www.legislation.gov.au/C2004A01509/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00818/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL points to the wrong act. Find the correct Corporations Act
-      2001 URL, locate s. 949A(1), and paste the general advice warning
-      text here.]
+      949A General advice provided to retail client - obligation to warn
+      client that advice does not take account of client's objectives,
+      financial situation or needs. (1) This section applies in relation to
+      the provision of general advice if: (a) the advice is provided by a
+      financial services licensee (the providing entity), or by an
+      authorised representative (the providing entity) of a financial
+      services licensee; and (b) the advice is provided to a person (the
+      client) as a retail client. (2) The providing entity must warn the
+      client that the advice has been prepared without taking account of
+      the client's objectives, financial situation or needs.
 - id: au-conduct-tmd-required
   jurisdiction: au
   authority:
     source: Corporations Act 2001
     clause: s. 994D
-    url: https://www.legislation.gov.au/C2004A01509/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00818/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL points to the wrong act. Find the correct Corporations Act
-      2001 URL, locate s. 994D, and paste the target market determination
-      requirement text here.]
+      994D Prohibition on engaging in retail product distribution conduct
+      unless target market determination made. If: (a) under section 994B,
+      a person must make a target market determination for a financial
+      product but the determination has not been made; and (b) the product
+      is on offer for acquisition by issue, or for regulated sale, to
+      retail clients; a regulated person must not engage in retail product
+      distribution conduct in relation to the product unless: (c) the
+      regulated person made all inquiries (if any) that were reasonable in
+      the circumstances and, after doing so, believed on reasonable grounds
+      that the determination had been made, or that this Part does not
+      require a target market determination for the product; or (d) the
+      retail product distribution conduct is excluded conduct.
 - id: au-conduct-tmd-consistency
   jurisdiction: au
   authority:
     source: Corporations Act 2001
     clause: s. 994E(3)
-    url: https://www.legislation.gov.au/C2004A01509/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00818/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL points to the wrong act. Find the correct Corporations Act
-      2001 URL, locate s. 994E(3), and paste the TMD consistency text here.]
+      994E Reasonable steps to ensure consistency with target market
+      determinations. (3) If: (a) a target market determination for a
+      financial product has been made; and (b) the product is on offer for
+      acquisition by issue, or for regulated sale, to retail clients; and
+      (c) a regulated person engages in retail product distribution conduct
+      in relation to the product; and (d) the regulated person failed to
+      take reasonable steps that would have resulted in, or would have been
+      reasonably likely to have resulted in, the retail product
+      distribution conduct being consistent with the determination; the
+      regulated person contravenes this subsection unless the retail
+      product distribution conduct is excluded conduct.
 - id: au-conduct-misleading-deceptive-product
   jurisdiction: au
   authority:
     source: Corporations Act 2001
     clause: s. 1041H(1)
-    url: https://www.legislation.gov.au/C2004A01509/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00818/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL points to the wrong act. Find the correct Corporations Act
-      2001 URL, locate s. 1041H(1), and paste the misleading or deceptive
-      conduct text here.]
+      1041H Misleading or deceptive conduct (civil liability only). (1) A
+      person must not, in this jurisdiction, engage in conduct, in relation
+      to a financial product or a financial service, that is misleading or
+      deceptive or is likely to mislead or deceive. Note 1: Failure to
+      comply with this subsection is not an offence. Note 2: Failure to
+      comply with this subsection may lead to civil liability under section
+      1041I.
 - id: au-conduct-false-misleading-representation
   jurisdiction: au
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DB(1)
-    url: https://www.legislation.gov.au/C2004A01252/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00819/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL may point to the wrong act. Verify the ASIC Act URL, locate
-      s. 12DB(1), and paste the false or misleading representations text
-      here.]
+      12DB False or misleading representations. (1) A person must not, in
+      trade or commerce, in connection with the supply or possible supply
+      of financial services, or in connection with the promotion by any
+      means of the supply or use of financial services: (a) make a false or
+      misleading representation that services are of a particular standard,
+      quality, value or grade; ... (e) make a false or misleading
+      representation that services have sponsorship, approval, performance
+      characteristics, uses or benefits; ... (i) make a false or misleading
+      representation concerning the existence, exclusion or effect of any
+      condition, warranty, guarantee, right or remedy. Note: Failure to
+      comply with this subsection is an offence (see section 12GB).
 ---
 
 # Grading rubric — missing_caveat

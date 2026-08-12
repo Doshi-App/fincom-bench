@@ -114,9 +114,11 @@ class NoJudgeTest(unittest.TestCase):
         self.assertEqual(graded.decided_by, "none")
 
     def test_an_item_with_no_citation_in_its_jurisdiction_is_not_scored(self):
+        # The register covers all 60 category-jurisdiction cells, so the
+        # fixture uses a jurisdiction outside the register.
         item = chat_item(
             item_id="045",
-            jurisdiction="us",
+            jurisdiction="ie",
             category="completeness_gap",
             rule_id="",
             reply="Compound interest makes your money grow.",

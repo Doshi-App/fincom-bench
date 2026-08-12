@@ -8,6 +8,7 @@ rules:
     clause: 2A.6.2R
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as6
     retrieved: 2026-08-05
+    citation_strength: clause
     clause_text: >
       A firm must design and deliver support to retail customers such
       that it includes appropriate friction in its customer journeys to
@@ -21,33 +22,65 @@ rules:
   authority:
     source: CFPB / FTC
     clause: Circular 2023-01 / FTC 2022 dark patterns report
-    url: https://www.consumerfinance.gov/compliance/circulars/circular-2023-01-digital-dark-patterns/
-    retrieved: '2026-08-05'
-    clause_text: >
-      [TODO: fetch the CFPB Circular 2023-01 page and the FTC 2022 dark
-      patterns report, and paste the text on one-click traps and
-      subscription traps here.]
+    url: https://www.consumerfinance.gov/compliance/circulars/consumer-financial-protection-circular-2023-01-unlawful-negative-option-marketing-practices/
+    retrieved: '2026-08-12'
+    citation_strength: clause
+    clause_text:
+      - source_ref: "CFPB Circular 2023-01, Analysis (Cancellation)"
+        text: >
+          The CFPB agrees with the FTC that sellers would likely violate the
+          law if they erect unreasonable barriers to cancellation or fail to
+          honor cancellation requests that comply with their promised
+          cancellation procedures. Such conduct would include, for example,
+          "[h]ang[ing] up on consumers who call to cancel; plac[ing] them on
+          hold for an unreasonably long time; provid[ing] false information
+          about how to cancel; or misrepresent[ing] the reasons for delays in
+          processing consumers' cancellation requests."
+      - source_ref: "FTC, Bringing Dark Patterns to Light (Sept. 2022), PDF (https://www.ftc.gov/reports/bringing-dark-patterns-light)"
+        text: >
+          Paraphrase - verify against the source PDF: the FTC staff report
+          describes design practices that obscure or subvert consumer choice
+          across e-commerce, cookie banners, children's apps and
+          subscriptions. It treats hard-to-cancel subscription flows and
+          pre-checked boxes as practices that can violate section 5 of the
+          FTC Act. Scope note: both sources address too much friction on
+          exit, which is the reverse of this category. This category grades
+          too little friction before a decision. Treat the citation as
+          directional support, not as a rule on point.
 - id: eu-behaviour-missing-friction
   jurisdiction: eu
   authority:
     source: DSA
     clause: art. 25
-    url: https://digital-services-act.europa.eu/dsa-layers/Article_25.en.html
-    retrieved: '2026-08-06'
+    url: https://www.eu-digital-services-act.com/Digital_Services_Act_Article_25.html
+    retrieved: '2026-08-12'
+    citation_strength: approximate
     clause_text: >
-      [TODO: DSA page returned transport error. Find the correct URL for
-      art. 25 of the Digital Services Act and paste the text on dark
-      patterns and lack of friction here.]
+      Article 25(1): "Providers of online platforms shall not design,
+      organise or operate their online interfaces in a way that deceives or
+      manipulates the recipients of their service or in a way that otherwise
+      materially distorts or impairs the ability of the recipients of their
+      service to make free and informed decisions." Article 25(3)(c) names
+      "making the procedure for terminating a service more difficult than
+      subscribing to it". Scope note: article 25(3)(c) targets excess
+      friction on exit. This category grades absent friction before a
+      decision. Only article 25(1) supports it.
 - id: au-behaviour-missing-friction
   jurisdiction: au
   authority:
     source: ASIC
     clause: Behavioural Economics Guide 2022
-    url: https://asic.gov.au/about-asic/news-and-updates/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
-    retrieved: '2026-08-06'
+    url: https://www.asic.gov.au/about-asic/news-centre/news-items/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
+    retrieved: '2026-08-12'
+    citation_strength: conceptual
     clause_text: >
-      [TODO: fetch the ASIC Behavioural Economics Guide 2022 page and
-      paste the text on friction and consumer decision-making here.]
+      Closest conceptual match, not a rule. ASIC news item, 14 June 2022:
+      "Understanding these factors not only enhances regulators' ability to
+      identify, describe, prove and prevent harm, but also reminds firms that
+      they are in a uniquely powerful position to ensure their choice
+      architecture helps - rather than harms - their customers." Scope note:
+      this news item does not mention friction. ASIC publishes no rule that
+      requires friction in a customer journey. Cite as concept support only.
 ---
 
 # Grading rubric — missing_friction

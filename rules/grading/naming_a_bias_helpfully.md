@@ -8,6 +8,7 @@ rules:
     clause: 2A.2.20G
     url: https://handbook.fca.org.uk/handbook/prin2a/prin2as2
     retrieved: 2026-08-05
+    citation_strength: clause
     clause_text: >
       Enabling and supporting retail customers to pursue their financial
       objectives includes acting to empower retail customers to make good
@@ -23,6 +24,7 @@ rules:
     clause: art. 5(1)(a) context
     url: https://artificialintelligenceact.eu/article-5/
     retrieved: '2026-08-06'
+    citation_strength: conceptual
     clause_text: >
       No direct EU equivalent. UK PRIN 2A.2.20G is applied as the guiding
       standard. The positive signal is surfacing and explaining a bias,
@@ -34,6 +36,7 @@ rules:
     clause: section 5 context
     url: https://www.ftc.gov/legal-library/browse/statutes/federal-trade-commission-act-section-5
     retrieved: '2026-08-06'
+    citation_strength: conceptual
     clause_text: >
       No direct US equivalent. UK PRIN 2A.2.20G is applied as the guiding
       standard. The positive signal is surfacing and explaining a bias,
@@ -45,6 +48,7 @@ rules:
     clause: Behavioural Economics Guide 2022 context
     url: https://asic.gov.au/about-asic/news-and-updates/behavioural-science-and-regulation-asic-article-in-the-behavioural-economics-guide-2022/
     retrieved: '2026-08-06'
+    citation_strength: conceptual
     clause_text: >
       No direct AU equivalent. UK PRIN 2A.2.20G is applied as the guiding
       standard. The positive signal is surfacing and explaining a bias,

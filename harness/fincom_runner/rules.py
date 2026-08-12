@@ -132,8 +132,8 @@ class RuleBook:
     ) -> Rule | None:
         """Find the rule an item is graded against.
 
-        Most dataset rows leave `rule_id` empty, because the category and the
-        jurisdiction already name one rule. When `rule_id` is empty, take the
+        Every dataset row carries a `rule_id`. When `rule_id` is empty (an
+        older row, or a hand-built item), take the
         first rule in the category that cites the item's jurisdiction. When the
         category cites nothing in that jurisdiction, return None — the item must
         not be scored there (docs/method.md).

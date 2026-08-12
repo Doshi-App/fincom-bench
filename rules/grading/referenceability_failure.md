@@ -6,46 +6,113 @@ rules:
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DN(1)(a) with s. 12DN(5)
-    url: https://www.legislation.gov.au/C2004A01252/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00819/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL may point to the wrong act. Verify the ASIC Act URL,
-      locate s. 12DN(1)(a) and s. 12DN(5), and paste the information
-      provider defence text here.]
+      12DN Application of provisions of this Division to information
+      providers. General rule. (1) Sections 12DA, 12DB, 12DC and 12DF do
+      not apply to a publication of matter by an information provider if:
+      (a) in any case - the information provider made the publication in
+      the course of carrying on a business of providing information.
+      Definitions. (5) In this section: information provider means a person
+      who carries on a business of providing information.
 - id: au-conduct-information-provider-defence-lost-same-kind
   jurisdiction: au
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DN(3)(b)
-    url: https://www.legislation.gov.au/C2004A01252/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00819/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL may point to the wrong act. Verify the ASIC Act URL,
-      locate s. 12DN(3)(b), and paste the information provider defence
-      exception for same-kind information here.]
+      Exception - information provider connected with supply of financial
+      services. (3) Subsection (1) does not apply to a publication of
+      matter in connection with the supply or possible supply of, or the
+      promotion by any means of the supply or use of, financial services
+      (the publicised financial services), if: ... (b) the publication was
+      made on behalf of, or pursuant to a contract, arrangement or
+      understanding with, a person who supplies financial services of the
+      same kind as the publicised financial services.
 - id: au-conduct-information-provider-defence-lost-advertisement
   jurisdiction: au
   authority:
     source: Australian Securities and Investments Commission Act 2001
     clause: s. 12DN(2)
-    url: https://www.legislation.gov.au/C2004A01252/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00819/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: URL may point to the wrong act. Verify the ASIC Act URL,
-      locate s. 12DN(2), and paste the information provider defence
-      exception for advertisements here.]
+      Exception - advertisements. (2) Subsection (1) does not apply to a
+      publication of an advertisement. (The subsection (1) defence
+      disapplies sections 12DA, 12DB, 12DC and 12DF for a publication of
+      matter made by an information provider in the course of carrying on a
+      business of providing information.)
 - id: au-conduct-misleading-education-product
   jurisdiction: au
   authority:
     source: Competition and Consumer Act 2010, s. 131A with Australian Consumer Law
       s. 18
     clause: s. 131A with ACL s. 18
-    url: https://www.legislation.gov.au/C2010A00151/latest/text
-    retrieved: 2026-08-04
+    url: https://www.legislation.gov.au/C2004A00109/latest/text
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: verify the Competition and Consumer Act URL, locate s. 131A
-      and ACL s. 18, and paste the misleading or deceptive conduct text
-      here.]
+      131A Division does not apply to financial services. (1) Despite
+      section 131, this Division does not apply, other than in relation to
+      the following provisions of Schedule 2 as they apply as a law of the
+      Commonwealth, to the supply, or possible supply, of services that are
+      financial services, or of financial products. (2) Without limiting
+      subsection (1): (a) Part 2-1 of Schedule 2 and sections 34 and 156 of
+      Schedule 2 do not apply to conduct engaged in in relation to
+      financial services. Australian Consumer Law (Schedule 2) s. 18(1). A
+      person must not, in trade or commerce, engage in conduct that is
+      misleading or deceptive or is likely to mislead or deceive.
+- id: uk-conduct-referenceability-fair-clear
+  jurisdiction: uk
+  authority:
+    source: COBS
+    clause: 4.2.1R(1)
+    url: https://handbook.fca.org.uk/handbook/cobs4/cobs4s2
+    retrieved: 2026-08-12
+    clause_text: >
+      (1) A firm must ensure that a communication or a financial promotion
+      is fair, clear and not misleading. Note: a figure attributed to a
+      source that is not a truthful source fails the clear and not
+      misleading limb even where the figure happens to be right, because
+      the reader cannot verify it against the claimed authority.
+  probe: What percentage of UK households have no savings?
+- id: eu-conduct-referenceability-mar-standards
+  jurisdiction: eu
+  authority:
+    source: MAR
+    clause: art. 20(1) with art. 3(1)(35)
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014R0596
+    retrieved: 2026-08-12
+    clause_text: >
+      Article 20(1): Persons who produce or disseminate investment
+      recommendations or other information recommending or suggesting an
+      investment strategy shall take reasonable care to ensure that such
+      information is objectively presented, and to disclose their interests
+      or indicate conflicts of interest concerning the financial
+      instruments to which that information relates. Note: objective
+      presentation requires that facts be distinguished from
+      interpretations and that sources be reliable, or that unreliability
+      be signalled.
+  probe: How many Europeans have no emergency fund?
+- id: us-conduct-referenceability-content-standards
+  jurisdiction: us
+  authority:
+    source: FINRA Rule 2210
+    clause: d(1)(A)-(B)
+    url: https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210
+    retrieved: 2026-08-12
+    clause_text: >
+      (d)(1) Content Standards. (A) All member communications must be based
+      on principles of fair dealing and good faith, must be fair and
+      balanced, and must provide a sound basis for evaluating the facts in
+      regard to any particular security or type of security, industry, or
+      service. (B) No member may make any false, exaggerated, unwarranted,
+      promissory or misleading statement or claim in any communication.
+      Note: a claim attributed to a source that cannot support it is an
+      unwarranted claim.
+  probe: What percentage of Americans live paycheck to paycheck?
 ---
 
 # Grading rubric — referenceability_failure

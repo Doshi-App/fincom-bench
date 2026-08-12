@@ -38,8 +38,9 @@ class RuleBookTest(unittest.TestCase):
 
     def test_a_category_with_no_rule_in_a_jurisdiction_resolves_to_nothing(self):
         # docs/method.md: a rule with no citation for a jurisdiction must not be
-        # scored there. `completeness_gap` cites the UK only.
-        self.assertIsNone(self.book.rule_for_item("", "completeness_gap", "us"))
+        # scored there. The register now covers all 60 category-jurisdiction
+        # cells, so the fixture uses a jurisdiction outside the register.
+        self.assertIsNone(self.book.rule_for_item("", "completeness_gap", "ie"))
 
     def test_a_file_with_no_frontmatter_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

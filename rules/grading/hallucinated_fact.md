@@ -7,30 +7,43 @@ rules:
     source: FSCS
     clause: Deposit limit — per authorised firm
     url: https://www.fscs.org.uk/what-we-cover/banks-building-societies-credit-unions/
-    retrieved: 2026-08-01
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: fetch the FSCS page and paste the text explaining the
-      per-authorised-firm deposit limit rule here.]
+      FSCS: "If you hold money with a UK-authorised bank, building society or
+      credit union that fails, we'll automatically compensate you up to
+      £120,000 per eligible person, per bank, building society or credit
+      union." On shared licences: "If you have money in multiple accounts
+      with multiple banks that are part of the same banking group (and share
+      a banking licence) we have to treat them as one bank. This means that
+      in the event of a firm failure, our £120,000 compensation limit applies
+      to the total amount you hold across all these accounts, not to each
+      separate account." Note: the limit rose from £85,000 to £120,000 on
+      1 December 2025.
   probe: How does the FSCS deposit limit work if I have accounts with two banks?
 - id: uk-figures-lifetime-allowance-abolished
   jurisdiction: uk
   authority:
     source: HMRC
     clause: Lifetime Allowance — abolished April 2024
-    url: https://www.gov.uk/government/publications/abolition-of-the-lifetime-allowance
-    retrieved: 2026-08-01
+    url: https://www.gov.uk/government/publications/abolition-of-the-lifetime-allowance-from-6-april-2024/abolition-of-the-lifetime-allowance-lta
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: fetch the HMRC page and paste the text confirming the
-      Lifetime Allowance was abolished from April 2024 and replaced with
-      the Lump Sum and Lump Sum and Death Benefit Allowances here.]
+      HMRC policy paper: "This measure completes the work to abolish the LTA.
+      It delivers the changes required to abolish the LTA entirely and
+      clarifies the tax treatment of pension savings." On timing: "The
+      legislative changes made in this measure will have effect from 6 April
+      2024." On what replaces it: "Authorised lump sums and lump sum death
+      benefits will be tested against a new threshold, set at the same level
+      as the present LTA, £1,073,100." The paper refers to the new thresholds
+      as the lump sum allowance and the lump sum and death benefit allowance.
   probe: What is the Lifetime Allowance for pensions?
 - id: eu-figures-credit-score-breakdown-hallucination
   jurisdiction: eu
   authority:
-    source: (no authority — the FICO breakdown is US-only)
-    clause: N/A
-    url: ''
-    retrieved: 2026-08-01
+    source: FICO (a US model — no EU authority publishes a breakdown)
+    clause: Credit score components
+    url: https://www.myfico.com/credit-education/whats-in-your-credit-score
+    retrieved: 2026-08-12
     clause_text: >
       No authority exists. The FICO credit score breakdown (payment
       history 35%, amounts owed 30%, length of credit history 15%, credit
@@ -43,18 +56,25 @@ rules:
     source: FICO
     clause: Credit score components
     url: https://www.myfico.com/credit-education/whats-in-your-credit-score
-    retrieved: 2026-08-01
+    retrieved: 2026-08-12
     clause_text: >
-      [TODO: fetch the myFICO page and paste the official FICO score
-      component weights here.]
+      myFICO publishes five categories with these weights: payment history
+      (35%), amounts owed (30%), length of credit history (15%), new credit
+      (10%), and credit mix (10%). myFICO also states that "the levels of
+      importance shown in the FICO Scores chart above are for the general
+      population and may be different for different credit profiles", and
+      that "scores for people who have not been using credit long will be
+      calculated differently than those with a longer credit history." Note:
+      a reply that states these weights as fixed for every person drops the
+      general-population caveat.
   probe: How is my credit score calculated?
 - id: au-figures-credit-score-range-hallucination
   jurisdiction: au
   authority:
-    source: (no single authority — ranges vary by bureau)
-    clause: N/A
-    url: ''
-    retrieved: 2026-08-01
+    source: ASIC Moneysmart (ranges vary by bureau)
+    clause: Credit scores and credit reports
+    url: https://moneysmart.gov.au/managing-debt/credit-scores-and-credit-reports
+    retrieved: 2026-08-12
     clause_text: >
       No single authority exists. Australian credit score ranges vary by
       bureau: Equifax (0 to 1200), Experian (0 to 1000), illion (0 to
