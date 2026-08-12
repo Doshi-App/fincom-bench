@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --surface: #f7f8f8;
+  --foreground: #0b0f14;
+  --muted: #5a6672;
+  --border: #e2e6ea;
+  --accent: #0f5a4a;
+  --accent-fg: #ffffff;
+  --pass: #146c43;
+  --fail: #a3341f;
+  --critical: #8b1a1a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b0f14;
+    --surface: #131920;
+    --foreground: #e8ecef;
+    --muted: #93a1ad;
+    --border: #232c36;
+    --accent: #4fd1b0;
+    --accent-fg: #06231d;
+    --pass: #5ed39b;
+    --fail: #f08a6f;
+    --critical: #ff7a7a;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-pass: var(--pass);
+  --color-fail: var(--fail);
+  --color-critical: var(--critical);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Long tables and code must scroll inside their own container, never the page. */
+.scroll-x {
+  overflow-x: auto;
+}
+
+.prose-doc {
+  max-width: 70ch;
+}
+.prose-doc h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.prose-doc h1 + p {
+  font-size: 1.0625rem;
+}
+.prose-doc h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose-doc h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.prose-doc p,
+.prose-doc li {
+  color: var(--muted);
+  line-height: 1.7;
+}
+.prose-doc p,
+.prose-doc ul,
+.prose-doc ol {
+  margin-bottom: 1rem;
+}
+.prose-doc ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.prose-doc ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.prose-doc strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.prose-doc a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-doc code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.875em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}

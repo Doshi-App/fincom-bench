@@ -67,16 +67,16 @@ cd harness
 pip install -r requirements.txt
 
 # Check the rules and a dataset. No model, no network, no key.
-python -m fincom_runner validate --dataset ../fincom-bench/benchmark-public.csv
+python -m fincom_runner validate --dataset ../fincom-bench/benchmark-open.csv
 
 # Grade the replies the meta-eval set already holds, deterministic checks only.
 python -m fincom_runner run \
-  --dataset ../fincom-bench/dataset-v1.csv \
+  --dataset ../fincom-bench/meta-eval.csv \
   --assistant hand-written-replies \
   --provider dataset --judge none --out ../submissions
 ```
 
-A run has two stages per item. A deterministic check reads the published figures in `figures/` and can fail an item on its own. Everything the check does not decide goes to the judge model with the rubric and the check result. An item nothing decided is recorded as `ungraded`, never as a pass.
+A run has two stages per item. A deterministic check reads the published figures in `sourcebooks/statutory_figures/` and can fail an item on its own. Everything the check does not decide goes to the judge model with the rubric and the check result. An item nothing decided is recorded as `ungraded`, never as a pass.
 
 The runner scores lesson slides, the Doshi FCP agent over an HTTP endpoint, and a third-party assistant used through its ordinary consumer interface — for the last one, a person collects the replies by hand and the runner grades a 2-column CSV.
 
@@ -93,7 +93,7 @@ fincom-bench/
   README.md          this file
   ERRATA.md          known errors in the dataset, if any
   rules/             conduct and behaviour rules, one markdown file per category in rules/grading/
-  figures/           expiring statutory figures, one YAML file per jurisdiction
+  sourcebooks/       reference clauses and statutory figures, one markdown file per topic per jurisdiction
   harness/           the runner that executes a run, and its tests
   meta-eval/         the meta-evaluation harness (separate ticket)
   docs/
@@ -101,11 +101,9 @@ fincom-bench/
     rubric.md        the finding categories, the two axes, and the grading scheme
   submissions/       one directory per run, holding the transcript
   fincom-bench/
-    dataset-v1.csv        the meta-eval set: 274 probes with replies, labels blank
-    benchmark.csv         the benchmark set: same 274 probes, no replies, no labels
-    benchmark-public.csv  70% of the benchmark set (191 rows), published in the repo
-    benchmark-private.csv 30% of the benchmark set (83 rows), also published — see the split note
-    end-to-end-pass.md    one real lesson graded end to end
+    meta-eval.csv         the meta-eval set: 274 probes with replies, labels blank
+    benchmark-open.csv    the main evaluation set: 191 probes, no replies, no labels
+    benchmark-holdout.csv the future-gated seed set: 83 probes, no replies, no labels
 ```
 
 ## The rule record
@@ -143,22 +141,40 @@ A rule lands only by pull request. The pull request must attach the citation. On
 
 The benchmark uses one set of 274 probes, applied in two phases.
 
-**Phase 1 — choose the judge (meta-eval).** The file `fincom-bench/dataset-v1.csv` holds 274 probes. Each probe has a pre-written reply. Human labellers mark each reply pass or fail. Five candidate judge models also mark each reply. The model with the best macro-F1 against the human labels becomes the judge.
+**Phase 1 — choose the judge (meta-eval).** The file `fincom-bench/meta-eval.csv` holds 274 probes. Each probe has a pre-written reply. Human labellers mark each reply pass or fail. Five candidate judge models also mark each reply. The model with the best macro-F1 against the human labels becomes the judge.
 
-**Phase 2 — score the assistants (benchmark).** The file `fincom-bench/benchmark.csv` holds the same 274 probes with the reply column removed. The runner sends each probe to each assistant. Each assistant produces a reply. The judge scores each reply pass or fail. The result is a pass/fail matrix on the leaderboard.
+**Phase 2 — score the assistants (benchmark).** The same 274 probes are reused, but the reply column is removed. The runner sends each probe to each assistant. Each assistant produces a reply. The judge scores each reply pass or fail. The result is a pass/fail matrix on the leaderboard. The full benchmark set is the union of `benchmark-open.csv` and `benchmark-holdout.csv`.
 
-### Public and private split
+### Open and holdout split
 
 The 274 probes are split 70/30, stratified by category so both halves cover all 15 categories.
 
-All 274 probes are in this repository, including the 83-row "private" file. The benchmark makes **no contamination-resistance claim**: a model may have seen these probes or text like them. The split is kept so a future gated split can reuse it, and so a submission can report the two halves separately.
-
 | File | Rows | Purpose |
 |---|---|---|
-| `benchmark-public.csv` | 191 | The primary evaluation set. Anyone may run a submission on these probes. |
-| `benchmark-private.csv` | 83 | Published too. Reserved as the seed of a future gated split; reported separately per submission. |
+| `benchmark-open.csv` | 191 | The primary evaluation set. Anyone may run a submission on these probes. |
+| `benchmark-holdout.csv` | 83 | Reserved as the seed of a future gated split; reported separately per submission. |
 
-The human labels in `dataset-v1.csv` are never published. A judge candidate cannot read them before scoring.
+Both files are published. The benchmark makes **no contamination-resistance claim**: a model may have seen these probes or text like them. The split is kept so a future gated split can reuse it, and so a submission can report the two halves separately.
+
+The meta-eval set, `meta-eval.csv`, has no open/holdout split. Judge selection is an internal step, not a submission endpoint, so the split would add complexity without a purpose. The human labels for the meta-eval set are never published; a judge candidate cannot read them before scoring.
+
+## The website
+
+The `src/` directory at the repo root is a Next.js site that publishes this benchmark — the
+leaderboard, the 15 category pages, and the methodology. It is a pure renderer over the files
+already in this repository: it reads `submissions/*/run.json` and `*/transcript.jsonl` directly (no
+duplicated sample data) and reads the real per-jurisdiction citations out of `rules/grading/*.md`
+frontmatter. `submissions/` is gitignored today, so a fresh checkout has none — the site renders that
+honestly as "no benchmark leaderboard yet" rather than failing.
+
+```bash
+npm install
+npm run dev     # http://localhost:4700
+npm run build   # static generation; fails loudly on a malformed run file or rule file
+```
+
+Data-loading code: `src/lib/submissions.ts` (run/transcript files), `src/lib/rules.ts` (rule
+citations), `src/data/categories.ts` (the 15 categories, hand-authored). Deployed on Vercel.
 
 ## Scope and limits
 
