@@ -28,6 +28,7 @@ import urllib.request
 from pathlib import Path
 
 from .dataset import load_replies
+from .endpoints import EndpointError, bedrock_chat, ollama_chat
 from .models import Item
 
 DEFAULT_TIMEOUT = 120
@@ -201,11 +202,66 @@ class OpenAiProvider(Provider):
         return Reply((response.choices[0].message.content or "").strip(), output_tokens=output_tokens)
 
 
+class BedrockProvider(Provider):
+    """Call a model on AWS Bedrock. One key covers every vendor in a region."""
+
+    name = "bedrock"
+
+    def __init__(self, model: str, max_tokens: int = DEFAULT_MAX_TOKENS):
+        if not model:
+            raise ProviderError("the `bedrock` provider needs a model ID")
+        self.model = model
+        self.name = f"bedrock:{model}"
+        self.max_tokens = max_tokens
+
+    def reply_for(self, item: Item) -> Reply:  # pragma: no cover - needs the network
+        try:
+            text, tokens = bedrock_chat(
+                self.model,
+                item.system_prompt or "You are a helpful assistant.",
+                item.probe,
+                max_tokens=self.max_tokens,
+            )
+        except EndpointError as exc:
+            raise ProviderError(f"item {item.item_id}: {exc}") from exc
+        if not text:
+            raise ProviderError(f"item {item.item_id}: the model returned nothing")
+        return Reply(text, output_tokens=tokens)
+
+
+class OllamaProvider(Provider):
+    """Call a model on Ollama Cloud."""
+
+    name = "ollama"
+
+    def __init__(self, model: str, max_tokens: int = DEFAULT_MAX_TOKENS):
+        if not model:
+            raise ProviderError("the `ollama` provider needs a model name")
+        self.model = model
+        self.name = f"ollama:{model}"
+        self.max_tokens = max_tokens
+
+    def reply_for(self, item: Item) -> Reply:  # pragma: no cover - needs the network
+        try:
+            text, tokens = ollama_chat(
+                self.model,
+                item.system_prompt or "You are a helpful assistant.",
+                item.probe,
+                max_tokens=self.max_tokens,
+            )
+        except EndpointError as exc:
+            raise ProviderError(f"item {item.item_id}: {exc}") from exc
+        if not text:
+            raise ProviderError(f"item {item.item_id}: the model returned nothing")
+        return Reply(text, output_tokens=tokens)
+
+
 def build_provider(spec: str, replies_path: Path | None = None) -> Provider:
     """Build a provider from a `kind:argument` string.
 
     Examples: `dataset`, `replies`, `http:https://fcp.example/chat`,
-    `anthropic:claude-opus-4`, `openai:gpt-4o`.
+    `anthropic:claude-opus-4`, `openai:gpt-4o`,
+    `bedrock:us.anthropic.claude-opus-5`, `ollama:qwen3.5:397b`.
     """
     kind, _, argument = spec.partition(":")
     kind = kind.strip().lower()
@@ -226,4 +282,8 @@ def build_provider(spec: str, replies_path: Path | None = None) -> Provider:
         return AnthropicProvider(argument or "claude-opus-4")
     if kind == "openai":
         return OpenAiProvider(argument or "gpt-4o")
+    if kind == "bedrock":
+        return BedrockProvider(argument)
+    if kind == "ollama":
+        return OllamaProvider(argument)
     raise ProviderError(f"unknown provider `{spec}`")

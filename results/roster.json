@@ -1,0 +1,350 @@
+[
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-opus-5",
+    "ok": false,
+    "error": "HTTP 403: {\"message\":\"anthropic.claude-opus-5 is not available for this account. You can explore other available models on Amazon Bedrock. For additional access options, contact AW"
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-sonnet-5",
+    "ok": false,
+    "error": "HTTP 403: {\"message\":\"anthropic.claude-sonnet-5 is not available for this account. You can explore other available models on Amazon Bedrock. For additional access options, contact "
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-fable-5",
+    "ok": false,
+    "error": "HTTP 403: {\"message\":\"anthropic.claude-fable-5 is not available for this account. You can explore other available models on Amazon Bedrock. For additional access options, contact A"
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-opus-4-8",
+    "ok": false,
+    "error": "HTTP 403: {\"message\":\"anthropic.claude-opus-4-8 is not available for this account. You can explore other available models on Amazon Bedrock. For additional access options, contact "
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-opus-4-7",
+    "ok": false,
+    "error": "HTTP 403: {\"message\":\"anthropic.claude-opus-4-7 is not available for this account. You can explore other available models on Amazon Bedrock. For additional access options, contact "
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-sonnet-4-6",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-opus-4-5-20251101-v1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "ok": true,
+    "sample": "Ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.anthropic.claude-3-haiku-20240307-v1:0",
+    "ok": false,
+    "error": "HTTP 404: {\"message\":\"Access denied. This Model is marked by provider as Legacy and you have not been actively using the model in the last 30 days. Please upgrade to an active mode"
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.meta.llama4-maverick-17b-instruct-v1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.meta.llama4-scout-17b-instruct-v1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.meta.llama3-3-70b-instruct-v1:0",
+    "ok": true,
+    "sample": "Ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.meta.llama3-1-70b-instruct-v1:0",
+    "ok": true,
+    "sample": "Go.",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "deepseek.v3.2",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.deepseek.r1-v1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "qwen.qwen3-235b-a22b-2507-v1:0@us-west-2",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "qwen.qwen3-coder-480b-a35b-v1:0@us-west-2",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "qwen.qwen3-next-80b-a3b",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "qwen.qwen3-32b-v1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "moonshotai.kimi-k2.5",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "moonshot.kimi-k2-thinking",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "zai.glm-5",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "zai.glm-4.7",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "zai.glm-4.7-flash",
+    "ok": true,
+    "sample": "Ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "minimax.minimax-m2.5",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "minimax.minimax-m2.1",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "mistral.mistral-large-3-675b-instruct",
+    "ok": true,
+    "sample": "Ready.",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "mistral.devstral-2-123b",
+    "ok": true,
+    "sample": "Ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "mistral.ministral-3-14b-instruct",
+    "ok": true,
+    "sample": "Go.",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "mistral.magistral-small-2509",
+    "ok": true,
+    "sample": "Got it! Here's your one-word reply:\n\n**Ready**",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "openai.gpt-oss-120b-1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "openai.gpt-oss-20b-1:0",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "openai.gpt-oss-safeguard-120b",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.amazon.nova-premier-v1:0",
+    "ok": false,
+    "error": "HTTP 404: {\"message\":\"Access denied. This Model is marked by provider as Legacy and you have not been actively using the model in the last 30 days. Please upgrade to an active mode"
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.amazon.nova-pro-v1:0",
+    "ok": true,
+    "sample": "Set.",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.amazon.nova-lite-v1:0",
+    "ok": true,
+    "sample": "Ready.",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "nvidia.nemotron-super-3-120b",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "nvidia.nemotron-nano-12b-v2",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "google.gemma-3-27b-it",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "google.gemma-3-12b-it",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "bedrock",
+    "model": "cohere.command-r-plus-v1:0",
+    "ok": false,
+    "error": "HTTP 404: {\"message\":\"Access denied. This Model is marked by provider as Legacy and you have not been actively using the model in the last 30 days. Please upgrade to an active mode"
+  },
+  {
+    "kind": "bedrock",
+    "model": "ai21.jamba-1-5-large-v1:0",
+    "ok": false,
+    "error": "HTTP 404: {\"message\":\"Access denied. This Model is marked by provider as Legacy and you have not been actively using the model in the last 30 days. Please upgrade to an active mode"
+  },
+  {
+    "kind": "bedrock",
+    "model": "us.writer.palmyra-x5-v1:0",
+    "ok": true,
+    "sample": "Ready",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "nemotron-3-ultra",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "deepseek-v4-pro",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "qwen3.5:397b",
+    "ok": true,
+    "sample": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Inpu",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "glm-5.2",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "nemotron-3-super",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "gpt-oss:120b",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "minimax-m2.7",
+    "ok": true,
+    "sample": "ready",
+    "error": ""
+  }
+]

@@ -19,6 +19,7 @@ import json
 import os
 import re
 
+from .endpoints import EndpointError, bedrock_chat, ollama_chat
 from .models import (
     INSTITUTION_ACTION,
     PERMISSION_INVESTMENT_ADVICE,
@@ -347,6 +348,41 @@ class OpenAiJudge(Judge):
         )
 
 
+class EndpointJudge(Judge):
+    """Mark with a model reached over plain HTTP — Bedrock or Ollama Cloud.
+
+    A judge that cannot be reached is recorded as an `error` verdict, never as a
+    pass, so an unreachable judge never turns into a clean leaderboard.
+    """
+
+    def __init__(self, kind: str, model: str, max_tokens: int = 4096):
+        if not model:
+            raise RuntimeError(f"the `{kind}` judge needs a model ID")
+        self.kind = kind
+        self.model = model
+        self.name = f"{kind}:{model}"
+        self.max_tokens = max_tokens
+        self._call = bedrock_chat if kind == "bedrock" else ollama_chat
+
+    def mark(self, prompt: str) -> JudgeResult:  # pragma: no cover - needs the network
+        try:
+            text, tokens = self._call(
+                self.model, "", prompt, max_tokens=self.max_tokens, temperature=0.0
+            )
+        except EndpointError as exc:
+            return JudgeResult(verdict="error", model=self.model, reasoning=str(exc))
+        result = parse_verdict(text, self.model)
+        return JudgeResult(
+            verdict=result.verdict,
+            model=result.model,
+            reasoning=result.reasoning,
+            quoted_text=result.quoted_text,
+            product_risk=result.product_risk,
+            raw=result.raw,
+            output_tokens=tokens,
+        )
+
+
 def build_judge(spec: str) -> Judge:
     """Build a judge from a `kind:model` string, for example `anthropic:claude-opus-4`."""
     kind, _, model = (spec or "none").partition(":")
@@ -358,4 +394,6 @@ def build_judge(spec: str) -> Judge:
         return AnthropicJudge(model or "claude-opus-4")
     if kind == "openai":
         return OpenAiJudge(model or "gpt-4o")
+    if kind in ("bedrock", "ollama"):
+        return EndpointJudge(kind, model)
     raise RuntimeError(f"unknown judge `{spec}`")

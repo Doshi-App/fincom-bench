@@ -341,13 +341,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--provider",
         default="dataset",
         help="Where the reply comes from: dataset | replies:<csv> | http:<url> | "
-        "anthropic:<model> | openai:<model>. Default: dataset.",
+        "anthropic:<model> | openai:<model> | bedrock:<model> | ollama:<model>. "
+        "Default: dataset.",
     )
     run.add_argument("--replies", help="A replies CSV, for the `replies` provider.")
     run.add_argument(
         "--judge",
         default="none",
-        help="The judge: none | anthropic:<model> | openai:<model>. Default: none.",
+        help="The judge: none | anthropic:<model> | openai:<model> | "
+        "bedrock:<model> | ollama:<model>. Default: none.",
     )
     run.add_argument(
         "--permissions",

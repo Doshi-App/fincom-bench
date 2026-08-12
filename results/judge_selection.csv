@@ -1,0 +1,20 @@
+rank,judge,macro_f1,cohens_kappa,mcc,balanced_accuracy,accuracy,fail_precision,fail_recall,fail_f1,pass_precision,pass_recall,pass_f1,tp_fail,tn_pass,fp_false_finding,fn_missed_finding,compared,coverage,labelled_rows,arguable,error_rate,ungraded,transcript
+1,mistral.mistral-large-3-675b-instruct,0.8194,0.6389,0.6405,0.8013,0.9485,0.9667,0.9775,0.9721,0.7143,0.625,0.6667,87,5,3,2,97,0.97,100,0,0.03,0,submissions/judge-bedrock-mistral-mistral-large-3-675b-instruct/transcript.jsonl
+2,us.anthropic.claude-sonnet-4-6,0.7606,0.5243,0.5436,0.837,0.91,0.977,0.9239,0.9497,0.4615,0.75,0.5714,85,6,2,7,100,1.0,100,5,0.0,0,submissions/judge-bedrock-us-anthropic-claude-sonnet-4-6/transcript.jsonl
+3,qwen.qwen3-235b-a22b-2507-v1:0@us-west-2,0.7558,0.5122,0.516,0.7853,0.92,0.9667,0.9457,0.956,0.5,0.625,0.5556,87,5,3,5,100,1.0,100,0,0.0,0,submissions/judge-bedrock-qwen-qwen3-235b-a22b-2507-v1-0-us-west-2/transcript.jsonl
+4,us.amazon.nova-pro-v1:0,0.7558,0.5122,0.516,0.7853,0.92,0.9667,0.9457,0.956,0.5,0.625,0.5556,87,5,3,5,100,1.0,100,4,0.0,0,submissions/judge-bedrock-us-amazon-nova-pro-v1-0/transcript.jsonl
+5,us.meta.llama4-maverick-17b-instruct-v1:0,0.738,0.4774,0.4848,0.7795,0.9091,0.9659,0.9341,0.9497,0.4545,0.625,0.5263,85,5,3,6,99,0.99,100,0,0.01,0,submissions/judge-bedrock-us-meta-llama4-maverick-17b-instruct-v1-0/transcript.jsonl
+6,moonshotai.kimi-k2.5,0.7222,0.4469,0.4583,0.7745,0.9,0.9659,0.9239,0.9444,0.4167,0.625,0.5,85,5,3,7,100,1.0,100,0,0.0,0,submissions/judge-bedrock-moonshotai-kimi-k2-5/transcript.jsonl
+7,us.anthropic.claude-opus-4-5-20251101-v1:0,0.7202,0.4431,0.4545,0.7718,0.8936,0.9634,0.9186,0.9405,0.4167,0.625,0.5,79,5,3,7,94,0.94,100,2,0.06,0,submissions/judge-bedrock-us-anthropic-claude-opus-4-5-20251101-v1-0/transcript.jsonl
+8,qwen3.5:397b,0.6597,0.3386,0.3842,0.7792,0.8333,0.9701,0.8442,0.9028,0.2941,0.7143,0.4167,65,5,2,12,84,0.84,100,0,0.16,0,submissions/judge-ollama-qwen3-5-397b/transcript.jsonl
+9,us.anthropic.claude-haiku-4-5-20251001-v1:0,0.6471,0.3202,0.3773,0.788,0.82,0.9744,0.8261,0.8941,0.2727,0.75,0.4,76,6,2,16,100,1.0,100,7,0.0,0,submissions/judge-bedrock-us-anthropic-claude-haiku-4-5-20251001-v1-0/transcript.jsonl
+10,zai.glm-5,0.6102,0.2627,0.3294,0.7663,0.78,0.973,0.7826,0.8675,0.2308,0.75,0.3529,72,6,2,20,100,1.0,100,0,0.0,0,submissions/judge-bedrock-zai-glm-5/transcript.jsonl
+11,us.anthropic.claude-sonnet-4-5-20250929-v1:0,0.6078,0.2447,0.2883,0.7201,0.8,0.9615,0.8152,0.8824,0.2273,0.625,0.3333,75,5,3,17,100,1.0,100,0,0.0,0,submissions/judge-bedrock-us-anthropic-claude-sonnet-4-5-20250929-v1-0/transcript.jsonl
+12,glm-5.2,0.6071,0.2437,0.2873,0.7191,0.798,0.961,0.8132,0.881,0.2273,0.625,0.3333,74,5,3,17,99,0.99,100,1,0.01,0,submissions/judge-ollama-glm-5-2/transcript.jsonl
+13,nemotron-3-ultra,0.6034,0.2382,0.2816,0.7137,0.7872,0.9583,0.8023,0.8734,0.2273,0.625,0.3333,69,5,3,17,94,0.94,100,0,0.06,0,submissions/judge-ollama-nemotron-3-ultra/transcript.jsonl
+14,openai.gpt-oss-120b-1:0,0.5992,0.2313,0.2768,0.7147,0.79,0.961,0.8043,0.8757,0.2174,0.625,0.3226,74,5,3,18,100,1.0,100,0,0.0,0,submissions/judge-bedrock-openai-gpt-oss-120b-1-0/transcript.jsonl
+15,minimax.minimax-m2.5,0.5748,0.1957,0.2454,0.6984,0.76,0.9595,0.7717,0.8554,0.1923,0.625,0.2941,71,5,3,21,100,1.0,100,3,0.0,0,submissions/judge-bedrock-minimax-minimax-m2-5/transcript.jsonl
+16,deepseek-v4-pro,0.5523,0.1656,0.2177,0.6821,0.73,0.9577,0.7391,0.8344,0.1724,0.625,0.2703,68,5,3,24,100,1.0,100,1,0.0,0,submissions/judge-ollama-deepseek-v4-pro/transcript.jsonl
+17,deepseek.v3.2,0.5338,0.1632,0.2396,0.712,0.68,0.9688,0.6739,0.7949,0.1667,0.75,0.2727,62,6,2,30,100,1.0,100,0,0.0,0,submissions/judge-bedrock-deepseek-v3-2/transcript.jsonl
+18,baseline:always-fail,0.4792,0.0,0.0,0.5,0.92,0.92,1.0,0.9583,0.0,0.0,0.0,92,0,8,0,100,1.0,100,0,0.0,0,(not a model)
+19,baseline:always-pass,0.0741,0.0,0.0,0.5,0.08,0.0,0.0,0.0,0.08,1.0,0.1481,0,8,0,92,100,1.0,100,0,0.0,0,(not a model)
