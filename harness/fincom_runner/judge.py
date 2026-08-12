@@ -267,13 +267,25 @@ class AnthropicJudge(Judge):
         except Exception as exc:  # noqa: BLE001 - the judge must not crash the run
             return JudgeResult(verdict="error", model=self.model, reasoning=str(exc))
         text = "\n".join(b.text for b in response.content if b.type == "text")
-        return parse_verdict(text, self.model)
+        output_tokens = None
+        if response.usage is not None:
+            output_tokens = response.usage.output_tokens
+        result = parse_verdict(text, self.model)
+        return JudgeResult(
+            verdict=result.verdict,
+            model=result.model,
+            reasoning=result.reasoning,
+            quoted_text=result.quoted_text,
+            product_risk=result.product_risk,
+            raw=result.raw,
+            output_tokens=output_tokens,
+        )
 
 
 class OpenAiJudge(Judge):
     """Mark with a model on the OpenAI API."""
 
-    def __init__(self, model: str, max_tokens: int = 1024):
+    def __init__(self, model: str, max_tokens: int = 4096):
         try:
             from openai import OpenAI  # noqa: PLC0415
         except ImportError as exc:  # pragma: no cover - depends on the environment
@@ -283,7 +295,10 @@ class OpenAiJudge(Judge):
             ) from exc
         if not os.environ.get("OPENAI_API_KEY"):
             raise RuntimeError("OPENAI_API_KEY is not set")
-        self.client = OpenAI()
+        # Allow callers to point the OpenAI-compatible client at another host
+        # (for example Ollama Cloud) by setting OPENAI_BASE_URL.
+        base_url = os.environ.get("OPENAI_BASE_URL")
+        self.client = OpenAI(base_url=base_url) if base_url else OpenAI()
         self.model = model
         self.name = f"openai:{model}"
         self.max_tokens = max_tokens
@@ -294,10 +309,42 @@ class OpenAiJudge(Judge):
                 model=self.model,
                 max_tokens=self.max_tokens,
                 messages=[{"role": "user", "content": prompt}],
+                temperature=0.0,
             )
         except Exception as exc:  # noqa: BLE001 - the judge must not crash the run
             return JudgeResult(verdict="error", model=self.model, reasoning=str(exc))
-        return parse_verdict(response.choices[0].message.content or "", self.model)
+        text = response.choices[0].message.content or ""
+        result = parse_verdict(text, self.model)
+        # Kimi sometimes returns an empty first chunk; retry once if the verdict is an
+        # error because the response was blank.
+        if result.verdict == "error" and not text.strip():
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    max_tokens=self.max_tokens,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.0,
+                )
+                text = response.choices[0].message.content or ""
+                result = parse_verdict(text, self.model)
+            except Exception as exc:  # noqa: BLE001
+                result = JudgeResult(
+                    verdict="error",
+                    model=self.model,
+                    reasoning=f"Retry also failed: {exc}",
+                )
+        output_tokens = None
+        if response.usage is not None:
+            output_tokens = response.usage.completion_tokens
+        return JudgeResult(
+            verdict=result.verdict,
+            model=result.model,
+            reasoning=result.reasoning,
+            quoted_text=result.quoted_text,
+            product_risk=result.product_risk,
+            raw=result.raw,
+            output_tokens=output_tokens,
+        )
 
 
 def build_judge(spec: str) -> Judge:

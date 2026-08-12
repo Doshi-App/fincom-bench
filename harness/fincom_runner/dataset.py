@@ -50,7 +50,7 @@ def load_chat_items(path: Path) -> list[Item]:
                     system_prompt=(row.get("system_prompt") or "").strip(),
                     permissions=(row.get("permissions") or PERMISSION_NONE).strip(),
                     reply=(row.get("reply") or "").strip(),
-                    expected_label=(row.get("expected_label") or "").strip(),
+
                     item_type="chat",
                 )
             )
@@ -108,7 +108,7 @@ def load_lesson_items(path: Path) -> list[Item]:
                         item_type="lesson",
                         lesson_id=str(row.get("lesson_id") or "").strip(),
                         slide=str(row.get("slide") or "").strip(),
-                        expected_label=str(row.get("expected_label") or "").strip(),
+
                     )
                 )
     if not items:

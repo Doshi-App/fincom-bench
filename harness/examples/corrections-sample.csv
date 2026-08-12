@@ -1,3 +1,0 @@
-correction_id,lesson_id,item_id,category,jurisdiction,note
-OPS-1451-01,what-are-credit-unions,credit-unions-s3,expired_figure,uk,FSCS limit moved to 120000 on 1 December 2025
-OPS-1451-02,what-are-credit-unions,credit-unions-s3-gap,completeness_gap,uk,Temporary high balance cover is not mentioned

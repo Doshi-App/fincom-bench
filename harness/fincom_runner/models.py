@@ -126,7 +126,7 @@ class Rubric:
 
 @dataclass(frozen=True)
 class Figure:
-    """One expiring statutory figure, read from figures/<jurisdiction>.yaml."""
+    """One statutory figure, read from sourcebooks/statutory_figures/<jurisdiction>.md."""
 
     figure_id: str
     jurisdiction: str
@@ -150,10 +150,10 @@ class Item:
     system_prompt: str = ""
     permissions: str = PERMISSION_NONE
     reply: str = ""
+    output_tokens: int | None = None
     item_type: str = "chat"
     lesson_id: str = ""
     slide: str = ""
-    expected_label: str = ""
 
     def as_dict(self) -> dict:
         out = {
@@ -162,6 +162,8 @@ class Item:
             "probe": self.probe,
             "reply": self.reply,
         }
+        if self.output_tokens is not None:
+            out["output_tokens"] = self.output_tokens
         if self.item_type == "lesson":
             out["lesson_id"] = self.lesson_id
             out["slide"] = self.slide
@@ -198,6 +200,7 @@ class JudgeResult:
     quoted_text: str = ""
     product_risk: str = ""
     raw: str = ""
+    output_tokens: int | None = None
 
     def as_dict(self) -> dict:
         return {
@@ -259,10 +262,12 @@ class GradedItem:
             "final_verdict": self.final_verdict,
             "leaderboard_cell": "fail" if self.is_finding else "",
         }
+        if self.item.output_tokens is not None:
+            record["output_tokens"] = self.item.output_tokens
+        if self.judge.output_tokens is not None:
+            record["judge_output_tokens"] = self.judge.output_tokens
         if self.judge.product_risk:
             record["product_risk"] = self.judge.product_risk
-        if self.item.expected_label:
-            record["expected_label"] = self.item.expected_label
         if self.error:
             record["error"] = self.error
         return record

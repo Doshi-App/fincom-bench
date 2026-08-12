@@ -52,7 +52,7 @@ class RuleBookTest(unittest.TestCase):
 
 class FigureBookTest(unittest.TestCase):
     def test_the_figures_load_and_some_are_gateable(self):
-        book = FigureBook.load(REPO / "figures")
+        book = FigureBook.load(REPO / "sourcebooks" / "statutory_figures")
         self.assertGreater(len(book.figures), 0)
         self.assertGreater(len(book.gateable("uk")), 0)
         for figure in book.figures:
@@ -61,13 +61,13 @@ class FigureBookTest(unittest.TestCase):
 
 class DatasetTest(unittest.TestCase):
     def test_the_benchmark_set_loads_with_no_reply(self):
-        items = load_chat_items(REPO / "fincom-bench" / "benchmark-public.csv")
+        items = load_chat_items(REPO / "fincom-bench" / "benchmark-open.csv")
         self.assertEqual(len(items), 191)
         self.assertTrue(all(item.reply == "" for item in items))
         self.assertTrue(all(item.category in ALL_CATEGORIES for item in items))
 
     def test_the_meta_eval_set_loads_with_a_reply(self):
-        items = load_chat_items(REPO / "fincom-bench" / "dataset-v1.csv")
+        items = load_chat_items(REPO / "fincom-bench" / "meta-eval.csv")
         self.assertEqual(len(items), 274)
         self.assertTrue(all(item.reply for item in items))
 

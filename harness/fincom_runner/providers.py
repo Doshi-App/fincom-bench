@@ -38,12 +38,20 @@ class ProviderError(Exception):
     """The provider could not produce a reply."""
 
 
+class Reply:
+    """A reply from a provider, plus the output tokens it cost."""
+
+    def __init__(self, text: str, output_tokens: int | None = None):
+        self.text = text
+        self.output_tokens = output_tokens
+
+
 class Provider:
     """The interface every provider implements."""
 
     name = "provider"
 
-    def reply_for(self, item: Item) -> str:
+    def reply_for(self, item: Item) -> Reply:
         raise NotImplementedError
 
 
@@ -52,13 +60,13 @@ class DatasetProvider(Provider):
 
     name = "dataset"
 
-    def reply_for(self, item: Item) -> str:
+    def reply_for(self, item: Item) -> Reply:
         if not item.reply:
             raise ProviderError(
                 f"item {item.item_id}: the dataset holds no reply. "
                 f"Use a different provider, or pass a dataset with a `reply` column."
             )
-        return item.reply
+        return Reply(item.reply)
 
 
 class RepliesFileProvider(Provider):
@@ -70,11 +78,11 @@ class RepliesFileProvider(Provider):
         self.path = path
         self.replies = load_replies(path)
 
-    def reply_for(self, item: Item) -> str:
+    def reply_for(self, item: Item) -> Reply:
         reply = self.replies.get(item.item_id)
         if reply is None:
             raise ProviderError(f"item {item.item_id}: no reply in {self.path}")
-        return reply
+        return Reply(reply)
 
 
 class HttpProvider(Provider):
@@ -91,7 +99,7 @@ class HttpProvider(Provider):
         self.url = url
         self.timeout = timeout
 
-    def reply_for(self, item: Item) -> str:
+    def reply_for(self, item: Item) -> Reply:
         payload = json.dumps(
             {
                 "item_id": item.item_id,
@@ -113,10 +121,15 @@ class HttpProvider(Provider):
                 body = json.loads(response.read().decode("utf-8"))
         except (urllib.error.URLError, json.JSONDecodeError, TimeoutError) as exc:
             raise ProviderError(f"item {item.item_id}: {exc}") from exc
+        output_tokens = body.get("output_tokens") or body.get("completion_tokens")
+        if isinstance(output_tokens, str) and output_tokens.isdigit():
+            output_tokens = int(output_tokens)
+        elif not isinstance(output_tokens, int):
+            output_tokens = None
         for key in ("reply", "text", "content", "output"):
             value = body.get(key)
             if isinstance(value, str) and value.strip():
-                return value.strip()
+                return Reply(value.strip(), output_tokens=output_tokens)
         raise ProviderError(f"item {item.item_id}: the endpoint returned no reply")
 
 
@@ -139,7 +152,7 @@ class AnthropicProvider(Provider):
         self.model = model
         self.max_tokens = max_tokens
 
-    def reply_for(self, item: Item) -> str:  # pragma: no cover - needs the network
+    def reply_for(self, item: Item) -> Reply:  # pragma: no cover - needs the network
         response = self.client.messages.create(
             model=self.model,
             max_tokens=self.max_tokens,
@@ -147,7 +160,10 @@ class AnthropicProvider(Provider):
             messages=[{"role": "user", "content": item.probe}],
         )
         parts = [block.text for block in response.content if block.type == "text"]
-        return "\n".join(parts).strip()
+        output_tokens = None
+        if response.usage is not None:
+            output_tokens = response.usage.output_tokens
+        return Reply("\n".join(parts).strip(), output_tokens=output_tokens)
 
 
 class OpenAiProvider(Provider):
@@ -169,7 +185,7 @@ class OpenAiProvider(Provider):
         self.model = model
         self.max_tokens = max_tokens
 
-    def reply_for(self, item: Item) -> str:  # pragma: no cover - needs the network
+    def reply_for(self, item: Item) -> Reply:  # pragma: no cover - needs the network
         messages = []
         if item.system_prompt:
             messages.append({"role": "system", "content": item.system_prompt})
@@ -179,7 +195,10 @@ class OpenAiProvider(Provider):
             max_tokens=self.max_tokens,
             messages=messages,
         )
-        return (response.choices[0].message.content or "").strip()
+        output_tokens = None
+        if response.usage is not None:
+            output_tokens = response.usage.completion_tokens
+        return Reply((response.choices[0].message.content or "").strip(), output_tokens=output_tokens)
 
 
 def build_provider(spec: str, replies_path: Path | None = None) -> Provider:

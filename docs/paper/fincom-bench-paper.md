@@ -192,7 +192,9 @@ Two clarifications that follow from the clauses rather than from convenience. St
 
 ### 3.5 Test context
 
-Every probe runs with a system prompt and no conversation history. The system prompt tells the assistant its role, its jurisdiction and the conduct rules it must follow, and it varies by test case rather than being uniform across the set — a vulnerability probe carries a different prompt from a product-recommendation probe. The prompt is part of the test and is recorded in the transcript, because two assistants given different prompts produce different replies and a reader must be able to see what each was told.
+Every probe runs with a system prompt and no conversation history. The system prompt is a short preamble plus a deployment configuration in JSON. The configuration states the facts a production deployment would state: the operator (a consumer app or a regulated bank) and the permissions it holds, the jurisdiction with its regulator and its currency, the capabilities of the deployment (no internet access, no live market data, no account access, no transactions, no tools), the conversation context, the conduct rules, and the style. The conduct rules and the style vary by test case rather than being uniform across the set — a vulnerability probe carries a different variant from a product-recommendation probe, and the `prompt_variant` column names the variant each row uses. The variation is deliberate: one variant states the conduct rules and the baseline variant does not, so the gap between them shows how much of a score the prompt supplies. The prompt is part of the test and is recorded in the transcript, because two assistants given different prompts produce different replies and a reader must be able to see what each was told.
+
+The capabilities block makes the expired-figure test well defined. The configuration tells the assistant it cannot browse or read live data, so a statutory figure must come from its own knowledge, and the honest handling of that limit is part of what the test measures. The same configuration goes to every assistant under test.
 
 Some probes embed member context — age, income, vulnerability, stated goal — in the probe text. Probes without context test whether an assistant volunteers advice unprompted. A context-free probe is not an unfair test: a real member's first message often carries no context, and the question is whether the assistant gives information rather than advice when it has no basis for a recommendation.
 
@@ -313,9 +315,9 @@ Product recommendation is deliberately the largest category, at 36 probes. It is
 
 The same 274 probes are used twice, for two different jobs.
 
-**Pass 1 chooses the judge.** `fincom-bench/dataset-v1.csv` holds all 274 probes with a **pre-written reply** in each row. Two human labellers read the rule and mark each reply pass or fail. Five candidate judge models mark the same rows with no sight of the human labels. The model whose labels agree most with the humans, by macro F1 per category, becomes the judge.
+**Pass 1 chooses the judge.** `fincom-bench/meta-eval.csv` holds all 274 probes with a **pre-written reply** in each row. Two human labellers read the rule and mark each reply pass or fail. Five candidate judge models mark the same rows with no sight of the human labels. The model whose labels agree most with the humans, by macro F1 per category, becomes the judge.
 
-**Pass 2 scores the assistants.** `fincom-bench/benchmark.csv` holds the same 274 probes with the reply column removed. The runner sends each probe to each assistant under test, each assistant writes its own reply, and the pass-1 winning judge marks every reply against the same rules.
+**Pass 2 scores the assistants.** The same 274 probes are reused with the reply column removed. They are split into `benchmark-open.csv` (191 rows) and `benchmark-holdout.csv` (83 rows). All three dataset files carry the structured deployment-configuration system prompt (§3.5). A recorded reply must come from the prompt recorded next to it, so when a prompt changes, the pass-1 replies are regenerated before anyone labels them. The runner sends each probe to each assistant under test, each assistant writes its own reply, and the pass-1 winning judge marks every reply against the same rules.
 
 Two properties of this design need stating because they are easy to misread.
 
@@ -466,10 +468,10 @@ Against an inter-labeller reference line rather than against truth, following He
 
 ### 7.3 The procedure
 
-1. All 274 rows in `dataset-v1.csv` carry a pre-written reply.
+1. All 274 rows in `meta-eval.csv` carry a pre-written reply.
 2. Two human labellers mark each row pass or fail independently, working from the rule and the rubric.
 3. Disagreements are resolved by discussion, and the agreed label is recorded as `human_label`. The pre-resolution labels supply the inter-labeller reference line.
-4. Five candidate judge models mark all 274 rows with no sight of the human labels: GPT-4o, Claude 3.5 Sonnet, Claude Opus 4, Gemini 1.5 Pro, Llama 3.1 70B.
+4. Candidate judge models mark all 274 rows with no sight of the human labels: GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, Claude Opus 5, Claude Sonnet 5, Gemini 2.5 Pro, Grok 4.5, Llama 4 Maverick, Qwen3-235B-A22B, DeepSeek-V3, Mistral Large 3, GLM-4.5.
 5. Macro F1 per category is computed for each candidate against `human_label`.
 6. The best-agreeing candidate becomes the benchmark judge.
 
@@ -544,7 +546,7 @@ We should also expect the norm applied elsewhere to be applied to us: in Novembe
 
 ### 9.2 There is no held-out split, by decision
 
-The repository tracks `benchmark-private.csv`, the 83-row split, alongside the 191-row public file and a 274-row combined file. All three are published. Earlier drafts claimed the 83 rows were held out to prevent training on the test set. That claim was false as the repository stood, and the decision taken for v1 is to publish everything and drop the claim, rather than to remove the file and become the gatekeeper of every outside score. The held-out splits that survive elsewhere do so by social gating rather than secrecy.
+The repository tracks `benchmark-holdout.csv`, the 83-row split, alongside the 191-row `benchmark-open.csv`. Both files are published. Earlier drafts claimed the 83 rows were held out to prevent training on the test set. That claim was false as the repository stood, and the decision taken for v1 is to publish everything and drop the claim, rather than to remove the file and become the gatekeeper of every outside score. The held-out splits that survive elsewhere do so by social gating rather than secrecy.
 
 This paper therefore claims no contamination resistance anywhere. The 83-row file is kept only as the seed of a possible future gated split, and submissions report the two halves separately. The related exposure stands: the probes are written from public rule books in ordinary English, and a model may well have seen text resembling them.
 

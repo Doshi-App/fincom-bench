@@ -1,12 +1,15 @@
 """The command line.
 
-4 subcommands.
+5 subcommands.
 
 - `validate` — read the rules, the figures and a dataset, and report anything
   that does not line up. No model, no network.
 - `run` — execute a run and write a transcript.
 - `leaderboard` — rebuild the leaderboard from one or more transcripts.
 - `missrate` — compare a transcript against the corrections people filed.
+- `prompts` — rebuild the `system_prompt` column of a dataset from the
+  prompt builder. A rebuild changes the prompt only. Replies collected under
+  an older prompt stay as they are — regenerate them before labelling.
 """
 
 from __future__ import annotations
@@ -21,6 +24,7 @@ from .figures import FigureBook, FigureError
 from .judge import build_judge
 from .leaderboard import leaderboard, load_corrections, miss_rate
 from .models import GateResult, GradedItem, Item, JudgeResult
+from .prompts import PromptError, rebuild_dataset_prompts
 from .providers import ProviderError, build_provider
 from .rules import RuleBook, RuleError
 from .runner import RunConfig, grade_items
@@ -31,7 +35,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 def _repo_paths(args) -> tuple[Path, Path]:
     root = Path(args.repo).resolve() if args.repo else REPO_ROOT
-    return root / "rules", root / "figures"
+    return root / "rules", root / "sourcebooks" / "statutory_figures"
 
 
 def _load_books(args) -> tuple[RuleBook, FigureBook | None]:
@@ -200,6 +204,21 @@ def cmd_run(args) -> int:
 
 
 # --------------------------------------------------------------------------
+# prompts
+
+
+def cmd_prompts(args) -> int:
+    for raw in args.dataset:
+        path = Path(raw)
+        result = rebuild_dataset_prompts(path)
+        variants = ", ".join(
+            f"{name}: {count}" for name, count in sorted(result["variants"].items())
+        )
+        print(f"{path}: {result['rows']} rows rebuilt ({variants})")
+    return 0
+
+
+# --------------------------------------------------------------------------
 # leaderboard and missrate
 
 
@@ -221,10 +240,10 @@ def _graded_from_transcript(path: Path) -> list[GradedItem]:
                 probe=item_record.get("probe", ""),
                 permissions=record.get("permissions", "none"),
                 reply=item_record.get("reply", ""),
+                output_tokens=item_record.get("output_tokens"),
                 item_type=item_record.get("type", "chat"),
                 lesson_id=item_record.get("lesson_id", ""),
                 slide=item_record.get("slide", ""),
-                expected_label=record.get("expected_label", ""),
             )
             judge = record.get("judge", {})
             gate = record.get("gate", {})
@@ -245,6 +264,7 @@ def _graded_from_transcript(path: Path) -> list[GradedItem]:
                         reasoning=judge.get("reasoning", ""),
                         quoted_text=judge.get("quoted_text", ""),
                         product_risk=record.get("product_risk", ""),
+                        output_tokens=record.get("judge_output_tokens"),
                     ),
                     final_verdict=record.get("final_verdict", "ungraded"),
                     threshold=record.get("threshold", "n/a"),
@@ -362,6 +382,15 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--quiet", action="store_true", help="No progress output.")
     run.set_defaults(func=cmd_run)
 
+    prompts = sub.add_parser(
+        "prompts",
+        help="Rebuild the system_prompt column of a dataset from the prompt builder.",
+    )
+    prompts.add_argument(
+        "dataset", nargs="+", help="One or more chat dataset CSV files. Rewritten in place."
+    )
+    prompts.set_defaults(func=cmd_prompts)
+
     board = sub.add_parser("leaderboard", help="Rebuild the leaderboard from transcripts.")
     board.add_argument("transcript", nargs="+", help="One or more transcript.jsonl files.")
     board.add_argument("--json", action="store_true", help="Print JSON instead of a table.")
@@ -381,7 +410,14 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         return args.func(args)
-    except (RuleError, FigureError, DatasetError, ProviderError, ValueError) as exc:
+    except (
+        RuleError,
+        FigureError,
+        DatasetError,
+        ProviderError,
+        PromptError,
+        ValueError,
+    ) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
     except FileNotFoundError as exc:

@@ -3,7 +3,8 @@
 A gate reads published data and returns an answer without a model. Two gates
 exist, because two categories have published data behind them.
 
-1. The figure gate, for `expired_figure`. It reads `figures/*.yaml` and looks
+1. The figure gate, for `expired_figure`. It reads
+   `sourcebooks/statutory_figures/*.md` and looks
    for an expired value in the reply. This gate can fail an item on its own.
 2. The source gate, for `referenceability_failure`. It looks for a named
    consultancy in the reply. The list of consultancies is closed, but whether

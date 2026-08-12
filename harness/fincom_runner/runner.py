@@ -22,7 +22,7 @@ from .figures import FigureBook
 from .gates import run_gate
 from .judge import Judge, build_prompt, threshold_for
 from .models import GateResult, GradedItem, Item, JudgeResult
-from .providers import Provider, ProviderError
+from .providers import Provider, ProviderError, Reply
 from .rules import RuleBook
 
 
@@ -126,8 +126,8 @@ def grade_item(
     except ProviderError as exc:
         return failed(str(exc))
 
-    item = Item(**{**item.__dict__, "reply": reply})
-    gate = run_gate(item, reply, figure_book)
+    item = Item(**{**item.__dict__, "reply": reply.text, "output_tokens": reply.output_tokens})
+    gate = run_gate(item, reply.text, figure_book)
 
     if gate.verdict == "fail" and not config.confirm_gate_fails:
         return GradedItem(
@@ -146,7 +146,7 @@ def grade_item(
             finding_id=finding_id(config.run_id, item),
         )
 
-    prompt = build_prompt(item, reply, rubric, rule, gate, config.include_examples)
+    prompt = build_prompt(item, reply.text, rubric, rule, gate, config.include_examples)
     verdict = judge.mark(prompt)
 
     if verdict.verdict in ("fail", "pass", "arguable"):

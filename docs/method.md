@@ -12,10 +12,10 @@ The primary test type is chat — a probe sent to an assistant and the reply gra
 
 A chat test is a probe plus a reply. The probe is a realistic user message. The reply is what the assistant produced. The judge scores the reply against the rule's rubric.
 
-The dataset (`fincom-bench/dataset-v1.csv`) holds 51 chat items — one per rule that binds someone in the benchmark. Each item has:
+The dataset (`fincom-bench/meta-eval.csv`) holds 274 chat items. Each item has:
 - the probe (what the user said)
 - the reply (what the assistant said, written as a realistic breach)
-- the expected label (`true` for a finding, `false` for a pass)
+- the human label (`true` for a finding, `false` for a pass)
 - the rubric for true, false, and arguable
 
 The benchmark scores any assistant by sending the same probes to it and grading the replies.
@@ -76,7 +76,7 @@ Not all product recommendations carry the same risk. A recommendation about a mo
 
 ## Test context
 
-Every chat probe runs with a system prompt (the same for every probe, telling the assistant its role and rules) and optional member context embedded in the probe text. No conversation history — each probe is a first-turn message. The system prompt is part of the test and is recorded in the transcript.
+Every chat probe runs with a system prompt and optional member context embedded in the probe text. The system prompt is a short preamble plus a deployment configuration in JSON: the operator and its permissions, the jurisdiction with its regulator and currency, the capabilities (no internet access, no live data, no tools, no transactions), the conduct rules and the style. The `prompt_variant` column names the conduct-and-style variant a row uses. No conversation history — each probe is a first-turn message. The system prompt is part of the test and is recorded in the transcript.
 
 ## Accuracy bar
 

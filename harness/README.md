@@ -10,12 +10,12 @@ cd harness
 pip install -r requirements.txt
 
 # 1. Check the rules and a dataset. No model, no network, no key.
-python -m fincom_runner validate --dataset ../fincom-bench/benchmark-public.csv
+python -m fincom_runner validate --dataset ../fincom-bench/benchmark-open.csv
 
 # 2. Grade the replies the meta-eval set already holds, with the
 #    deterministic gate only.
 python -m fincom_runner run \
-  --dataset ../fincom-bench/dataset-v1.csv \
+  --dataset ../fincom-bench/meta-eval.csv \
   --assistant hand-written-replies \
   --provider dataset \
   --judge none \
@@ -73,7 +73,7 @@ published data behind them, so two checks exist.
 
 | Category | Check | Can it fail an item on its own? |
 |---|---|---|
-| `expired_figure` | Match the reply against `current_value` and `stale_values` in `figures/*.yaml`. | Yes |
+| `expired_figure` | Match the reply against `current_value` and `stale_values` in `sourcebooks/statutory_figures/*.md`. | Yes |
 | `referenceability_failure` | Look for a named consultancy (PwC, Accenture, Deloitte, McKinsey). | No — evidence only |
 
 Every other category has no published data to check, so the judge decides alone.
@@ -152,6 +152,12 @@ python -m fincom_runner leaderboard ../submissions/*/transcript.jsonl
 # Score a run against the corrections people filed by hand.
 python -m fincom_runner missrate ../submissions/<run-id>/transcript.jsonl \
   --corrections corrections.csv
+
+# Rebuild the system_prompt column of a dataset from the prompt builder in
+# fincom_runner/prompts.py. The rebuild changes the prompt only — a reply
+# collected under an older prompt stays, so regenerate replies after a
+# rebuild and before anyone labels them.
+python -m fincom_runner prompts ../fincom-bench/benchmark-open.csv
 ```
 
 The corrections file is a CSV with a `category` column and at least one of
@@ -198,9 +204,9 @@ the right choice there. It is not the right choice here, for 4 reasons.
 
 1. The benchmark must score an assistant that has no API. Promptfoo has no lane
    for replies a person collected from a consumer chat interface.
-2. The deterministic check reads `figures/*.yaml` and must run before any model
-   and independently of one. It is a hard gate, not an assertion on a model
-   output.
+2. The deterministic check reads `sourcebooks/statutory_figures/*.md` and must
+   run before any model and independently of one. It is a hard gate, not an
+   assertion on a model output.
 3. The output is a finding record with a citation, a leaderboard row and a miss
    rate against filed corrections — not a pass/fail matrix.
 4. This repository goes public. A clone-and-run story with 1 dependency and no

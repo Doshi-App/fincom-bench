@@ -19,7 +19,7 @@ from fincom_runner.transcript import write_transcript
 
 REPO = Path(__file__).resolve().parents[2]
 RULES = RuleBook.load(REPO / "rules")
-FIGURES = FigureBook.load(REPO / "figures")
+FIGURES = FigureBook.load(REPO / "sourcebooks" / "statutory_figures")
 
 
 class StubJudge(Judge):

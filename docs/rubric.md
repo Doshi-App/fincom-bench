@@ -287,11 +287,15 @@ The 3-condition test is never available to an unregulated assistant, regardless 
 
 Every chat probe runs in a defined context. The benchmark sends the probe with:
 
-1. **A system prompt** — the standard system prompt the assistant would receive in production. This is the same for every probe. It tells the assistant its role, its jurisdiction, and the conduct rules it must follow.
+1. **A system prompt** — the prompt the assistant would receive in production. It is a short preamble plus a deployment configuration in JSON. The configuration states the operator (a consumer app or a regulated bank), the permissions the operator holds, the jurisdiction (with its regulator and currency), the capabilities (no internet access, no live market data, no account access, no transactions, no tools), the conversation context (in-app chat, no history), the conduct rules, and the style. The builder is `harness/fincom_runner/prompts.py`, and the `prompt_variant` column names which conduct-and-style variant a row uses.
 2. **Member context** (optional) — some probes include member context (age, income, vulnerability, stated goal). This is embedded in the probe text, not sent as a separate field. Probes without member context test whether the assistant volunteers advice unprompted.
 3. **No conversation history** — each probe is a first-turn message. The benchmark does not test multi-turn conversations in v1.
 
 The system prompt is part of the test. Two assistants with different system prompts produce different replies, and the benchmark scores both. The system prompt is recorded in the submission transcript so a reader can see what the assistant was told before the probe.
+
+The variant axis is deliberate. The `strict_conduct` variant tells the assistant the conduct rules. The `baseline` variant does not. The gap between the two answers the question a compliance officer will ask: how much of the score is the system prompt? The `regulated_adviser` variant is the one variant for a row with `permissions: investment_advice`, so the prompt and the grading threshold always agree.
+
+The capabilities block states what the deployment cannot do: no internet access, no live market data, no account access, no transactions. This makes the expired-figure test well defined — the assistant cannot look a figure up, so it must handle its own knowledge honestly — and it applies to every assistant under test equally.
 
 A probe without context is not an unfair test. A member in a real chat may send a first message with no context. The benchmark tests whether the assistant handles that realistically — giving information, not advice, when it has no basis for a recommendation.
 
@@ -299,7 +303,7 @@ A probe without context is not an unfair test. A member in a real chat may send 
 
 There are two datasets. This repo holds the first one.
 
-### 1. Meta-evaluation dataset (`fincom-bench/dataset-v1.csv`)
+### 1. Meta-evaluation dataset (`fincom-bench/meta-eval.csv`)
 
 This dataset picks the judge model. the two human labellers mark each row by hand (`human_label`). Then each candidate judge model also marks each row (one column per model). Whichever model agrees most with the human labels becomes the judge for the benchmark dataset.
 
@@ -311,22 +315,30 @@ This dataset scores assistants. The runner sends each probe to an assistant (GPT
 
 ## Meta-evaluation dataset format
 
-The meta-eval dataset is a CSV file (`fincom-bench/dataset-v1.csv`). One row per item. 14 columns:
+The meta-eval dataset is a CSV file (`fincom-bench/meta-eval.csv`). One row per item. 22 columns:
 
 - `item_id` — stable identifier
 - `jurisdiction` — uk, eu, us, au
 - `category` — the finding category (product_recommendation, missing_caveat, outcome_promise, referenceability_failure, completeness_gap, exploiting_bias, manipulating_emotion, failing_to_check_understanding, information_overload, missing_friction, not_tailoring_to_vulnerability, inappropriate_urgency, naming_a_bias_helpfully, expired_figure, hallucinated_fact)
 - `rule_id` — the specific rule this item exercises (look up in `rules/<category>.yaml` for the authority and plain-words statement)
-- `system_prompt` — the context the assistant receives (varies per test case — a vulnerability probe has a different prompt than a product recommendation probe)
+- `system_prompt` — the context the assistant receives: the JSON deployment configuration described under "Test context" (varies per test case — a vulnerability probe has a different variant than a product recommendation probe)
+- `permissions` — the permission level the assistant under test holds
+- `prompt_variant` — the conduct-and-style variant the prompt builder used for this row
 - `probe` — what the user says to the assistant
 - `reply` — what the assistant said (the thing being graded)
-- `expected_label` — `true` or `false`. Filled in by the two human labellers. Empty until then.
-- `human_label` — the two human labellers's agreed label after convergence. Empty until they mark.
-- `gpt_4o` — GPT-4o's label for this row. Empty until the meta-eval run.
-- `claude_3_5_sonnet` — Claude 3.5 Sonnet's label. Empty until the meta-eval run.
-- `claude_opus_4` — Claude Opus 4's label. Empty until the meta-eval run.
-- `gemini_1_5_pro` — Gemini 1.5 Pro's label. Empty until the meta-eval run.
-- `llama_3_1_70b` — Llama 3.1 70B's label. Empty until the meta-eval run.
+- `human_label` — the two human labellers's agreed label. Empty until they mark.
+- `gpt_5_6_sol` — GPT-5.6 Sol's label. Empty until the meta-eval run.
+- `gpt_5_6_terra` — GPT-5.6 Terra's label. Empty until the meta-eval run.
+- `gpt_5_6_luna` — GPT-5.6 Luna's label. Empty until the meta-eval run.
+- `claude_opus_5` — Claude Opus 5's label. Empty until the meta-eval run.
+- `claude_sonnet_5` — Claude Sonnet 5's label. Empty until the meta-eval run.
+- `gemini_2_5_pro` — Gemini 2.5 Pro's label. Empty until the meta-eval run.
+- `grok_4_5` — Grok 4.5's label. Empty until the meta-eval run.
+- `llama_4_maverick` — Llama 4 Maverick's label. Empty until the meta-eval run.
+- `qwen3_235b_a22b` — Qwen3-235B-A22B's label. Empty until the meta-eval run.
+- `deepseek_v3` — DeepSeek-V3's label. Empty until the meta-eval run.
+- `mistral_large_3` — Mistral Large 3's label. Empty until the meta-eval run.
+- `glm_4_5` — GLM-4.5's label. Empty until the meta-eval run.
 
 The candidate judge model whose labels agree most with `human_label` becomes the benchmark judge. Agreement is measured by macro F1 per category, reported in the paper.
 
