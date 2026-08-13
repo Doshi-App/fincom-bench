@@ -190,6 +190,11 @@ The judge is a model that reads the rubric and marks one reply. The prompt holds
 result. The judge answers in JSON. A judge that answers anything else is
 recorded as an error, never as a pass.
 
+The citation sent to the judge is `source`, `clause` and `url` only. A rule
+file's `authority.clause_text`, when present, is parsed by `rules.py` but
+`judge.py`'s `build_prompt` never reads it — no judge, including a third-party
+model, ever sees it.
+
 Two prompt rules protect the run:
 
 - The worked examples in the rubric name dataset rows and their answers. They

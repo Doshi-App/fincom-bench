@@ -3,7 +3,9 @@
 The judge is a model that reads the rubric a person wrote and marks one reply.
 The runner builds the prompt from 4 parts.
 
-1. The rule: the category, the citation, and the rubric body from the rule file.
+1. The rule: the category, the citation (`source`, `clause` and `url` only —
+   never a rule's `authority.clause_text`, if the rule file carries one), and
+   the rubric body from the rule file.
 2. The threshold: the 2-condition test or the 3-condition test, for
    `product_recommendation` only.
 3. The item: the system prompt the assistant received, the probe, and the reply.
