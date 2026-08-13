@@ -23,7 +23,7 @@ document uses illustrative figures (for example "5 candidate judges") that set
 the shape of the benchmark, not a count any single run must match. Every figure
 below is what this run actually did.
 
-One overnight run of both phases. Three CSVs in this directory, plus the
+One overnight run of both phases. Four CSVs in this directory, plus the
 per-run audit records under `submissions/`.
 
 | File | What it holds |
@@ -31,6 +31,7 @@ per-run audit records under `submissions/`.
 | `judge_selection.csv` | 17 candidate judges scored against the 100 hand-labelled rows, plus 2 baselines. |
 | `model_outputs.csv` | 10,887 rows — one per model per probe: the probe, the reply, and the judge's verdict with its reasoning. |
 | `leaderboard.csv` | 54 rows, ranked by pass rate over the probes the judge decided. 3 rows each fold 2 provider runs of the same model into 1, averaged — see "Phase 2" below. 2 added columns, `est_cost_usd_1pass` and `avg_time_s_1pass`, are estimates — see "Phase 4" below before quoting either. |
+| `category_breakdown.csv` | 810 rows (54 models × 15 categories), long format: the fail rate 1 model earned on 1 category. Same 3-row merge as `leaderboard.csv`, same rule — averaged, not pooled. Backs the website's model-by-category matrix. |
 | `roster.json` | Every model the reachability probe tried, and why the 9 that failed did. |
 
 ## What ran

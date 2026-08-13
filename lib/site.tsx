@@ -75,6 +75,9 @@ export function Header() {
           <Link href="/" className="hover:text-foreground">
             Leaderboard
           </Link>
+          <Link href="/compare" className="hover:text-foreground">
+            Compare
+          </Link>
           <Link href="/categories" className="hover:text-foreground">
             Categories
           </Link>

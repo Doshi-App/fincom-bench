@@ -1,10 +1,14 @@
-"""Turn the phase 2 transcripts into the two published CSVs.
+"""Turn the phase 2 transcripts into the three published CSVs.
 
 - `results/model_outputs.csv` — one row per model per probe: what the model was
   asked, what it replied, and how the judge marked it. This is the wide record
   a person can read or re-grade.
 - `results/leaderboard.csv` — one row per model: pass rate over the probes the
   judge actually decided, plus the per-axis split.
+- `results/category_breakdown.csv` — one row per model per category (long
+  format, so adding a category never means adding a column): the fail rate
+  that category earned for that model. Backs the website's model-by-category
+  matrix. Same merge rule as the leaderboard for the 3 cross-provider pairs.
 
 Two honesty rules are enforced here rather than left to the reader.
 
@@ -43,6 +47,10 @@ LEADERBOARD_FIELDS = [
     "fails", "arguable", "ungraded", "errors", "pass_rate", "fail_rate",
     "coverage", "behaviour_pass_rate", "compliance_pass_rate",
     "avg_reply_tokens", "judge",
+]
+
+CATEGORY_FIELDS = [
+    "model", "provider", "category", "axis", "items", "decided", "fails", "fail_rate",
 ]
 
 # A model must have this share of its probes decided to earn a rank.
@@ -137,17 +145,53 @@ def merge_cross_provider(board: list[dict]) -> list[dict]:
     return survivors + merged
 
 
+def merge_cross_provider_categories(category_board: list[dict]) -> list[dict]:
+    """Same rule as `merge_cross_provider`, 1 category at a time.
+
+    `fail_rate` averages the 2 providers' rates 50/50; `items`/`decided`/
+    `fails` sum. A category only 1 side of the pair ever saw stays on that
+    side's row, unmerged, same as a pair with only 1 side present at all.
+    """
+    by_key: dict[str, dict[str, dict]] = defaultdict(dict)
+    for row in category_board:
+        by_key[f"{row['provider']}:{row['model']}"][row["category"]] = row
+    consumed: set[str] = set()
+    merged: list[dict] = []
+    for name, members in MERGE_GROUPS.items():
+        present = [key for key in members if key in by_key]
+        if len(present) < 2:
+            continue
+        consumed.update(members)
+        categories = sorted({cat for key in present for cat in by_key[key]})
+        for cat in categories:
+            rows = [by_key[key][cat] for key in present if cat in by_key[key]]
+            rates = [r["fail_rate"] for r in rows if r["fail_rate"] is not None]
+            merged.append({
+                "model": name,
+                "provider": "+".join(sorted({r["provider"] for r in rows})),
+                "category": cat,
+                "axis": rows[0]["axis"],
+                "items": sum(r["items"] for r in rows),
+                "decided": sum(r["decided"] for r in rows),
+                "fails": sum(r["fails"] for r in rows),
+                "fail_rate": _avg(rates),
+            })
+    survivors = [row for row in category_board if f"{row['provider']}:{row['model']}" not in consumed]
+    return survivors + merged
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("transcript", nargs="+")
     parser.add_argument("--judge", default="", help="The judge spec, to flag self-grading.")
     parser.add_argument("--outputs", default="results/model_outputs.csv")
     parser.add_argument("--leaderboard", default="results/leaderboard.csv")
+    parser.add_argument("--categories", default="results/category_breakdown.csv")
     args = parser.parse_args()
 
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-    from fincom_runner.models import axis_of  # noqa: PLC0415
+    from fincom_runner.models import ALL_CATEGORIES, axis_of  # noqa: PLC0415
 
     rows: list[dict] = []
     per_model: dict[str, list[dict]] = defaultdict(list)
@@ -231,6 +275,34 @@ def main() -> int:
 
     board = merge_cross_provider(board)
 
+    category_board: list[dict] = []
+    for assistant, items in per_model.items():
+        provider, model = split_spec(assistant)
+        for cat in ALL_CATEGORIES:
+            subset = [r for r in items if r["category"] == cat]
+            if not subset:
+                continue
+            decided = [r for r in subset if r["final_verdict"] in ("pass", "fail", "arguable")]
+            fails = sum(1 for r in decided if r["final_verdict"] == "fail")
+            category_board.append({
+                "model": model,
+                "provider": provider,
+                "category": cat,
+                "axis": axis_of(cat),
+                "items": len(subset),
+                "decided": len(decided),
+                "fails": fails,
+                "fail_rate": round(fails / len(decided), 4) if decided else None,
+            })
+    category_board = merge_cross_provider_categories(category_board)
+    category_board.sort(key=lambda r: (r["model"], r["axis"], r["category"]))
+    categories_path = Path(args.categories)
+    categories_path.parent.mkdir(parents=True, exist_ok=True)
+    with categories_path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=CATEGORY_FIELDS, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(category_board)
+
     # A model graded on a handful of probes is not comparable to one graded on
     # all of them, however good its rate looks. Rank the ones with real
     # coverage; list the rest below, unranked, with the reason visible.
@@ -269,6 +341,7 @@ def main() -> int:
             f"{row['fails']:>5} {rate:>7} {row['coverage']:>6.2f}{flag}"
         )
     print(f"\nWrote {board_path}   (* = graded by itself)")
+    print(f"Wrote {categories_path}   ({len(category_board)} model-category rows)")
     return 0
 
 

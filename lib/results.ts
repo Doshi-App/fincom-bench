@@ -51,6 +51,17 @@ export type JudgeRow = {
   isBaseline: boolean;
 };
 
+export type CategoryBreakdownRow = {
+  model: string;
+  provider: string;
+  category: string;
+  axis: string;
+  items: number;
+  decided: number;
+  fails: number;
+  failRate: number | null;
+};
+
 function read(file: string): Record<string, string>[] | null {
   const filePath = path.join(RESULTS_DIR, file);
   if (!fs.existsSync(filePath)) return null;
@@ -119,10 +130,42 @@ function loadJudges(): JudgeRow[] {
   });
 }
 
+function loadCategoryBreakdown(): CategoryBreakdownRow[] {
+  const rows = read("category_breakdown.csv");
+  if (!rows) return [];
+  return rows.map((row) => ({
+    model: need(row, "model", "category_breakdown.csv"),
+    provider: need(row, "provider", "category_breakdown.csv"),
+    category: need(row, "category", "category_breakdown.csv"),
+    axis: need(row, "axis", "category_breakdown.csv"),
+    items: num(need(row, "items", "category_breakdown.csv")) ?? 0,
+    decided: num(need(row, "decided", "category_breakdown.csv")) ?? 0,
+    fails: num(need(row, "fails", "category_breakdown.csv")) ?? 0,
+    failRate: num(need(row, "fail_rate", "category_breakdown.csv")),
+  }));
+}
+
 export const LEADERBOARD: LeaderboardRow[] = loadLeaderboard();
 export const JUDGES: JudgeRow[] = loadJudges();
+export const CATEGORY_BREAKDOWN: CategoryBreakdownRow[] = loadCategoryBreakdown();
 
 export const HAS_RESULTS = LEADERBOARD.length > 0;
 
 /** The judge every leaderboard row was marked by, taken from the rows themselves. */
 export const WINNING_JUDGE: string = LEADERBOARD[0]?.judge ?? "";
+
+/**
+ * `model` × `category` -> fail rate, for the compare page. Keyed off
+ * `LEADERBOARD`'s own `model` field so a row here always matches a row a
+ * reader already sees on the homepage — including the 3 merged
+ * cross-provider pairs, which `category_breakdown.csv` merges the same way
+ * `leaderboard.csv` does (see harness/pipeline/build_outputs.py).
+ */
+export function categoryMatrix(): Record<string, Record<string, number | null>> {
+  const matrix: Record<string, Record<string, number | null>> = {};
+  for (const row of CATEGORY_BREAKDOWN) {
+    matrix[row.model] ??= {};
+    matrix[row.model][row.category] = row.failRate;
+  }
+  return matrix;
+}
