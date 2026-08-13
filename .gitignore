@@ -1,5 +1,8 @@
-# FinCom Bench — keep this directory even when empty.
-submissions/
+# FinCom Bench.
+#
+# `submissions/` is deliberately NOT ignored. It is the audit record behind
+# every leaderboard row, and a reader who wants to check a score needs the
+# transcript that produced it. Keep one run directory per model per phase.
 
 # Python build artifacts from the harness.
 __pycache__/
