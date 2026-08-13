@@ -1,19 +1,34 @@
 import Link from "next/link";
-import { HAS_LEADERBOARD_DATA } from "@/lib/submissions";
+import { HAS_RESULTS } from "@/lib/results";
 import type { InstitutionAction } from "@/data/categories";
 
 /**
- * Same mechanism as conductbench's SampleDataBanner, repurposed for FinCom
- * Bench's real current state: no benchmark leaderboard run has happened yet,
- * only judge-selection runs. The banner says that, truthfully, rather than
- * calling anything "sample data".
+ * Same mechanism as conductbench's SampleDataBanner, repurposed for whichever
+ * state this benchmark is actually in. It reads the published results rather
+ * than `submissions/`, which is gitignored and therefore always empty on a
+ * deployed build — keying the banner off that made a finished run render as
+ * "nothing has run yet".
+ *
+ * With results published the banner does not disappear, because the run has a
+ * caveat a reader needs before they read the table: it is one judge, one pass,
+ * no repeat for variance.
  */
 export function NoLeaderboardBanner() {
-  if (HAS_LEADERBOARD_DATA) return null;
+  if (!HAS_RESULTS) {
+    return (
+      <div className="border-b border-critical/40 bg-critical/10 px-6 py-2.5 text-center text-sm text-critical">
+        <strong className="font-semibold">No benchmark leaderboard yet.</strong> Judge selection is
+        in progress. See the panel on the homepage for what has actually run.
+      </div>
+    );
+  }
   return (
-    <div className="border-b border-critical/40 bg-critical/10 px-6 py-2.5 text-center text-sm text-critical">
-      <strong className="font-semibold">No benchmark leaderboard yet.</strong> Judge selection is in
-      progress. See the panel on the homepage for what has actually run.
+    <div className="border-b border-border bg-surface px-6 py-2.5 text-center text-sm text-muted">
+      <strong className="font-semibold text-fg">Preliminary results.</strong> One judge, one run,
+      no repeat for variance, and the frontier hosted models are not in it yet.{" "}
+      <Link href="/methodology" className="text-accent hover:underline">
+        What this does and does not show →
+      </Link>
     </div>
   );
 }
@@ -83,6 +98,21 @@ export function FailMeter({ value }: { value: number }) {
       <span className="h-1.5 w-16 overflow-hidden rounded-full bg-border" aria-hidden>
         <span
           className="block h-full rounded-full bg-fail"
+          style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
+        />
+      </span>
+      <span className="font-mono text-sm tabular-nums">{value.toFixed(1)}%</span>
+    </span>
+  );
+}
+
+/** Like FailMeter, but for a score where more is better, so it fills in pass colour. */
+export function PassMeter({ value }: { value: number }) {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <span className="h-1.5 w-16 overflow-hidden rounded-full bg-border" aria-hidden>
+        <span
+          className="block h-full rounded-full bg-pass"
           style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
         />
       </span>

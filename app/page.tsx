@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { JUDGE_SELECTION_RUNS, HAS_LEADERBOARD_DATA } from "@/lib/submissions";
+import { LEADERBOARD, JUDGES, HAS_RESULTS, WINNING_JUDGE } from "@/lib/results";
 import { CATEGORIES } from "@/data/categories";
-import { FailMeter, ActionTag } from "@/components/site";
+import { PassMeter, ActionTag } from "@/components/site";
 
 export default function Home() {
   return (
@@ -36,66 +36,131 @@ export default function Home() {
 
       <section className="mt-16 rounded-lg border border-border bg-surface p-6">
         <h2 className="text-lg font-semibold tracking-tight">
-          {HAS_LEADERBOARD_DATA ? "Leaderboard" : "No benchmark leaderboard yet"}
+          {HAS_RESULTS ? "Leaderboard" : "No benchmark leaderboard yet"}
         </h2>
-        {!HAS_LEADERBOARD_DATA && (
-          <p className="mt-2 max-w-2xl text-sm text-muted">
-            Scoring assistants (GPT, Grok, Claude, Doshi FCP, and a regulated bank assistant) is
-            phase 2 of a run, and it happens only after a judge is chosen in phase 1. That choice
-            has not been made yet, so there is no leaderboard to show. What has run so far is judge
-            selection: a candidate judge model marks the meta-eval set, and the model that agrees
-            most with the human labels becomes the judge.
-          </p>
-        )}
 
-        {JUDGE_SELECTION_RUNS.length > 0 ? (
+        {!HAS_RESULTS ? (
+          <p className="mt-2 max-w-2xl text-sm text-muted">
+            Scoring assistants is phase 2 of a run, and it happens only after a judge is chosen in
+            phase 1. No run has published results yet.
+          </p>
+        ) : (
+          <>
+            <p className="mt-2 max-w-3xl text-sm text-muted">
+              {LEADERBOARD.length} models, each sent the {LEADERBOARD[0]?.items} open probes and
+              marked by <span className="font-mono text-xs">{WINNING_JUDGE}</span>, the judge that
+              agreed most with the human labels in phase 1. Pass rate counts only the probes the
+              judge decided; coverage says what share that was.
+            </p>
+            <p className="mt-3 max-w-3xl rounded border border-border bg-bg p-3 text-sm text-muted">
+              <span className="font-medium text-fg">Read the gaps with care.</span> These are one
+              judge&apos;s marks from a single run, with no repeat for variance. The same model
+              served by two hosts scored 5.8 points apart here, which is wider than most adjacent
+              rows — so neighbouring places are not a quality ranking. See{" "}
+              <Link href="/methodology" className="text-accent hover:underline">
+                methodology
+              </Link>{" "}
+              for the full caveats.
+            </p>
+
+            <div className="scroll-x mt-6 rounded-lg border border-border">
+              <table className="w-full min-w-[52rem] border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-border bg-surface text-xs uppercase tracking-wide text-muted">
+                    <th className="px-4 py-3 font-medium">#</th>
+                    <th className="px-4 py-3 font-medium">Model</th>
+                    <th className="px-4 py-3 font-medium">Host</th>
+                    <th className="px-4 py-3 font-medium">Pass rate</th>
+                    <th className="px-4 py-3 font-medium">Pass / fail</th>
+                    <th className="px-4 py-3 font-medium">Coverage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {LEADERBOARD.map((row) => (
+                    <tr key={`${row.provider}:${row.model}`} className="border-b border-border last:border-0">
+                      <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
+                        {row.rank ?? "—"}
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <span className="font-mono text-sm">{row.model}</span>
+                        {row.selfGraded && (
+                          <span
+                            className="ml-2 rounded border border-border bg-surface px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-muted"
+                            title="This model is also the judge. Its own row is self-reported."
+                          >
+                            self-graded
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3.5 text-sm text-muted">{row.provider}</td>
+                      <td className="px-4 py-3.5">
+                        {row.passRate === null ? (
+                          <span className="text-sm text-muted">—</span>
+                        ) : (
+                          <PassMeter value={row.passRate * 100} />
+                        )}
+                      </td>
+                      <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
+                        {row.passes} / {row.fails}
+                      </td>
+                      <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
+                        {(row.coverage * 100).toFixed(0)}%
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </section>
+
+      {JUDGES.length > 0 && (
+        <section className="mt-16 rounded-lg border border-border bg-surface p-6">
+          <h2 className="text-lg font-semibold tracking-tight">Phase 1 — choosing the judge</h2>
+          <p className="mt-2 max-w-3xl text-sm text-muted">
+            Every candidate marked the same hand-labelled rows, so the only thing that varied was
+            the judge. Macro-F1 decides. The human labels are lopsided, so an always-fail baseline
+            is scored alongside the candidates: it takes high accuracy and zero kappa, which is why
+            accuracy is not the metric here.
+          </p>
           <div className="scroll-x mt-6 rounded-lg border border-border">
             <table className="w-full min-w-[46rem] border-collapse text-left">
               <thead>
                 <tr className="border-b border-border bg-surface text-xs uppercase tracking-wide text-muted">
+                  <th className="px-4 py-3 font-medium">#</th>
                   <th className="px-4 py-3 font-medium">Candidate judge</th>
-                  <th className="px-4 py-3 font-medium">Fail rate on meta-eval</th>
-                  <th className="px-4 py-3 font-medium">Graded / items</th>
-                  <th className="px-4 py-3 font-medium">Run</th>
+                  <th className="px-4 py-3 font-medium">Macro-F1</th>
+                  <th className="px-4 py-3 font-medium">Cohen&apos;s κ</th>
+                  <th className="px-4 py-3 font-medium">Balanced acc.</th>
                 </tr>
               </thead>
               <tbody>
-                {JUDGE_SELECTION_RUNS.map(({ dir, run }) => {
-                  const entry = run.leaderboard[0];
-                  return (
-                    <tr key={dir} className="border-b border-border last:border-0">
-                      <td className="px-4 py-3.5">
-                        <Link href={`/models/${encodeURIComponent(run.assistant)}`} className="font-medium hover:underline">
-                          {run.assistant}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-3.5">
-                        {entry.fail_rate === null ? (
-                          <span className="text-sm text-muted">— (nothing graded yet)</span>
-                        ) : (
-                          <FailMeter value={entry.fail_rate * 100} />
-                        )}
-                      </td>
-                      <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
-                        {entry.graded} / {entry.items}
-                      </td>
-                      <td className="px-4 py-3.5 font-mono text-xs text-muted">{dir}</td>
-                    </tr>
-                  );
-                })}
+                {JUDGES.map((row) => (
+                  <tr
+                    key={row.judge}
+                    className={`border-b border-border last:border-0 ${row.isBaseline ? "text-muted" : ""}`}
+                  >
+                    <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
+                      {row.isBaseline ? "—" : row.rank}
+                    </td>
+                    <td className="px-4 py-3.5 font-mono text-sm">{row.judge}</td>
+                    <td className="px-4 py-3.5 font-mono text-sm tabular-nums">
+                      {row.macroF1.toFixed(4)}
+                    </td>
+                    <td className="px-4 py-3.5 font-mono text-sm tabular-nums">
+                      {row.kappa.toFixed(3)}
+                    </td>
+                    <td className="px-4 py-3.5 font-mono text-sm tabular-nums">
+                      {row.balancedAccuracy.toFixed(3)}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-        ) : (
-          <p className="mt-4 text-sm text-muted">No submissions have run yet.</p>
-        )}
-        <p className="mt-3 max-w-2xl text-sm text-muted">
-          This is not a leaderboard. It is a record of who has been tried as the judge, and how
-          often their labels found a finding on a dataset written to contain them. No assistant
-          grades its own leaderboard row — the winner here goes on to grade every assistant in
-          phase 2.
-        </p>
-      </section>
+        </section>
+      )}
 
       <section className="mt-16">
         <div className="flex flex-wrap items-end justify-between gap-4">

@@ -8,7 +8,9 @@ Authors: the FinCom Bench team, Doshi.
 
 ## Status of this version
 
-This is version v1. Sections 1 to 7 and 9 to 10 are complete and describe a built artifact. Section 8 reports no numbers, because the first full run has not happened. Section 7 states the grader-validation method in full and reports no agreement statistic, because the human labels are not yet marked.
+This is version v1.1. Sections 1 to 7 and 9 to 10 describe a built artifact. Section 8 now reports the first run: 100 of the 274 meta-eval rows are labelled by hand, a judge has been selected against them, and 51 models have been scored. Section 7's agreement statistic is reported over those 100 rows.
+
+**These are preliminary numbers and section 8.4 says what they cannot carry.** In short: one judge, one pass, no repeat for variance; the frontier hosted models are absent because the account used had no entitlement to them; and the same weights served by two different hosts scored 5.8 points apart, which is wider than the gap between most adjacent rows. A reader who takes the ordering of neighbouring rows as a quality ranking is reading more than this run supports.
 
 Every table in this paper that has no numbers in it says so in the table itself. No number in this paper is a placeholder dressed as a result.
 
@@ -520,9 +522,23 @@ Per assistant: overall pass rate; pass rate per axis; pass rate per category; pa
 
 Separately, recall against the filed corrections, reported over the 254 compliance-relevant requests and broken out by the three filed categories that map onto benchmark categories — see section 5.4.
 
-### 8.3 What v1 reports
+### 8.3 What v1.1 reports
 
-Nothing. No run has been executed, no reply has been graded, and no leaderboard row exists.
+The first run, executed 2026-08-12/13. It is a run of the machinery, not the run that settles an ordering.
+
+**Phase 1 — judge selection.** 100 of the 274 meta-eval rows carry a hand label (92 fail, 8 pass). 17 candidate judges marked those rows through the `dataset` provider, so the replies and the rubric were identical across candidates and only the judge varied. `mistral-large-3-675b` won on macro-F1 at 0.8194, with Cohen's kappa 0.639 and MCC 0.640, ahead of `claude-sonnet-4-6` at 0.7606. Two degenerate baselines were scored alongside the candidates: always-fail reaches 92 per cent accuracy on this label distribution and 0.000 kappa, which is why section 7 selects on macro-F1 and reports kappa, and does not report accuracy.
+
+**Phase 2 — the leaderboard.** 53 models were sent the 191 open probes under the 2-condition test, and the phase 1 winner marked every reply. 51 are ranked; 2 are excluded for reasons that are not about the model (one billing, one rate limit). Pass rates run from 76.7 per cent to 42.0 per cent. The full per-model table is `results/leaderboard.csv`, and `results/model_outputs.csv` carries all 9,741 model-item rows with the reply and the judge's reasoning for each.
+
+### 8.4 What the v1.1 numbers cannot carry
+
+Five things, each of which would change the table if addressed.
+
+1. **One run, no variance.** Every model was sent every probe exactly once, at temperature 0, and the judge marked each reply once. There is no repeat, so there is no error bar. A gap of two or three points between adjacent rows is inside the noise this design cannot measure. Ordering claims need repeated runs; this one does not have them.
+2. **The serving host moves the score.** Mistral Large 3 675B was run twice, on two hosts, with the same weights, probes, prompt and judge. It scored 65.4 per cent on one and 59.6 on the other — 5.8 points, wider than the gap between most neighbouring rows. Whatever produces it (sampling defaults, serving configuration, quantisation) is not controlled for here, and it means **a row identifies a model *as served*, not a model.** Two people benchmarking "the same model" on different hosts should expect to disagree.
+3. **The frontier hosted models are missing.** The run reached models through two API hosts. The newest closed frontier models were not available on the account used — some by entitlement, some by billing — so the leading proprietary systems are absent and the strongest results here come from open-weight models. This is a statement about the account, not about the field.
+4. **The judge agrees with people at kappa 0.64.** That is substantial agreement, not near-perfect. Every leaderboard number inherits it, and a judge that disagrees with a labeller on roughly one contested row in three will move a model's rate by more than the distance between adjacent rows.
+5. **The pass class rests on 8 rows.** Of 100 labelled rows, 8 are pass. Every pass-side precision and recall in section 7, and therefore the choice of judge itself, stands on those 8. This is the single cheapest thing to fix and the one that would firm up the most.
 
 ---
 
@@ -569,16 +585,26 @@ A second, structural caveat: PRIN 2A binds Financial Conduct Authority-authorise
 ### 9.5 The judge
 
 - **Self-preference is not measured.** Every reply in the meta-eval set is human-written, so no candidate judge can recognise its own output. A judge can win pass 1 and still be soft on its own replies in pass 2. The mitigation is procedural — no assistant grades its own row — and it is not a measurement.
-- **The agreement sample is small.** Section 7.5 gives the numbers.
-- **One judge, one run.** Version v1 does not report variance across repeated judge runs at the same temperature, which HealthBench does report.
+- **The agreement sample is small.** Section 7.5 gives the numbers. In v1.1 it is 100 rows, 8 of them pass, so every pass-side statistic rests on those 8.
+- **One judge, one run.** Version v1.1 does not report variance across repeated judge runs at the same temperature, which HealthBench does report. Section 8.4 carries this as the first thing the numbers cannot do.
+- **The judge is also a contestant.** The phase 1 winner is a model that also holds a leaderboard row. That row is marked `self_graded` and is self-reported, the same treatment the authors' own assistant gets under 9.1. It landed mid-table, which is not the shape self-preference would take, but that is an observation and not a control.
+- **The selection metric and the safety metric disagree.** Macro-F1 chose `mistral-large-3-675b`; the runner-up had the better balanced accuracy and full coverage, meaning it was better on the 8-row pass class. Section 7 selects on macro-F1 because that is what the method fixed in advance, and a reader who cares more about false findings than about macro-F1 would have chosen the runner-up on the same table.
 
-### 9.6 The rules are dated and moving
+### 9.6 The score belongs to a model as served, not to a model
+
+The benchmark reaches a model through an API host, and the host is part of what is measured. Section 8.4.2 records the case that showed it: identical weights on two hosts, 5.8 points apart, larger than the gap between most adjacent leaderboard rows.
+
+Nothing in the harness controls for serving configuration, sampling defaults or quantisation, and no host publishes enough for a submitter to control for them either. So a leaderboard row names a model, a host and a date, and a comparison against a row obtained elsewhere is not like-for-like. A future version should either fix the host per model and say so on the row, or run the same weights across several hosts and publish the spread as the measurement error it is.
+
+A second consequence: coverage of the field is a property of the account that ran it. The v1.1 run reached no frontier closed model, because the account it used had no entitlement to them. A reader should not read the resulting open-weight-heavy ordering as a finding about open weights.
+
+### 9.7 The rules are dated and moving
 
 The Financial Conduct Authority has said it intends to consult on changing its perimeter guidance, so the United Kingdom advice boundary is moving during 2026. The Australian Delivering Better Financial Outcomes package may move the Australian perimeter, and its status was not confirmed at the time of the register build. Regulatory Guide 244, which supplies the operative Australian factual-information test, is dated December 2012 and predates chat assistants by more than a decade.
 
 Every authority block carries a retrieval date for this reason. A score in this paper is a score against the rule books as they stood on those dates.
 
-### 9.7 Questions we have flagged for a lawyer and have not graded as settled
+### 9.8 Questions we have flagged for a lawyer and have not graded as settled
 
 We list these because a register that presents unresolved perimeter questions as settled is worse than one that admits them.
 
@@ -628,7 +654,7 @@ Version v1 of this paper is reproducible in the sense that the method can be che
 3. The first full run, and the four baselines in section 8.1.
 4. Recall against the 254 compliance-relevant filed corrections, per filed category, and a re-derived recall bar.
 5. Decided in v1: the split claim is dropped and everything is published — section 9.2. v2 revisits only if a gated split is built.
-6. A lawyer's read on section 9.7 before anything in this paper is published outside the company.
+6. A lawyer's read on section 9.8 before anything in this paper is published outside the company.
 
 ---
 
@@ -668,14 +694,18 @@ Three categories cross-reference a system-level risk in the FINOS AI Governance 
 
 Collected in one place so a reader does not have to assemble it from nine sections.
 
-| Quantity | Status in v1 | Blocked on |
+| Quantity | Status in v1.1 | Blocked on |
 |---|---|---|
-| Human labels | 0 of 274 rows | Two labellers marking the set |
-| Inter-labeller agreement | Not measured | The above |
-| Judge macro F1 per category | Not measured | The above, then 5 candidate runs |
-| Judge selected | None | The above |
-| Any assistant score | None | The first full run |
-| Recall against filed corrections | None | The first full run |
+| Human labels | 100 of 274 rows, one labeller (92 fail / 8 pass) | A second labeller, and more pass-class rows |
+| Inter-labeller agreement | Not measured | A second labeller marking the same rows |
+| Judge macro F1 overall | 0.8194 for the selected judge, over 100 rows | — |
+| Judge macro F1 per category | Not measured | Too few rows per category to support it |
+| Judge selected | `mistral-large-3-675b` | — |
+| Judge run-to-run variance | Not measured | Repeated judge runs at the same temperature |
+| Assistant scores | 51 models, single run | Repeats, for an error bar |
+| Frontier closed models | Absent | Account entitlement and billing, see 9.6 |
+| Serving-host effect | Observed once at 5.8 points, not characterised | The same weights run across several hosts |
+| Recall against filed corrections | None | The 500 filed corrections file |
 | Recall bar per category | Not derived | Re-derivation over the 254-request denominator |
 | Held-out split integrity | Claim dropped — all probes published, see 9.2 | Nothing — decided in v1 |
-| Legal sign-off | Not obtained | A lawyer's read of section 9.7 |
+| Legal sign-off | Not obtained | A lawyer's read of section 9.8 |
