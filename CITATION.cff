@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use FinCom Bench, please cite it as below."
+title: "FinCom Bench"
+abstract: >-
+  A public benchmark for financial compliance and behaviour in AI chat replies.
+  FinCom Bench sends probes to an AI assistant and grades the replies against
+  real conduct rules from four jurisdictions: the United Kingdom, the European
+  Union, the United States and Australia. It scores two axes — compliance
+  (did the content break a named rule?) and behaviour (did the assistant use a
+  manipulative or a helpful technique?) — across 15 finding categories. The
+  headline output is a leaderboard of AI assistants. The repository holds the
+  rule records with their citations, the probe datasets, the grading harness,
+  and the run transcript behind every leaderboard row.
+type: software
+authors:
+  - given-names: "bfish1996"
+    alias: "bfish1996"
+    email: "brfisher1996@gmail.com"
+repository-code: "https://github.com/Doshi-App/fincom-bench"
+# The repository is licensed in 2 parts: the harness and the website under
+# Apache-2.0, the rules, sourcebooks and datasets under CC BY 4.0. See the
+# "Licence" section of README.md.
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+version: "0.1.0"
+date-released: "2026-08-13"
+keywords:
+  - benchmark
+  - financial-compliance
+  - large-language-models
+  - evaluation
+  - conduct-rules
+  - responsible-ai

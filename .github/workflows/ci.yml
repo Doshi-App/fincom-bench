@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# A second push to the same branch cancels the first run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  harness-tests:
+    name: Harness tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            harness/requirements.txt
+            harness/requirements-dev.txt
+
+      - name: Install harness dependencies
+        working-directory: harness
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Run pytest
+        working-directory: harness
+        run: pytest
+
+  validate-datasets:
+    name: Validate rules and datasets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: harness/requirements.txt
+
+      - name: Install harness dependencies
+        working-directory: harness
+        run: pip install -r requirements.txt
+
+      # `validate` reads the rules, the statutory figures and each dataset. It
+      # calls no model and needs no network and no key. It exits non-zero on any
+      # problem, which fails this job.
+      - name: Validate the open benchmark set
+        working-directory: harness
+        run: python -m fincom_runner validate --dataset ../datasets/benchmark-open.csv
+
+      - name: Validate the holdout set
+        working-directory: harness
+        run: python -m fincom_runner validate --dataset ../datasets/benchmark-holdout.csv
+
+      - name: Validate the meta-eval set
+        working-directory: harness
+        run: python -m fincom_runner validate --dataset ../datasets/meta-eval.csv
+
+  site-build:
+    name: Site build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install site dependencies
+        run: npm ci
+
+      - name: Build the site
+        run: npm run build

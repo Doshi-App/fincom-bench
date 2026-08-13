@@ -1,0 +1,13 @@
+# Test-only dependencies for the harness.
+#
+# The runner core (requirements.txt) keeps 1 dependency on purpose, so anyone
+# can clone the repository and run `validate` with no key. Test tooling lives
+# here instead. Install both to run the suite:
+#
+#   pip install -r requirements.txt -r requirements-dev.txt && pytest
+#
+# The tests use unittest.TestCase and the standard library only (json,
+# tempfile, pathlib), so pytest is the sole addition — it is the runner, not
+# a test dependency. The upper bound guards against an unreviewed major
+# release. The suite is verified on 8.x and 9.x.
+pytest>=8.0,<10
