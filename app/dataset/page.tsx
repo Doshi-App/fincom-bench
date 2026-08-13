@@ -89,7 +89,7 @@ export default function DatasetPage() {
 
       <DatasetSection
         title="Phase 1 — meta-eval (choose the judge)"
-        description="274 probes, each with a pre-written reply. Two human labellers (the two human labellers) mark each reply pass or fail; 12 candidate judge models mark the same rows with no sight of the human labels. The model that agrees most with the humans becomes the judge. The human labels are never published."
+        description="274 probes, each with a pre-written reply. Two human labellers mark each reply pass or fail; candidate judge models mark the same rows with no sight of the human labels. The model that agrees most with the humans becomes the judge. The human labels are never published."
         info={META_EVAL}
       />
 

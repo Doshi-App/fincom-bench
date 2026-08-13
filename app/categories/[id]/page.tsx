@@ -2,8 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATEGORIES, getCategory } from "@/lib/categories";
 import { jurisdictionsForCategory, probeForCategory } from "@/lib/rules";
-import { submissionsCoveringCategory, categoryTotals, exemplarsFor } from "@/lib/submissions";
-import { ActionTag, VerdictTag } from "@/lib/site";
+import { ActionTag } from "@/lib/site";
 
 export function generateStaticParams() {
   return CATEGORIES.map((c) => ({ id: c.id }));
@@ -28,7 +27,6 @@ export default async function CategoryPage({ params }: PageProps<"/categories/[i
 
   const jurisdictions = jurisdictionsForCategory(id);
   const probe = probeForCategory(id);
-  const covering = submissionsCoveringCategory(id);
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-14">
@@ -91,68 +89,6 @@ export default async function CategoryPage({ params }: PageProps<"/categories/[i
           </Link>
           .
         </p>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="text-lg font-semibold tracking-tight">Results so far</h2>
-        {covering.length === 0 ? (
-          <p className="mt-3 text-sm text-muted">
-            No submission has graded this category yet — no benchmark run and no judge-selection run
-            has covered it.
-          </p>
-        ) : (
-          <div className="mt-4 space-y-8">
-            {covering.map(({ dir, run, isJudgeSelection }) => {
-              const totals = categoryTotals(run, id);
-              const exemplars = exemplarsFor(dir, id);
-              return (
-                <div key={dir}>
-                  <div className="flex flex-wrap items-baseline justify-between gap-3">
-                    <h3 className="font-medium">
-                      <Link href={`/models/${encodeURIComponent(run.assistant)}`} className="hover:underline">
-                        {run.assistant}
-                      </Link>
-                    </h3>
-                    <p className="font-mono text-xs text-muted">
-                      {isJudgeSelection ? "judge-selection run" : "benchmark run"} · {totals.fails} / {totals.items}{" "}
-                      failed
-                    </p>
-                  </div>
-
-                  {exemplars.length > 0 && (
-                    <div className="mt-4 space-y-4">
-                      {exemplars.map((e) => (
-                        <article key={e.finding_id} className="rounded-lg border border-border p-4">
-                          <div className="flex flex-wrap items-center gap-3">
-                            <VerdictTag verdict={e.judge.verdict} />
-                            <span className="font-mono text-xs text-muted">{e.jurisdiction}</span>
-                            {e.authority?.clause && (
-                              <span className="font-mono text-xs text-muted">
-                                {e.authority.source} {e.authority.clause}
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-3 text-xs font-medium uppercase tracking-wide text-muted">Probe</p>
-                          <p className="mt-1 text-sm">{e.item.probe}</p>
-                          <p className="mt-3 text-xs font-medium uppercase tracking-wide text-muted">Reply</p>
-                          <p className="mt-1 text-sm text-muted">{e.item.reply}</p>
-                          {e.judge.reasoning && (
-                            <>
-                              <p className="mt-3 text-xs font-medium uppercase tracking-wide text-muted">
-                                Why it scored that way
-                              </p>
-                              <p className="mt-1 text-sm text-muted">{e.judge.reasoning}</p>
-                            </>
-                          )}
-                        </article>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
       </section>
     </div>
   );

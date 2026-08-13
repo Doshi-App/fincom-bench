@@ -9,7 +9,7 @@ Source: FCA Handbook, COBS (Conduct of Business Sourcebook) chapter 4.
 - **URL:** <https://handbook.fca.org.uk/handbook/COBS/4/2.html>
 - **Retrieved:** 2026-08-12
 
-> (1) A firm must ensure that a communication or a financial promotion is fair, clear and not misleading. (3) As part of complying with (1), a firm must take into account the nature of the client.
+*Verbatim clause withheld — the publishing authority's reuse terms do not confirm a right to redistribute the exact text (see `sourcebooks/NOTICE-SOURCEBOOKS.md`). See the URL above for the original, and "What this means" below for Doshi's own paraphrase.*
 
 **What this means.** Every marketing message and financial promotion a firm sends must be fair, clear, and not misleading. The firm must adjust this to the client — for example, a promotion to a professional investor can differ from one sent to a retail client. "Fair, clear and not misleading" is the FCA's single most-cited financial promotion standard — nearly every other financial-promotion rule in the Handbook, including COBS 4.2.4G below, is a worked example of this one principle.
 
@@ -20,7 +20,7 @@ Source: FCA Handbook, COBS (Conduct of Business Sourcebook) chapter 4.
 - **URL:** <https://handbook.fca.org.uk/handbook/COBS/4/2.html>
 - **Retrieved:** 2026-08-12
 
-> A firm should ensure that a financial promotion: (1) for a product or service that places a client's capital at risk makes this clear; (2) that quotes a yield figure gives a balanced impression of both the short and long term prospects for the investment; (3) that promotes an investment or service whose charging structure is complex, or in relation to which the firm will receive more than one element of remuneration, includes the information necessary to ensure that it is fair, clear and not misleading and contains sufficient information taking into account the needs of the recipients.
+*Verbatim clause withheld — the publishing authority's reuse terms do not confirm a right to redistribute the exact text (see `sourcebooks/NOTICE-SOURCEBOOKS.md`). See the URL above for the original, and "What this means" below for Doshi's own paraphrase.*
 
 **What this means.** The FCA lists concrete ways firms meet the fair-clear-not-misleading rule. A promotion for a product that risks the client's capital must say so plainly. A quoted yield must show both short-term and long-term prospects, not just the flattering number. A complex charge structure needs enough detail for the client to judge it fairly. This is guidance (the "G" in 4.2.4G), not a binding rule — a firm that finds another way to satisfy 4.2.1R's fair-clear-not-misleading standard is not automatically in breach for departing from these examples, but a firm that ignores them carries the burden of showing its alternative approach still works.
 
@@ -37,10 +37,7 @@ entries:
     clause: "4.2.1R"
     url: https://handbook.fca.org.uk/handbook/COBS/4/2.html
     retrieved: "2026-08-12"
-    clause_text: >
-      (1) A firm must ensure that a communication or a financial promotion
-      is fair, clear and not misleading. (3) As part of complying with (1),
-      a firm must take into account the nature of the client.
+    clause_text: null  # withheld — see sourcebooks/NOTICE-SOURCEBOOKS.md; `summary` below is Doshi's own paraphrase, not the source text
   summary: Every marketing message and financial promotion a firm sends must be fair, clear, and not misleading, adjusted for who the client is.
 - id: uk-source-cobs-4-2-4
   topic: financial_promotion
@@ -49,16 +46,7 @@ entries:
     clause: "4.2.4G"
     url: https://handbook.fca.org.uk/handbook/COBS/4/2.html
     retrieved: "2026-08-12"
-    clause_text: >
-      A firm should ensure that a financial promotion: (1) for a product or
-      service that places a client's capital at risk makes this clear; (2)
-      that quotes a yield figure gives a balanced impression of both the
-      short and long term prospects for the investment; (3) that promotes
-      an investment or service whose charging structure is complex, or in
-      relation to which the firm will receive more than one element of
-      remuneration, includes the information necessary to ensure that it
-      is fair, clear and not misleading and contains sufficient information
-      taking into account the needs of the recipients.
+    clause_text: null  # withheld — see sourcebooks/NOTICE-SOURCEBOOKS.md; `summary` below is Doshi's own paraphrase, not the source text
   summary: >-
     The FCA gives concrete examples of the fair, clear, and not misleading
     rule. State capital risk clearly, balance short and long-term yield

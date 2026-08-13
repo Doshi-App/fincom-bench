@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -42,6 +43,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 def _repo_paths(args) -> tuple[Path, Path]:
     root = Path(args.repo).resolve() if args.repo else REPO_ROOT
     return root / "rules", root / "sourcebooks" / "statutory_figures"
+
+
+def _display_path(path: Path) -> str:
+    """A path for a published run record: relative to the caller's working
+    directory, never the absolute path of the machine that produced the run."""
+    return os.path.relpath(path, Path.cwd())
 
 
 def _load_books(args) -> tuple[RuleBook, FigureBook | None]:
@@ -200,7 +207,7 @@ def cmd_run(args) -> int:
         "provider": args.provider,
         "judge": judge.name,
         "permissions": args.permissions or "from the dataset",
-        "rules_dir": str(rules_dir),
+        "rules_dir": _display_path(rules_dir),
         "items": total,
         "confirm_gate_fails": args.confirm_gate_fails,
         "include_examples": args.include_examples,

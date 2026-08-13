@@ -1,6 +1,6 @@
 /**
- * The 15 finding categories, split across 2 axes. Hand-authored here, same
- * as conductbench's old suites.ts, because this list rarely changes — but
+ * The 15 finding categories, split across 2 axes. This list is hand-authored
+ * because it changes only when the rubric itself changes — but
  * the per-jurisdiction citations for each category are NOT hand-authored:
  * see src/lib/rules.ts, which reads them straight from rules/grading/*.md so
  * they can never drift from the rule the benchmark actually grades against.

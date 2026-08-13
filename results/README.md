@@ -1,4 +1,27 @@
-# Run of 2026-08-13 — judge selection, then the leaderboard
+# Run of 2026-08-13 (v1.1-preliminary) — judge selection, then the leaderboard
+
+## Read this before you quote a number
+
+This run is preliminary. Three limits carry through every number below.
+
+1. **One judge, one pass, no repeat.** Nothing here ran twice to measure
+   variance.
+2. **The judge is also a ranked contestant.**
+   `bedrock:mistral.mistral-large-3-675b-instruct` won judge selection and then
+   sat at rank 42 of 54 on the leaderboard it graded. That row carries
+   `self_graded=yes` — see "Phase 2" below.
+3. **The same weights scored 5.8 points apart on 2 hosts.** Bedrock and Ollama
+   Cloud served one identical model and disagreed by more than the gap between
+   most neighbouring rows — see "Phase 2" below.
+
+**Judge selection in this run cannot be reproduced or checked from outside.** It
+rests on 100 hand-labelled rows that are not published and are not available.
+You can re-run the pipeline; you cannot re-derive the judge choice.
+
+**This file is one run. `README.md` at the top level is the design.** The design
+document uses illustrative figures (for example "5 candidate judges") that set
+the shape of the benchmark, not a count any single run must match. Every figure
+below is what this run actually did.
 
 One overnight run of both phases. Three CSVs in this directory, plus the
 per-run audit records under `submissions/`.
@@ -6,33 +29,33 @@ per-run audit records under `submissions/`.
 | File | What it holds |
 |---|---|
 | `judge_selection.csv` | 17 candidate judges scored against the 100 hand-labelled rows, plus 2 baselines. |
-| `model_outputs.csv` | 9,741 rows — one per model per probe: the probe, the reply, and the judge's verdict with its reasoning. |
-| `leaderboard.csv` | 48 rows, ranked by pass rate over the probes the judge decided. 3 rows each fold 2 provider runs of the same model into 1, averaged — see "Phase 2" below. |
+| `model_outputs.csv` | 10,887 rows — one per model per probe: the probe, the reply, and the judge's verdict with its reasoning. |
+| `leaderboard.csv` | 54 rows, ranked by pass rate over the probes the judge decided. 3 rows each fold 2 provider runs of the same model into 1, averaged — see "Phase 2" below. 2 added columns, `est_cost_usd_1pass` and `avg_time_s_1pass`, are estimates — see "Phase 4" below before quoting either. |
 | `roster.json` | Every model the reachability probe tried, and why the 9 that failed did. |
 
 ## What ran
 
 Both phases went through the existing runner (`harness/fincom_runner`). Two
-providers were added to it — `bedrock:` and `ollama:` — because **neither the
-Anthropic nor the OpenAI key in the vault can call inference**. Both are admin
-keys: `sk-ant-admin…` is accepted by the Admin API and rejected by
-`/v1/messages`; `sk-admin-…` returns `Missing scopes: model.request`. The
-existing `anthropic:` and `openai:` providers are untouched and still work for
-anyone holding an ordinary key.
+providers were added to it — `bedrock:` and `ollama:` — because neither the
+Anthropic nor the OpenAI key available had inference scope, so both providers
+were reached through AWS Bedrock and Ollama Cloud instead for this run. Later
+the same day, ordinary inference keys for both replaced them — see "Phase 3"
+below for what they added.
 
-So every model here is reached through AWS Bedrock or Ollama Cloud. The Claude 5
-family is listed on Bedrock but not entitled on this account, so the newest
-Anthropic models present are Sonnet 4.6, Opus 4.5, Sonnet 4.5 and Haiku 4.5.
+So every model in phases 1 and 2 is reached through AWS Bedrock or Ollama
+Cloud. The Claude 5 family is listed on Bedrock but not entitled on this
+account, so the newest Anthropic models present *there* are Sonnet 4.6, Opus
+4.5, Sonnet 4.5 and Haiku 4.5.
 
 **Ollama Cloud is covered in full.** Its catalogue is 18 models — `/api/tags`
 and the OpenAI-compatible `/v1/models` return the same 18, so that is the whole
 hosted set, not a page of it. 17 of the 18 are on the leaderboard. Do not trust
-`~/.hermes/ollama_cloud_models_cache.json` for this: it lists 21, and 2 of its
-extras (`kimi-k2.5`, `minimax-m2.5`) were retired from the host on 2026-07-31.
-Both still exist on Bedrock and appear here through that route instead. The much
-larger `ollama.com/library` is for models pulled and run locally, which is a
-different thing from the hosted set — and not an option on dex, which has no
-GPU, 6 cores and 14 GB of RAM.
+a stale local cache of the model list for this: the cache on the machine used
+for this run listed 21, and 2 of its extras (`kimi-k2.5`, `minimax-m2.5`) were
+retired from the host on 2026-07-31. Both still exist on Bedrock and appear here
+through that route instead. The much larger `ollama.com/library` is for models
+pulled and run locally, which is a different thing from the hosted set — and not
+an option on the machine used for this run, which has no GPU.
 
 34 models come through Bedrock and 17 through Ollama Cloud.
 
@@ -71,7 +94,8 @@ minutes without finishing and is absent from the CSV.
 same-model pairs across Bedrock and Ollama Cloud then fold into 1 row each (see
 below), so the board holds 48 rows.
 
-Two are not, and neither absence is a result about the model.
+The 2 that did not run cleanly are absent from the board. Neither absence is a
+result about the model.
 
 - **`ollama:kimi-k3` — HTTP 402 on all 191 items.** "This model uses extra usage
   only (not included plan usage) and your extra usage balance is empty." It is
@@ -83,8 +107,9 @@ Then three things to read the board with.
 
 - **The judge is also a contestant.** `mistral.mistral-large-3-675b-instruct`
   carries `self_graded=yes`. The README says no assistant grades its own row, so
-  treat rank 33 as self-reported. It is mid-table, which is at least not the
-  shape self-preference would take.
+  treat that row as self-reported. It is rank 38 of the 48 rows in this phase,
+  and rank 42 once phase 3 adds 6 more. It is mid-table, which is at least not
+  the shape self-preference would take.
 - **Pass rate uses only decided items**, and `coverage` says what share that was.
   Ranking needs coverage ≥ 0.80 so a thinly-graded model cannot outrank a fully
   graded one. Every ranked model here cleared 0.90.
@@ -92,7 +117,7 @@ Then three things to read the board with.
   every probe twice — once through Bedrock, once through Ollama Cloud, same
   probes, same judge, same prompt — and the 2 runs scored 5.8 points apart:
   65.4 percent through Bedrock, 59.6 through Ollama Cloud. Rather than publish
-  that as 2 separately ranked rows, `meta-eval/build_outputs.py` folds an
+  that as 2 separately ranked rows, `harness/pipeline/build_outputs.py` folds an
   exact same-model pair like this into 1 row and averages the 2 rates: rank 38
   at 62.5 percent. Both sizes of GPT-OSS get the same treatment. The 5.8-point
   gap the average is built from is still worth reading as a caution — whatever
@@ -115,21 +140,142 @@ agrees with the human labels at kappa 0.64 — substantial, not near-perfect —
 being made. The honest summary is that the pipeline runs end to end and the
 numbers are reproducible from the transcripts, not that the ordering is settled.
 
+## Phase 3 — the paid keys, added the same day
+
+Later on 2026-08-13, ordinary inference keys for Anthropic and OpenAI became
+available. `harness/pipeline/run_paid_keys.sh`
+then ran a short, hand-picked list of 6 models — 3 Anthropic, 3 OpenAI — using
+the native `anthropic:` and `openai:` providers, judged by the same
+`bedrock:mistral.mistral-large-3-675b-instruct`, 1 pass per item (the runner's
+default for a paid frontier key — see `harness/README.md`, "Repeats").
+
+The list was picked to cover 2 gaps phases 1 and 2 could not reach, not to
+re-run anything already on the board:
+
+- **The Claude 5 family — Opus 5, Sonnet 5, Fable 5.** `results/roster.json`
+  shows all 3 came back HTTP 403 on Bedrock ("not available for this
+  account"). The native Anthropic key is the only lane that reaches them.
+- **OpenAI's own hosted chat models — GPT-5.4, GPT-5.4 Mini, GPT-5.4 Nano.**
+  Bedrock's `openai.*` entries are the open-weight GPT-OSS line, a different
+  artifact from the same company. Neither had run before.
+
+All 6 finished cleanly (191 items each, 0 errors, coverage ≥ 0.98) and now
+hold their own rows — `leaderboard.csv` went from 48 rows to 54. One result
+worth flagging rather than quietly leaving in the CSV: **Claude Sonnet 5 (rank
+3, 74.6 percent) beats Claude Opus 5 (rank 19, 67.7 percent) by 7 points**,
+same generation, same judge, same day. That is either a real result — the
+smaller model is better-calibrated on this rubric — or a sign that 1 pass per
+model is too thin to trust a 7-point gap. Phase 3 ran once per item, same as
+every paid-key run so far; nothing here re-runs it to check.
+
+The spread across all 54 rows is still 42 to 77 percent — the 6 new rows
+landed inside the existing range, at ranks 3, 19, 26, 41, 43 and 48, not at
+either end.
+
+## Phase 4 — cost and time, retrospective
+
+`harness/pipeline/estimate_cost.py` added 2 columns to `leaderboard.csv` after
+the fact: `est_cost_usd_1pass` and `avg_time_s_1pass`. Both are normalized to
+1 pass per item, even for the `bedrock`/`ollama` rows that actually ran 10 —
+divide their real spend and wall-clock by 10 to get a number that means the
+same thing as every other row.
+
+Read the note column in the script's `PRICING` table before quoting any 1
+row — confidence varies a lot across it:
+
+- **Real, not estimated, for OpenAI.** `gpt-5.4`, `gpt-5.4-mini` and
+  `gpt-5.4-nano` are priced from this org's own August 2026 cost report
+  (`/v1/organization/costs`), not a list price. `gpt-5.4-mini`'s run was the
+  only usage under its cost-report bucket that day, so its cost is fully
+  verified: input and output token counts there matched this repo's own
+  transcript exactly.
+- **First-party list price for Anthropic and most of Bedrock.** Anthropic's
+  own pricing page, and AWS's own Bedrock pricing page (or, where a specific
+  point release wasn't listed there, an AWS launch blog or AWS Marketplace
+  listing for that exact model).
+- **No price exists for 3 Bedrock rows.** `qwen.qwen3-coder-480b-a35b-v1:0`,
+  `us.meta.llama3-1-70b-instruct-v1:0` and `us.meta.llama4-scout-17b-instruct-v1:0`
+  have no published on-demand rate anywhere checked. Their cost cell is
+  blank, not a guess.
+- **Ollama Cloud bills by subscription, not by token** (Free / Pro $20/mo /
+  Max $100/mo / Team, at ollama.com/pricing) — usage counts against a plan's
+  limits by a 1–4 "usage level" per model, with no published per-token rate.
+  So the 17 Ollama rows carry a different kind of number: what the *same
+  open-weight model* costs per token on a normal first-party or well-known
+  third-party API (DeepSeek, Z.ai, Moonshot, MiniMax, DeepInfra, OpenRouter,
+  DashScope, or — for the 3 weights that are also on Bedrock — Bedrock's own
+  rate). That is a market-rate stand-in for "what this would cost off
+  Ollama," not what the Ollama Cloud run itself billed, which was $0
+  marginal inside a subscription. Several of these come from a third-party
+  aggregator rather than the vendor's own page — the script's `note` field
+  says "low-confidence source" wherever that's true.
+- **Input tokens are always an estimate, for every row.** The runner never
+  records what a provider billed for the prompt (see `harness/README.md`),
+  so every row's input-token count is 1 estimate applied uniformly — 237.6
+  tokens/item, from `tiktoken`'s `cl100k_base` encoding over the dataset's
+  own `system_prompt` + `probe` text. Checked once against a real number
+  (OpenAI's cost report for `gpt-5.4-mini`: 47,733 real vs 45,389 estimated,
+  5 percent low) — a plausible size of error to carry across every row, not
+  a bound on it.
+
+**Total, all 54 rows, 1 pass each: $22.63.** The 6 phase-3 paid-key models
+alone: $12.53 — $11.11 of that is the 3 Anthropic models, $1.42 the 3 OpenAI
+ones, because Claude Opus 5 and Claude Fable 5 both charge $25 and $50 per
+million output tokens against GPT-5.4's $15. Cheapest row: Bedrock's `us.amazon.nova-lite-v1:0` at $0.008, with 3 more
+under $0.02 (`google.gemma-3-12b-it`, `zai.glm-4.7-flash`,
+`nvidia.nemotron-nano-12b-v2`). Most expensive: `claude-fable-5`
+at $5.82, ahead of `claude-opus-5` at $4.23 — Fable 5's own list price
+($10/$50 per million) is double Opus 5's ($5/$25), so it costs more here
+despite writing a shorter average reply.
+
+`avg_time_s_1pass` is wall-clock ÷ (items × repeats) for that run, at
+whatever `--concurrency` the run used (4 for phase 3, 6 for phases 1–2) — it
+is throughput, not 1 call's true latency. At concurrency 6, a model that
+takes 1.6s of wall-clock per pass is really answering in something nearer
+6 × 1.6 ≈ 10s per call if the run stayed fully parallel; read the column as
+"how fast this made the leaderboard happen," not as a latency benchmark.
+
+Reproduce it: `python3 harness/pipeline/estimate_cost.py` (no key, no
+network — it reads `submissions/runs/*/run.json` and
+`results/model_outputs.csv`, both already in this repo).
+
 ## Reproducing it
 
-```bash
-set -a; . "$HOME/.hermes/.op.env"; set +a
+Each provider reads its key from the environment. Export the keys, then run the
+scripts in order.
 
-op run --env-file=secrets.op.env --no-masking -- python3 harness/pipeline/probe_models.py
-op run --env-file=secrets.op.env --no-masking -- bash harness/pipeline/select_judge.sh
+```bash
+export BEDROCK_API_KEY=...   # phases 1 and 2, and the judge
+export OLLAMA_API_KEY=...    # the Ollama Cloud contestants
+export ANTHROPIC_API_KEY=... # phase 3 only
+export OPENAI_API_KEY=...    # phase 3 only
+
+python3 harness/pipeline/probe_models.py
+bash harness/pipeline/select_judge.sh
 python3 harness/pipeline/score_judges.py submissions/judges/judge-*/transcript.jsonl
 
-op run --env-file=secrets.op.env --no-masking -- \
-  bash harness/pipeline/score_contestants.sh bedrock:mistral.mistral-large-3-675b-instruct
+bash harness/pipeline/score_contestants.sh bedrock:mistral.mistral-large-3-675b-instruct
+
+# Phase 3 — the 6 models bedrock and ollama cannot reach.
+bash harness/pipeline/run_paid_keys.sh bedrock:mistral.mistral-large-3-675b-instruct
+
 python3 harness/pipeline/build_outputs.py submissions/runs/run-*/transcript.jsonl \
   --judge bedrock:mistral.mistral-large-3-675b-instruct
 ```
 
-`secrets.op.env` holds `op://` references only, so it carries no secret. The
-human labels stay in `harness/pipeline/human-labels.csv`, which is gitignored
-— the README says they are never published.
+Bedrock uses region `us-east-1` unless a model ID names its own region as
+`model@region`.
+
+**Phase 1 needs a file that is not published.** `select_judge.sh` and
+`score_judges.py` mark the 100 hand-labelled rows, and those labels are not in
+this repo and are not available. Run phases 2 and 3 with the judge named above
+and you reproduce the leaderboard; you cannot reproduce the choice of judge.
+
+### If you use 1Password
+
+`secrets.op.env` holds `op://` references only, so it carries no secret. Point
+`op run` at it and drop the `export` lines:
+
+```bash
+op run --env-file=secrets.op.env --no-masking -- python3 harness/pipeline/probe_models.py
+```

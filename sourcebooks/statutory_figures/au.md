@@ -2,7 +2,7 @@
 
 This file replaces `figures/au.yaml`. It holds 17 statutory figures the `expired_figure` gate checks a reply against. 11 are currently stale — a lesson somewhere cites a number the authority has since replaced, and `figure_gate()` in `harness/fincom_runner/gates.py` can fail a reply that repeats one. The other 6 are current, correct figures tracked so a future change can be caught — not figures that are wrong today.
 
-Seeded from OPS-1512 (Australia as the fourth rule book). Values are for the 2026-27 financial year, which began on 1 July 2026. For Australian statutory figures the numbers are not published in machine-readable form.
+Australia is the fourth jurisdiction this benchmark covers. Values are for the 2026-27 financial year, which began on 1 July 2026. For Australian statutory figures the numbers are not published in machine-readable form.
 
 ## Super Guarantee Rate
 

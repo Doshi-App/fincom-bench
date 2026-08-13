@@ -68,7 +68,8 @@ export default function Home() {
               {LEADERBOARD.length} models, each sent the {LEADERBOARD[0]?.items} open probes and
               marked by <span className="font-mono text-xs">{WINNING_JUDGE}</span>, the judge that
               agreed most with the human labels in phase 1. Pass rate counts only the probes the
-              judge decided; coverage says what share that was.
+              judge decided; coverage says what share that was — below 100% means the judge left the
+              rest of that model&apos;s probes undecided, not a software test-coverage number.
             </p>
             <p className="mt-3 max-w-3xl rounded border border-border bg-bg p-3 text-sm text-muted">
               <span className="font-medium text-fg">Read the gaps with care.</span> These are one
@@ -142,6 +143,12 @@ export default function Home() {
             the judge. Macro-F1 decides. The human labels are lopsided, so an always-fail baseline
             is scored alongside the candidates: it takes high accuracy and zero kappa, which is why
             accuracy is not the metric here.
+          </p>
+          <p className="mt-3 max-w-3xl rounded border border-border bg-bg p-3 text-sm text-muted">
+            <span className="font-medium text-fg">The hand labels behind this table are not
+            published.</span> They are not gitignored by mistake — a candidate judge must not read
+            them before scoring — but that means an outside reader cannot independently reproduce
+            or verify this choice of judge from this repository alone.
           </p>
           <div className="scroll-x mt-6 rounded-lg border border-border">
             <table className="w-full min-w-[46rem] border-collapse text-left">

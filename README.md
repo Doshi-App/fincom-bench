@@ -15,6 +15,8 @@ The headline output is a leaderboard of AI assistants — which conduct rules ea
 
 Two passes over two datasets. The first pass has the replies already written and asks which model marks them the way a person does. The second pass leaves the replies blank, lets every assistant write its own, and has the winning judge mark them.
 
+The diagram below and every count in this README describe the design of the benchmark — the shape a full run aims for. One run's real counts can differ, because hand-labelling is still in progress and the number of candidate judges tried varies. See `results/README.md` for the counts of a specific run.
+
 ```mermaid
 flowchart TB
   subgraph P1["PASS 1 — choose the judge (the replies already exist)"]
@@ -34,7 +36,7 @@ flowchart TB
   subgraph P2["PASS 2 — score the assistants (the replies do not exist yet)"]
     direction LR
     B["Benchmark set<br/>the same probes<br/>REPLY COLUMN EMPTY"]
-    A["Assistants under test<br/>GPT / Grok / Claude / Doshi FCP<br/>+ a regulated bank assistant"]
+    A["Assistants under test<br/>GPT / Grok / Claude<br/>+ Doshi FCP (uplift on each base model)<br/>+ a regulated bank assistant"]
     JB["THE JUDGE<br/>the pass 1 winner marks every<br/>reply against the same rules"]
     L["Leaderboard<br/>fail = a finding that cites its clause<br/>pass = no record"]
     B -->|"the same probe"| A
@@ -53,7 +55,7 @@ A thick blue border marks a step a person does. Everything else is a model. Noth
 
 Two notes on who grades whom:
 
-- **Doshi FCP is a contestant, never the judge.** Doshi holds no advice permission, so Doshi FCP is scored against the stricter 2-condition test, the same as GPT, Grok and Claude. Only the bank assistant gets the 3-condition test, and only because it holds the permission.
+- **Doshi FCP is a contestant, never the judge.** Doshi holds no advice permission, so Doshi FCP is scored against the stricter 2-condition test, the same as GPT, Grok and Claude. Only the bank assistant gets the 3-condition test, and only because it holds the permission. Doshi FCP has no leaderboard row yet. When it runs, it will not appear as a single row: it runs the same models already on this leaderboard through the harness in this repo, and the result reports the uplift Doshi FCP adds on top of each base model. That harness — the one in this repository — is the only evaluation tool used anywhere in this benchmark.
 - **Pass 1 cannot detect self-preference.** Every reply in the meta-eval set is written by a person, so no candidate judge has anything of its own to recognise. A judge can win pass 1 cleanly and still be soft on its own replies in pass 2. No assistant grades its own leaderboard row.
 
 See `docs/method.md` for how a run is scored and `docs/rubric.md` for the finding categories.
@@ -78,7 +80,7 @@ python -m fincom_runner run \
 
 A run has two stages per item. A deterministic check reads the published figures in `sourcebooks/statutory_figures/` and can fail an item on its own. Everything the check does not decide goes to the judge model with the rubric and the check result. An item nothing decided is recorded as `ungraded`, never as a pass.
 
-The runner scores lesson slides, the Doshi FCP agent over an HTTP endpoint, and a third-party assistant used through its ordinary consumer interface — for the last one, a person collects the replies by hand and the runner grades a 2-column CSV.
+The runner scores lesson slides, the Doshi FCP agent over an HTTP endpoint, and a third-party assistant used through its ordinary consumer interface — for the last one, a person collects the replies by hand and the runner grades a 2-column CSV. This is the same harness that produces every other row on the leaderboard; there is no separate, undisclosed tool used to score Doshi FCP.
 
 See `harness/README.md` for the providers, the judge, the transcript format and the miss rate.
 
@@ -177,8 +179,9 @@ npm run dev     # http://localhost:4700
 npm run build   # static generation; fails loudly on a malformed run file or rule file
 ```
 
-Data-loading code: `src/lib/submissions.ts` (run/transcript files), `src/lib/rules.ts` (rule
-citations), `src/data/categories.ts` (the 15 categories, hand-authored). Deployed on Vercel.
+Data-loading code sits in `lib/` at the repo root: `lib/submissions.ts` (run/transcript files),
+`lib/rules.ts` (rule citations), `lib/categories.ts` (the 15 categories, hand-authored).
+Deployed on Vercel.
 
 ## Scope and limits
 
@@ -188,4 +191,13 @@ This benchmark does not replace legal advice. Every rule that needs a lawyer is 
 
 ## Licence
 
-To be decided before the repository goes public. The current working assumption is a permissive licence for the rule files and the dataset, with the runner under a separate licence.
+This repository uses a split licence.
+
+| Tree | Licence |
+|---|---|
+| `rules/` | CC BY 4.0 (`rules/LICENSE`) |
+| `sourcebooks/` | CC BY 4.0 for Doshi's own material; quoted regulatory clauses keep the original authority's terms (`sourcebooks/LICENSE`, `sourcebooks/NOTICE-SOURCEBOOKS.md`) |
+| `datasets/` | CC BY 4.0 (`datasets/LICENSE`) |
+| `harness/`, the website (`app/`, `lib/`), and everything else | Apache 2.0 (`LICENSE`) |
+
+See `NOTICE` for the copyright line.

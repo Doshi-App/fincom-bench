@@ -3,8 +3,8 @@ import { HAS_RESULTS } from "@/lib/results";
 import type { InstitutionAction } from "@/lib/categories";
 
 /**
- * Same mechanism as conductbench's SampleDataBanner, repurposed for whichever
- * state this benchmark is actually in. It reads the published results rather
+ * A site-wide banner that states which state this benchmark is actually in,
+ * so no page can show numbers without their caveat. It reads the published results rather
  * than `submissions/` directly, because the transcripts under `submissions/`
  * are tens of MB and exist to be audited, not read on every build.
  *
@@ -111,8 +111,15 @@ export function Footer() {
         <p className="max-w-2xl">
           FinCom Bench is built and published by Doshi, which also builds Doshi FCP — one of the
           assistants it will score. Doshi FCP is a contestant, never the judge, and it is scored
-          against the same 2-condition test as every other unregulated assistant. The rules, the
-          dataset, and the harness are in this repository so the grade can be checked, not trusted.
+          against the same 2-condition test as every other unregulated assistant. It will not get a
+          leaderboard row of its own: it runs the same models already on this leaderboard through
+          the harness in this repository, and its result reports the uplift it adds on top of each
+          base model. The rules, the dataset, and the harness are in this repository — the only
+          harness used anywhere in this benchmark — so the grade can be checked, not trusted.
+        </p>
+        <p className="mt-4 max-w-2xl">
+          Model providers have not been contacted about their inclusion on this leaderboard. If a
+          provider asks for its model to be removed, it will be removed.
         </p>
         <p className="mt-4">
           Not affiliated with or endorsed by the FCA, the EU, the CFPB, the FTC, or ASIC.
@@ -133,7 +140,7 @@ export function AuthorBadge() {
   );
 }
 
-/** A fail-rate meter, 0-100. Lower is better, unlike conductbench's pass-rate meter. */
+/** A fail-rate meter, 0-100. Lower is better, so it fills in fail colour. */
 export function FailMeter({ value }: { value: number }) {
   return (
     <span className="inline-flex items-center gap-2">
@@ -175,8 +182,8 @@ export function VerdictTag({ verdict }: { verdict: "pass" | "fail" | "arguable" 
 }
 
 /**
- * What happens at the institution when a finding lands — the closest real
- * analog to conductbench's "critical breach" flag. There is no severity
+ * What happens at the institution when a finding lands. This is the only
+ * escalation signal the benchmark reports. There is no severity
  * tier here; the category alone decides the action.
  */
 export function ActionTag({ action }: { action: InstitutionAction }) {

@@ -25,11 +25,11 @@ function readCsv(file: string): { rows: Record<string, string>[]; columns: strin
   const filePath = path.join(DATA_DIR, file);
   const raw = fs.readFileSync(filePath, "utf8");
   const parsed = Papa.parse<Record<string, string>>(raw, { header: true, skipEmptyLines: true });
-  // FieldMismatch (a row with fewer fields than the header) is real in this dataset today — every
-  // row in meta-eval.csv is shorter than its 24-column header, because the header was updated (the
-  // human_label -> labeller_a_label/labeller_b_label/notes split, and the candidate-judge renames) without
-  // regenerating the row data. jurisdiction/category are still positionally correct either way, so
-  // this doesn't corrupt the counts below — but it's real and worth surfacing, not silently eating.
+  // FieldMismatch (a row with fewer fields than the header) showed up in meta-eval.csv in the past:
+  // the header was once split (human_label -> labeller_a_label/labeller_b_label/notes, plus 12 unused
+  // candidate-judge columns) without regenerating the row data. Those extra columns were dropped —
+  // see ERRATA.md — so meta-eval.csv should read clean today. shortRows is kept as a live check, not
+  // a note about a fixed issue: it surfaces any future header/row drift instead of silently eating it.
   // Anything that ISN'T a field-count mismatch (a genuinely unparseable file) still throws.
   const fatal = parsed.errors.filter((e) => e.type !== "FieldMismatch");
   if (fatal.length > 0) {

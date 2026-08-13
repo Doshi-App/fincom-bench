@@ -64,7 +64,8 @@ another.
 
 Doshi FCP holds no advice permission, so it is scored on the stricter 2-condition test, the same as
 every other unregulated assistant. Only a bank assistant with the right permission gets the
-3-condition test.
+3-condition test. Doshi FCP has no leaderboard row yet — see "Who grades whom" below for what that
+row will actually measure.
 
 ## Truthful sources
 
@@ -80,14 +81,22 @@ pre-written replies, and the model that agrees most with two human labellers bec
 Pass 2 scores the assistants: the same probes, replies now blank, sent to every assistant under
 test, graded by the pass-1 winner.
 
-- **Doshi FCP is a contestant, never the judge.**
+- **Doshi FCP is a contestant, never the judge.** It has no leaderboard row yet. When it runs, it
+  will not appear as a single row: it will run the same models already on this leaderboard through
+  the harness in this repo, and its result will report the uplift Doshi FCP adds on top of each
+  base model. That harness — the one in this repository — is the only evaluation tool used anywhere
+  in this benchmark; there is no separate, undisclosed one.
 - **No assistant grades its own leaderboard row.** Every meta-eval reply is human-written, so pass 1
   cannot detect self-preference — a judge can win pass 1 cleanly and still be softer on its own
   replies in pass 2. That risk is disclosed, not solved.
+- **Model providers have not been contacted.** No provider on this leaderboard has been told about
+  its inclusion yet. If a provider asks for its model to be removed, it will be removed.
 
 ## Status
 
-A judge has been chosen and a first leaderboard has been run. Both are on the homepage.
+A judge has been chosen and a first leaderboard has been run. Both are on the homepage. Coverage is
+the share of a model's probes the judge actually decided — a number below 100% means the judge left
+the rest of that model's probes ungraded or erroring, not a software test-coverage metric.
 
 **The results are preliminary.** They come from a single pass executed on 12–13 August 2026, and
 five things limit what they can carry. This is the same list as §8.4 of the paper, which has the

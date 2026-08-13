@@ -305,7 +305,7 @@ There are two datasets. This repo holds the first one.
 
 ### 1. Meta-evaluation dataset (`datasets/meta-eval.csv`)
 
-This dataset picks the judge model. the two human labellers mark each row by hand (`human_label`). Then each candidate judge model also marks each row (one column per model). Whichever model agrees most with the human labels becomes the judge for the benchmark dataset.
+This dataset picks the judge model. Two human labellers mark each row by hand. Their agreed labels live in `harness/pipeline/human-labels.csv`, not in this file — see the note below. Each candidate judge model also marks the same rows (one label set per model). Whichever model agrees most with the human labels becomes the judge for the benchmark dataset.
 
 This dataset does not score assistants. It scores judges.
 
@@ -315,7 +315,7 @@ This dataset scores assistants. The runner sends each probe to an assistant (GPT
 
 ## Meta-evaluation dataset format
 
-The meta-eval dataset is a CSV file (`datasets/meta-eval.csv`). One row per item. 22 columns:
+The meta-eval dataset is a CSV file (`datasets/meta-eval.csv`). One row per item. 10 columns:
 
 - `item_id` — stable identifier
 - `jurisdiction` — uk, eu, us, au
@@ -326,19 +326,17 @@ The meta-eval dataset is a CSV file (`datasets/meta-eval.csv`). One row per item
 - `prompt_variant` — the conduct-and-style variant the prompt builder used for this row
 - `probe` — what the user says to the assistant
 - `reply` — what the assistant said (the thing being graded)
-- `human_label` — the two human labellers's agreed label. Empty until they mark.
-- `gpt_5_6_sol` — GPT-5.6 Sol's label. Empty until the meta-eval run.
-- `gpt_5_6_terra` — GPT-5.6 Terra's label. Empty until the meta-eval run.
-- `gpt_5_6_luna` — GPT-5.6 Luna's label. Empty until the meta-eval run.
-- `claude_opus_5` — Claude Opus 5's label. Empty until the meta-eval run.
-- `claude_sonnet_5` — Claude Sonnet 5's label. Empty until the meta-eval run.
-- `gemini_2_5_pro` — Gemini 2.5 Pro's label. Empty until the meta-eval run.
-- `grok_4_5` — Grok 4.5's label. Empty until the meta-eval run.
-- `llama_4_maverick` — Llama 4 Maverick's label. Empty until the meta-eval run.
-- `qwen3_235b_a22b` — Qwen3-235B-A22B's label. Empty until the meta-eval run.
-- `deepseek_v3` — DeepSeek-V3's label. Empty until the meta-eval run.
-- `mistral_large_3` — Mistral Large 3's label. Empty until the meta-eval run.
-- `glm_4_5` — GLM-4.5's label. Empty until the meta-eval run.
+- `notes` — free-text notes from labelling, if any
 
-The candidate judge model whose labels agree most with `human_label` becomes the benchmark judge. Agreement is measured by macro F1 per category, reported in the paper.
+**The human label and the candidate-judge labels are not columns in this file.** An earlier version
+of this dataset carried them inline (`human_label`, later split into per-labeller columns, plus one
+column per candidate judge model) but the row data was never regenerated after that split, so the
+label columns went stale — see `ERRATA.md`. They are dropped from the published file.
+
+The real hand labels live in `harness/pipeline/human-labels.csv`, which is not published (a
+candidate judge must not read them before scoring — see the note in README.md's "The dataset"
+section). Each candidate judge model's labels are produced at run time by `harness/pipeline/
+score_judges.py` and scored against that file; they are not stored back into `meta-eval.csv`. The
+candidate judge model whose labels agree most with the human labels becomes the benchmark judge.
+Agreement is measured by macro F1, reported per run in `results/README.md`.
 

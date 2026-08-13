@@ -2,7 +2,7 @@
 
 This file replaces `figures/eu.yaml`. It holds 7 statutory figures the `expired_figure` gate checks a reply against. 2 are currently stale — a lesson somewhere cites a number the authority has since replaced, and `figure_gate()` in `harness/fincom_runner/gates.py` can fail a reply that repeats one. The other 5 are current, correct figures tracked so a future change can be caught — not figures that are wrong today.
 
-Seeded from OPS-1451 (which figures in the lesson library expire). Member state matters here, and each figure has a different national authority. Values verified against the publishing authority on 2026-08-01.
+This list comes from a review of which figures the lesson library cites and which of those expire. Member state matters here, and each figure has a different national authority. Values verified against the publishing authority on 2026-08-01.
 
 ## Bulgaria Euro Adoption
 
@@ -17,36 +17,36 @@ Bulgaria adopted the euro on 1 January 2026. The lev ceased to be legal tender o
 
 ## Belgium Savings Exemption
 
-- **Source:** FOD Financiën / SPF Finances — savings interest exemption
-- **URL:** <https://fin.belgium.be/nl/particulieren/belastingaangifte/inkomsten/spaargeld-beleggingen>
-- **Retrieved:** 2026-08-01
+- **Source:** FOD Financiën — Toelichting bij de aangifte in de personenbelasting, aanslagjaar 2026 (Vlaams Gewest editie; Vak VII, dat federaal en gewestonafhankelijk is), Vak VII.2.a
+- **URL:** <https://fin.belgium.be/sites/default/files/media/documents/toelichting-deel-1-vg-2026.pdf#page=56>
+- **Retrieved:** 2026-08-13
 - **Current value:** 1,020
 - **Superseded value(s):** 980 — currently cited in error if a reply repeats one
 - **Change cadence:** changes frozen 2026 to 2030; next expected change 2031
 
-The Belgian savings interest exemption is 1,020 euros. The old value of 980 euros appears in Sparen 3 and is wrong. The exemption is frozen at 1,020 euros for assessment years 2026 to 2030 by the 2025 programme law. Doubles to 2,040 euros for spouses and legal cohabitants.
+The Belgian savings interest exemption is 1,020 euros. The old value of 980 euros appears in Sparen 3 and is wrong. The exemption is frozen at 1,020 euros for assessment years 2026 to 2030 by the 2025 programme law. Doubles to 2,040 euros for spouses and legal cohabitants. Page 56 of the FOD Financiën explanatory notes to the AY2026 return states: "in de mate dat, per belastingplichtige, meer bedragen dan 1.020 euro (2) en er geen roerende voorheffing op is ingehouden" and, for spouses/cohabitants, "hebben elk afzonderlijk recht op een vrijstelling van 1.020 euro (2)" — replacing the general spaargeld-beleggingen landing page, which is not specific to this figure.
 
 ## Belgium Savings Exemption Label
 
-- **Source:** FOD Financiën / SPF Finances — savings interest exemption
-- **URL:** <https://fin.belgium.be/nl/particulieren/belastingaangifte/inkomsten/spaargeld-beleggingen>
-- **Retrieved:** 2026-08-01
+- **Source:** FOD Financiën — Toelichting bij de aangifte in de personenbelasting, aanslagjaar 2026 (Vlaams Gewest editie; Vak VII, dat federaal en gewestonafhankelijk is), Vak VII.2.a
+- **URL:** <https://fin.belgium.be/sites/default/files/media/documents/toelichting-deel-1-vg-2026.pdf#page=56>
+- **Retrieved:** 2026-08-13
 - **Current value:** 1,020
 - **Superseded value(s):** none on record — not stale as of the retrieval date
 - **Change cadence:** changes frozen 2026 to 2030; next expected change 2031
 
-The Belgian savings interest exemption is 1,020 euros. The value is not stale. The year label will mislead: Sparen 1 and Sparen 2 label it income year 2024.
+The Belgian savings interest exemption is 1,020 euros. The value is not stale. The year label will mislead: Sparen 1 and Sparen 2 label it income year 2024. The document's cover reads "Aanslagjaar 2026 (inkomsten van het jaar 2025)" and page 56 states "De te vermelden inkomsten zijn die van 2025" — the 1,020 euro threshold is tied to assessment year 2026 / income year 2025, not 2024. Replacing the general spaargeld-beleggingen landing page, which carries no year label at all.
 
 ## Belgium Withholding Tax
 
-- **Source:** FOD Financiën — withholding tax rates
-- **URL:** <https://fin.belgium.be/nl/particulieren/belastingaangifte/inkomsten/spaargeld-beleggingen>
-- **Retrieved:** 2026-08-01
+- **Source:** FOD Financiën — Toelichting bij de aangifte in de personenbelasting, aanslagjaar 2026 (Vlaams Gewest editie; Vak VII, dat federaal en gewestonafhankelijk is), Vak VII.2.a and Vak VII.A
+- **URL:** <https://fin.belgium.be/sites/default/files/media/documents/toelichting-deel-1-vg-2026.pdf#page=56>
+- **Retrieved:** 2026-08-13
 - **Current value:** 15% reduced above exemption, 30% standard
 - **Superseded value(s):** none on record — not stale as of the retrieval date
 - **Change cadence:** changes set by law no 2026 change
 
-Belgian reduced withholding tax is 15 percent above the exemption. Standard rate is 30 percent on other interest and dividends. Not stale as at 1 August 2026.
+Belgian reduced withholding tax is 15 percent above the exemption. Standard rate is 30 percent on other interest and dividends. Not stale as at 1 August 2026. Page 56 of the FOD Financiën explanatory notes to the AY2026 return states, of the income above the 1,020 euro savings exemption: "De te vermelden inkomsten zijn die van 2025. Ze zijn belastbaar tegen 15 %." Page 57 of the same document gives the default: "De interesten zijn in principe belastbaar tegen 30 %." Replacing the general spaargeld-beleggingen landing page, which is not specific to this figure.
 
 ## Belgium Deposit Guarantee
 
@@ -105,10 +105,10 @@ entries:
 - id: eu-figure-belgium-savings-exemption
   jurisdiction: eu
   authority:
-    source: FOD Financiën / SPF Finances
-    clause: savings interest exemption
-    url: https://fin.belgium.be/nl/particulieren/belastingaangifte/inkomsten/spaargeld-beleggingen
-    retrieved: 2026-08-01
+    source: FOD Financiën
+    clause: Toelichting bij de aangifte in de personenbelasting, AJ2026 (Vlaams Gewest editie), Vak VII.2.a
+    url: https://fin.belgium.be/sites/default/files/media/documents/toelichting-deel-1-vg-2026.pdf#page=56
+    retrieved: 2026-08-13
   current_value: '1020'
   stale_values:
   - '980'
@@ -120,10 +120,10 @@ entries:
 - id: eu-figure-belgium-savings-exemption-label
   jurisdiction: eu
   authority:
-    source: FOD Financiën / SPF Finances
-    clause: savings interest exemption
-    url: https://fin.belgium.be/nl/particulieren/belastingaangifte/inkomsten/spaargeld-beleggingen
-    retrieved: 2026-08-01
+    source: FOD Financiën
+    clause: Toelichting bij de aangifte in de personenbelasting, AJ2026 (Vlaams Gewest editie), Vak VII.2.a
+    url: https://fin.belgium.be/sites/default/files/media/documents/toelichting-deel-1-vg-2026.pdf#page=56
+    retrieved: 2026-08-13
   current_value: '1020'
   stale_values: []
   stale_now: false
@@ -134,9 +134,9 @@ entries:
   jurisdiction: eu
   authority:
     source: FOD Financiën
-    clause: withholding tax rates
-    url: https://fin.belgium.be/nl/particulieren/belastingaangifte/inkomsten/spaargeld-beleggingen
-    retrieved: 2026-08-01
+    clause: Toelichting bij de aangifte in de personenbelasting, AJ2026 (Vlaams Gewest editie), Vak VII.2.a en Vak VII.A
+    url: https://fin.belgium.be/sites/default/files/media/documents/toelichting-deel-1-vg-2026.pdf#page=56
+    retrieved: 2026-08-13
   current_value: 15% reduced above exemption, 30% standard
   stale_values: []
   stale_now: false

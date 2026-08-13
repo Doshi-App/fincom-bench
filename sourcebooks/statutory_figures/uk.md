@@ -2,7 +2,7 @@
 
 This file replaces `figures/uk.yaml`. It holds 26 statutory figures the `expired_figure` gate checks a reply against. 9 are currently stale — a lesson somewhere cites a number the authority has since replaced, and `figure_gate()` in `harness/fincom_runner/gates.py` can fail a reply that repeats one. The other 17 are current, correct figures tracked so a future change can be caught — not figures that are wrong today.
 
-Seeded from OPS-1451 (which figures in the lesson library expire). Values verified against the publishing authority on 2026-08-01.
+This list comes from a review of which figures the lesson library cites and which of those expire. Values verified against the publishing authority on 2026-08-01.
 
 ## Deposit Protection
 

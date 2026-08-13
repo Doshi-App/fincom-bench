@@ -2,7 +2,7 @@
 
 This file replaces `figures/us.yaml`. It holds 19 statutory figures the `expired_figure` gate checks a reply against. 10 are currently stale — a lesson somewhere cites a number the authority has since replaced, and `figure_gate()` in `harness/fincom_runner/gates.py` can fail a reply that repeats one. The other 9 are current, correct figures tracked so a future change can be caught — not figures that are wrong today.
 
-Seeded from OPS-1451 (which figures in the lesson library expire). Values verified against the publishing authority on 2026-08-01. Many IRS figures are published as PDFs each autumn — the authoritative tables are not on a stable HTML page.
+This list comes from a review of which figures the lesson library cites and which of those expire. Values verified against the publishing authority on 2026-08-01. Many IRS figures are published as PDFs each autumn — the authoritative tables are not on a stable HTML page.
 
 ## RMD Age
 
