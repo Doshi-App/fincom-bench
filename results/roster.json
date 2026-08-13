@@ -346,5 +346,82 @@
     "ok": true,
     "sample": "ready",
     "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "gemma4:31b",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "nemotron-3-nano:30b",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "deepseek-v4-flash:preview",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "glm-5.1",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "kimi-k2.7-code",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "kimi-k3",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "kimi-k2.6",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "deepseek-v4-flash:0731",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "minimax-m3",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "mistral-large-3:675b",
+    "ok": true,
+    "sample": "",
+    "error": ""
+  },
+  {
+    "kind": "ollama",
+    "model": "gpt-oss:20b",
+    "ok": true,
+    "sample": "",
+    "error": ""
   }
 ]

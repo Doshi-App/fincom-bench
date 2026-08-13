@@ -6,8 +6,8 @@ per-run audit records under `submissions/`.
 | File | What it holds |
 |---|---|
 | `judge_selection.csv` | 17 candidate judges scored against the 100 hand-labelled rows, plus 2 baselines. |
-| `model_outputs.csv` | 7,831 rows — one per model per probe: the probe, the reply, and the judge's verdict with its reasoning. |
-| `leaderboard.csv` | 41 models, ranked by pass rate over the probes the judge decided. |
+| `model_outputs.csv` | 9,741 rows — one per model per probe: the probe, the reply, and the judge's verdict with its reasoning. |
+| `leaderboard.csv` | 51 models, ranked by pass rate over the probes the judge decided. |
 | `roster.json` | Every model the reachability probe tried, and why the 9 that failed did. |
 
 ## What ran
@@ -20,10 +20,21 @@ keys: `sk-ant-admin…` is accepted by the Admin API and rejected by
 existing `anthropic:` and `openai:` providers are untouched and still work for
 anyone holding an ordinary key.
 
-So every model here is reached through AWS Bedrock or Ollama Cloud. 51 models
-were probed, 42 answered. The Claude 5 family is listed on Bedrock but not
-entitled on this account, so the newest Anthropic models present are Sonnet 4.6,
-Opus 4.5, Sonnet 4.5 and Haiku 4.5.
+So every model here is reached through AWS Bedrock or Ollama Cloud. The Claude 5
+family is listed on Bedrock but not entitled on this account, so the newest
+Anthropic models present are Sonnet 4.6, Opus 4.5, Sonnet 4.5 and Haiku 4.5.
+
+**Ollama Cloud is covered in full.** Its catalogue is 18 models — `/api/tags`
+and the OpenAI-compatible `/v1/models` return the same 18, so that is the whole
+hosted set, not a page of it. 17 of the 18 are on the leaderboard. Do not trust
+`~/.hermes/ollama_cloud_models_cache.json` for this: it lists 21, and 2 of its
+extras (`kimi-k2.5`, `minimax-m2.5`) were retired from the host on 2026-07-31.
+Both still exist on Bedrock and appear here through that route instead. The much
+larger `ollama.com/library` is for models pulled and run locally, which is a
+different thing from the hosted set — and not an option on dex, which has no
+GPU, 6 cores and 14 GB of RAM.
+
+34 models come through Bedrock and 17 through Ollama Cloud.
 
 ## Phase 1 — the judge
 
@@ -55,20 +66,32 @@ minutes without finishing and is absent from the CSV.
 
 ## Phase 2 — the leaderboard
 
-All 42 reachable models answered the 191 open probes under
-`--permissions none` (the stricter 2-condition test), and the winning judge
-marked every reply. 41 models are on the board.
+53 models answered the 191 open probes under `--permissions none` (the stricter
+2-condition test), and the winning judge marked every reply. 51 are on the board.
 
-- **`us.writer.palmyra-x5-v1:0` is not on it.** Bedrock returned HTTP 429 for it
-  on 173 of 191 items, then again on a retry at concurrency 2. That is a rate
-  limit on this account, not a result about the model.
+Two are not, and neither absence is a result about the model.
+
+- **`ollama:kimi-k3` — HTTP 402 on all 191 items.** "This model uses extra usage
+  only (not included plan usage) and your extra usage balance is empty." It is
+  billing, not capability: put credit on the Ollama account and it will run.
+- **`bedrock:us.writer.palmyra-x5-v1:0` — HTTP 429 on 173 of 191 items**, twice,
+  the second time at concurrency 2. It is rate-limited on this account.
+
+Then three things to read the board with.
+
 - **The judge is also a contestant.** `mistral.mistral-large-3-675b-instruct`
   carries `self_graded=yes`. The README says no assistant grades its own row, so
-  treat rank 26 as self-reported. It is mid-table, which is at least not the
+  treat rank 33 as self-reported. It is mid-table, which is at least not the
   shape self-preference would take.
 - **Pass rate uses only decided items**, and `coverage` says what share that was.
   Ranking needs coverage ≥ 0.80 so a thinly-graded model cannot outrank a fully
   graded one. Every ranked model here cleared 0.90.
+- **The same model scored 5.8 points apart on two hosts.** Mistral Large 3 675B
+  is rank 33 at 65.4 percent through Bedrock and rank 41 at 59.6 percent through
+  Ollama Cloud. Same weights, same probes, same judge, same prompt. Whatever
+  separates them — serving config, sampling defaults, quantisation — is worth
+  more than several adjacent places on this board, and it is a caution against
+  reading gaps of a few points between neighbouring rows as model quality.
 
 Top of the board: `minimax.minimax-m2.1` at 76.7 percent, then
 `minimax.minimax-m2.5` at 75.1 and `moonshotai.kimi-k2.5` at 72.1. Bottom:
