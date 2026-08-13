@@ -83,54 +83,79 @@ export default function Home() {
               for the full caveats.
             </p>
 
-            <div className="scroll-x mt-6 rounded-lg border border-border">
+            <div className="scroll-x mt-6 max-h-[34rem] overflow-y-auto rounded-lg border border-border">
               <table className="w-full min-w-[52rem] border-collapse text-left">
                 <thead>
-                  <tr className="border-b border-border bg-surface text-xs uppercase tracking-wide text-muted">
-                    <th className="px-4 py-3 font-medium">#</th>
-                    <th className="px-4 py-3 font-medium">Model</th>
-                    <th className="px-4 py-3 font-medium">Host</th>
-                    <th className="px-4 py-3 font-medium">Pass rate</th>
-                    <th className="px-4 py-3 font-medium">Pass / fail</th>
-                    <th className="px-4 py-3 font-medium">Coverage</th>
+                  <tr className="text-xs uppercase tracking-wide text-muted">
+                    <th className="sticky top-0 z-10 border-b border-border bg-surface px-4 py-3 font-medium">#</th>
+                    <th className="sticky top-0 z-10 border-b border-border bg-surface px-4 py-3 font-medium">
+                      Model
+                    </th>
+                    <th className="sticky top-0 z-10 border-b border-border bg-surface px-4 py-3 font-medium">
+                      Host
+                    </th>
+                    <th className="sticky top-0 z-10 border-b border-border bg-surface px-4 py-3 font-medium">
+                      Pass rate
+                    </th>
+                    <th className="sticky top-0 z-10 border-b border-border bg-surface px-4 py-3 font-medium">
+                      Pass / fail
+                    </th>
+                    <th className="sticky top-0 z-10 border-b border-border bg-surface px-4 py-3 font-medium">
+                      Coverage
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {LEADERBOARD.map((row) => (
-                    <tr key={`${row.provider}:${row.model}`} className="border-b border-border last:border-0">
-                      <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
-                        {row.rank ?? "—"}
-                      </td>
-                      <td className="px-4 py-3.5">
-                        <span className="font-mono text-sm">{row.model}</span>
-                        {row.selfGraded && (
-                          <span
-                            className="ml-2 rounded border border-border bg-surface px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-muted"
-                            title="This model is also the judge. Its own row is self-reported."
-                          >
-                            self-graded
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3.5 text-sm text-muted">{row.provider}</td>
-                      <td className="px-4 py-3.5">
-                        {row.passRate === null ? (
-                          <span className="text-sm text-muted">—</span>
-                        ) : (
-                          <PassMeter value={row.passRate * 100} />
-                        )}
-                      </td>
-                      <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
-                        {row.passes} / {row.fails}
-                      </td>
-                      <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
-                        {(row.coverage * 100).toFixed(0)}%
-                      </td>
-                    </tr>
-                  ))}
+                  {LEADERBOARD.map((row) => {
+                    const isTopTier = row.rank !== null && row.rank <= 3;
+                    return (
+                      <tr
+                        key={`${row.provider}:${row.model}`}
+                        className={`border-b border-border last:border-0 even:bg-surface/50 ${
+                          isTopTier ? "border-l-2 border-l-accent" : ""
+                        }`}
+                      >
+                        <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
+                          <span className={isTopTier ? "font-semibold text-accent" : ""}>{row.rank ?? "—"}</span>
+                        </td>
+                        <td className="px-4 py-3.5">
+                          <span className="font-mono text-sm">{row.model}</span>
+                          {row.selfGraded && (
+                            <span
+                              className="ml-2 rounded border border-border bg-surface px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-muted"
+                              title="This model is also the judge. Its own row is self-reported."
+                            >
+                              self-graded
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3.5 text-sm text-muted">{row.provider}</td>
+                        <td className="px-4 py-3.5">
+                          {row.passRate === null ? (
+                            <span className="text-sm text-muted">—</span>
+                          ) : (
+                            <PassMeter value={row.passRate * 100} />
+                          )}
+                        </td>
+                        <td className="px-4 py-3.5 font-mono text-sm tabular-nums text-muted">
+                          {row.passes} / {row.fails}
+                        </td>
+                        <td
+                          className={`px-4 py-3.5 font-mono text-sm tabular-nums ${row.coverage < 0.95 ? "text-fail" : "text-muted"}`}
+                          title={row.coverage < 0.95 ? "Below 95% coverage — this rate rests on fewer decided probes than most rows." : undefined}
+                        >
+                          {(row.coverage * 100).toFixed(0)}%
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
+            <p className="mt-2 text-xs text-muted">
+              Top 3 marked. Coverage below 95% is flagged — that rate rests on fewer decided probes
+              than most rows.
+            </p>
           </>
         )}
 

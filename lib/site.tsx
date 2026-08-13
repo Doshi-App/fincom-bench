@@ -164,7 +164,7 @@ export function AuthorBadge() {
 export function FailMeter({ value }: { value: number }) {
   return (
     <span className="inline-flex items-center gap-2">
-      <span className="h-1.5 w-16 overflow-hidden rounded-full bg-border" aria-hidden>
+      <span className="h-2 w-24 overflow-hidden rounded-full bg-border" aria-hidden>
         <span
           className="block h-full rounded-full bg-fail"
           style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
@@ -179,7 +179,7 @@ export function FailMeter({ value }: { value: number }) {
 export function PassMeter({ value }: { value: number }) {
   return (
     <span className="inline-flex items-center gap-2">
-      <span className="h-1.5 w-16 overflow-hidden rounded-full bg-border" aria-hidden>
+      <span className="h-2 w-24 overflow-hidden rounded-full bg-border" aria-hidden>
         <span
           className="block h-full rounded-full bg-pass"
           style={{ width: `${Math.max(0, Math.min(100, value))}%` }}
