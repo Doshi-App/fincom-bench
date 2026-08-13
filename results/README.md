@@ -10,7 +10,7 @@ This run is preliminary. Three limits carry through every number below.
    `bedrock:mistral.mistral-large-3-675b-instruct` won judge selection and then
    sat at rank 42 of 54 on the leaderboard it graded. That row carries
    `self_graded=yes` — see "Phase 2" below.
-3. **The same weights scored 5.8 points apart on 2 hosts.** Bedrock and Ollama
+3. **The same weights scored 5.8 points apart on 2 inference providers.** Bedrock and Ollama
    Cloud served one identical model and disagreed by more than the gap between
    most neighbouring rows — see "Phase 2" below.
 
@@ -53,7 +53,7 @@ and the OpenAI-compatible `/v1/models` return the same 18, so that is the whole
 hosted set, not a page of it. 17 of the 18 are on the leaderboard. Do not trust
 a stale local cache of the model list for this: the cache on the machine used
 for this run listed 21, and 2 of its extras (`kimi-k2.5`, `minimax-m2.5`) were
-retired from the host on 2026-07-31. Both still exist on Bedrock and appear here
+retired from Ollama Cloud on 2026-07-31. Both still exist on Bedrock and appear here
 through that route instead. The much larger `ollama.com/library` is for models
 pulled and run locally, which is a different thing from the hosted set — and not
 an option on the machine used for this run, which has no GPU.
@@ -126,7 +126,7 @@ Then three things to read the board with.
   quantisation) can be wider than the gap between neighbouring rows on this
   board, so a few adjacent places should read as noise, not a quality signal.
   A model that is *not* an exact match across providers (Minimax, for
-  example, is a different point release on each host) stays as 2 rows, because
+  example, is a different point release on each inference provider) stays as 2 rows, because
   that is a different test, not the same model twice.
 
 Top of the board: `minimax.minimax-m2.1` at 76.7 percent, then

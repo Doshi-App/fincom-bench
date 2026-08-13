@@ -106,18 +106,19 @@ detail.
    marked each reply once. Nothing was repeated, so there is no error bar and no way to tell a real
    two-point gap from noise. **Adjacent rows are not meaningfully ordered.**
 2. **A row is a model as served, not a model — except an exact pair, which is merged.** The same
-   weights, run through two different API hosts with the same probes, prompt and judge, can score
-   several points apart: Mistral Large 3 675B scored 5.8 points apart on Bedrock and Ollama Cloud.
-   Rather than publish that as 2 separately ranked rows, the leaderboard folds an exact same-weights
-   pair into 1 row and averages the 2 rates — GPT-OSS 120B and 20B get the same treatment. A
-   different point release of the same model family on each host (Minimax, for example) is a
-   different test, not the same model twice, and stays as 2 rows. Serving configuration, sampling
-   defaults and quantisation are not controlled for, and no host publishes enough for anyone to
-   control for them, so even a merged row's average can hide real variance between its 2 runs.
-   Comparing a row here with a number obtained elsewhere is not like-for-like.
-3. **The frontier closed models are missing.** The run reached models through two API hosts, and
-   the account used had no entitlement to the newest proprietary systems. The table is therefore
-   open-weight-heavy. That is a fact about the account, not a finding about open weights.
+   weights, run through two different inference providers with the same probes, prompt and judge,
+   can score several points apart: Mistral Large 3 675B scored 5.8 points apart on Bedrock and
+   Ollama Cloud. Rather than publish that as 2 separately ranked rows, the leaderboard folds an
+   exact same-weights pair into 1 row and averages the 2 rates — GPT-OSS 120B and 20B get the same
+   treatment. A different point release of the same model family on each inference provider
+   (Minimax, for example) is a different test, not the same model twice, and stays as 2 rows.
+   Serving configuration, sampling defaults and quantisation are not controlled for, and no
+   inference provider publishes enough for anyone to control for them, so even a merged row's
+   average can hide real variance between its 2 runs. Comparing a row here with a number obtained
+   elsewhere is not like-for-like.
+3. **The frontier closed models are missing.** The run reached models through two inference
+   providers, and the account used had no entitlement to the newest proprietary systems. The table
+   is therefore open-weight-heavy. That is a fact about the account, not a finding about open weights.
 4. **The judge agrees with people at κ 0.64.** Substantial, not near-perfect. Every number on the
    leaderboard inherits that disagreement.
 5. **The pass class rests on 8 rows.** 100 rows are hand-labelled and only 8 of them are pass, so
@@ -127,7 +128,7 @@ detail.
 
 In rough order of how much each would change the table: label more rows, and especially more pass
 rows, then have a second person label them so inter-labeller agreement can be reported; repeat the
-run so gaps carry an error bar; run the same weights across several hosts and publish the spread;
+run so gaps carry an error bar; run the same weights across several inference providers and publish the spread;
 add the frontier closed models once an account with entitlement is available; and tighten judge
 selection with a stricter meta-evaluation. Every item here, and more besides, is tracked as an open
 issue in the repository — see the
