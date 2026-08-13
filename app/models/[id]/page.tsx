@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { allAssistants, submissionsForAssistant } from "@/lib/submissions";
-import { getCategory } from "@/data/categories";
-import { FailMeter, ActionTag } from "@/components/site";
+import { getCategory } from "@/lib/categories";
+import { FailMeter, ActionTag } from "@/lib/site";
 
 export function generateStaticParams() {
   return allAssistants().map((id) => ({ id }));

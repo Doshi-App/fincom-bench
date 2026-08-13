@@ -2,7 +2,7 @@
 
 Two test types, one Item record.
 
-1. Chat tests come from a CSV in `fincom-bench/`. The benchmark files have no
+1. Chat tests come from a CSV in `datasets/`. The benchmark files have no
    `reply` column, because the assistant under test writes the reply. The
    meta-eval file has a `reply` column already filled.
 2. Lesson tests come from a JSON Lines file. One line is one slide. The runner

@@ -10,12 +10,12 @@ cd harness
 pip install -r requirements.txt
 
 # 1. Check the rules and a dataset. No model, no network, no key.
-python -m fincom_runner validate --dataset ../fincom-bench/benchmark-open.csv
+python -m fincom_runner validate --dataset ../datasets/benchmark-open.csv
 
 # 2. Grade the replies the meta-eval set already holds, with the
 #    deterministic gate only.
 python -m fincom_runner run \
-  --dataset ../fincom-bench/meta-eval.csv \
+  --dataset ../datasets/meta-eval.csv \
   --assistant hand-written-replies \
   --provider dataset \
   --judge none \
@@ -52,6 +52,8 @@ transcript. Add `--judge anthropic:<model>` to mark the other 14 categories.
 | `http:<url>` | Post `{"system", "prompt", "item_id"}` to a JSON endpoint and read `reply` back. | the endpoint |
 | `anthropic:<model>` | Call the Anthropic API. | `anthropic`, `ANTHROPIC_API_KEY` |
 | `openai:<model>` | Call the OpenAI API. | `openai`, `OPENAI_API_KEY` |
+| `bedrock:<model>` | Call a model on AWS Bedrock. One key covers every vendor in a region. | `BEDROCK_API_KEY` |
+| `ollama:<model>` | Call a model on Ollama Cloud. | `OLLAMA_API_KEY` |
 
 The `replies` provider is the lane for a third-party assistant used through its
 ordinary consumer interface. Send the probes by hand, paste the replies into a
@@ -63,8 +65,96 @@ Install the API packages only when you need them:
 pip install -r requirements-providers.txt
 ```
 
+`bedrock` and `ollama` need no package — `fincom_runner/endpoints.py` speaks
+to both hosts with a plain HTTP POST.
+
 Set `FINCOM_HTTP_AUTH` to send an `Authorization` header with the `http`
 provider. No key is ever written to a transcript.
+
+## Repeats — how many times an item runs
+
+`bedrock` and `ollama` are cheap or self-hosted. `anthropic` and `openai` are
+paid frontier keys, where every call costs real money. The runner treats them
+differently.
+
+| Provider | Passes per item | Why |
+|---|---|---|
+| `ollama`, `bedrock` | 10 (default) | Cheap enough to run several times. A model on these hosts can also be flakier reply to reply, so 1 pass is not enough to trust. |
+| every other provider | 1 | A paid frontier call. 10 passes would cost 10 times as much for little gain in trust. |
+
+For a repeated item, the runner runs the full pipeline — reply, gate, judge —
+once per pass, then takes the verdict most passes reached. A tie (an even
+split, for example 5 fail out of 10) breaks toward `fail`. This is a
+deliberate exception to `docs/method.md`, which says a false positive costs
+more everywhere else in the run — the choice here is to let an even split
+surface as a finding for a person to look at, rather than let it resolve
+silently toward `pass`. Every pass is kept in the transcript under `repeats`,
+so a reader can see the 10 replies and 10 verdicts behind the one final
+verdict, not just the final verdict itself.
+
+`--repeats <N>` overrides the default for any provider, including the ones
+that would otherwise run once:
+
+```bash
+# Force 3 passes on a paid key, to sanity-check the repeat mechanism cheaply.
+python -m fincom_runner run \
+  --dataset ../datasets/benchmark-open.csv \
+  --assistant anthropic-check \
+  --provider anthropic:claude-opus-4 \
+  --judge anthropic:claude-opus-4 \
+  --repeats 3 \
+  --out ../submissions
+
+# Run Ollama Cloud once instead of 10 times, for a quick smoke test.
+python -m fincom_runner run \
+  --dataset ../datasets/benchmark-open.csv \
+  --assistant ollama-smoke-test \
+  --provider ollama:qwen3.5:397b \
+  --repeats 1 \
+  --out ../submissions
+```
+
+The 10 passes for a repeated item run one after another, not at once. Use
+`--concurrency` to control how many items are in flight; it does not change how
+many passes one item runs.
+
+## Anthropic and OpenAI — only the models bedrock and ollama cannot reach
+
+`ANTHROPIC_API_KEY` and `OPENAI_API_KEY` now hold ordinary inference keys, not
+admin keys — see `results/README.md` for the earlier state, where neither key
+in the vault could call inference at all.
+
+A model gets an `anthropic:` or `openai:` run only when bedrock and ollama
+cannot reach it. Most of the Anthropic catalogue is already on the
+leaderboard through `bedrock:us.anthropic.*` — Sonnet 4.6, Opus 4.5, Sonnet
+4.5, Haiku 4.5. Most of the OpenAI catalogue on bedrock is the open-weight
+GPT-OSS line, not the hosted GPT models. So the paid keys exist to cover 2
+gaps, not to re-run what already has a row:
+
+- The Claude 5 family — Opus 5, Sonnet 5, Fable 5 — is not entitled on the
+  Bedrock account (`results/roster.json` records the 403s). The native
+  `ANTHROPIC_API_KEY` is the only lane that reaches it.
+- OpenAI's own hosted chat models (the GPT-5.x line, GPT-4o, and so on) have
+  never run at all — bedrock only ever served their open-weight GPT-OSS
+  models, a different artifact from the same company.
+
+Before adding a model to `harness/pipeline/run_paid_keys.sh`, check it is not already
+a leaderboard row under `bedrock:` or `ollama:`. If it is, the paid key would
+be paying to grade a model the free lane already covers.
+
+`harness/pipeline/run_paid_keys.sh` runs this short, hand-picked list — not the full
+roster the reachability probe walks for bedrock and ollama:
+
+```bash
+op run --env-file=secrets.op.env --no-masking -- \
+  bash harness/pipeline/run_paid_keys.sh bedrock:mistral.mistral-large-3-675b-instruct
+```
+
+One implementation note: models from the GPT-5.x line reject the
+`chat.completions` `max_tokens` parameter and require `max_completion_tokens`
+instead. `OpenAiProvider` in `fincom_runner/providers.py` sends
+`max_completion_tokens` for this reason — older models (GPT-4o and earlier)
+accept it too, so 1 parameter name covers the whole `openai:` provider.
 
 ## The deterministic checks
 
@@ -133,12 +223,16 @@ them anyway, and the finding then carries no citation.
 
 ## What a run writes
 
-One run writes one directory under `submissions/<run-id>/`.
+One run writes one directory under `<run-id>/`, wherever `--out` points. This
+repository's own driver scripts (`harness/pipeline/select_judge.sh`,
+`harness/pipeline/score_contestants.sh`) point `--out` at `submissions/judges/` for a
+judge-selection run and `submissions/runs/` for a benchmark run — that split
+is a convention of this repository, not something the harness enforces.
 
 | File | What it holds |
 |---|---|
 | `run.json` | What was run, against what, with what judge, plus the leaderboard. |
-| `transcript.jsonl` | One line per item, pass and fail alike, with the check result, the judge verdict and the final verdict. This is the audit record. |
+| `transcript.jsonl` | One line per item, pass and fail alike, with the check result, the judge verdict and the final verdict. For a repeated item, also every pass under `repeats` and the vote count under `repeat_tally`. This is the audit record. |
 | `report.md` | The same run in human words. Findings first, highest product risk first. |
 
 The finding record follows the shape in `docs/method.md`.
@@ -157,7 +251,7 @@ python -m fincom_runner missrate ../submissions/<run-id>/transcript.jsonl \
 # fincom_runner/prompts.py. The rebuild changes the prompt only — a reply
 # collected under an older prompt stays, so regenerate replies after a
 # rebuild and before anyone labels them.
-python -m fincom_runner prompts ../fincom-bench/benchmark-open.csv
+python -m fincom_runner prompts ../datasets/benchmark-open.csv
 ```
 
 The corrections file is a CSV with a `category` column and at least one of

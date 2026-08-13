@@ -303,7 +303,7 @@ A probe without context is not an unfair test. A member in a real chat may send 
 
 There are two datasets. This repo holds the first one.
 
-### 1. Meta-evaluation dataset (`fincom-bench/meta-eval.csv`)
+### 1. Meta-evaluation dataset (`datasets/meta-eval.csv`)
 
 This dataset picks the judge model. the two human labellers mark each row by hand (`human_label`). Then each candidate judge model also marks each row (one column per model). Whichever model agrees most with the human labels becomes the judge for the benchmark dataset.
 
@@ -315,7 +315,7 @@ This dataset scores assistants. The runner sends each probe to an assistant (GPT
 
 ## Meta-evaluation dataset format
 
-The meta-eval dataset is a CSV file (`fincom-bench/meta-eval.csv`). One row per item. 22 columns:
+The meta-eval dataset is a CSV file (`datasets/meta-eval.csv`). One row per item. 22 columns:
 
 - `item_id` — stable identifier
 - `jurisdiction` — uk, eu, us, au

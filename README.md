@@ -67,11 +67,11 @@ cd harness
 pip install -r requirements.txt
 
 # Check the rules and a dataset. No model, no network, no key.
-python -m fincom_runner validate --dataset ../fincom-bench/benchmark-open.csv
+python -m fincom_runner validate --dataset ../datasets/benchmark-open.csv
 
 # Grade the replies the meta-eval set already holds, deterministic checks only.
 python -m fincom_runner run \
-  --dataset ../fincom-bench/meta-eval.csv \
+  --dataset ../datasets/meta-eval.csv \
   --assistant hand-written-replies \
   --provider dataset --judge none --out ../submissions
 ```
@@ -95,12 +95,14 @@ fincom-bench/
   rules/             conduct and behaviour rules, one markdown file per category in rules/grading/
   sourcebooks/       reference clauses and statutory figures, one markdown file per topic per jurisdiction
   harness/           the runner that executes a run, and its tests
-  meta-eval/         the meta-evaluation harness (separate ticket)
+    pipeline/        the driver scripts that call the runner across many models
   docs/
     method.md        how a run is scored
     rubric.md        the finding categories, the two axes, and the grading scheme
   submissions/       one directory per run, holding the transcript
-  fincom-bench/
+                     judges/  phase 1, one directory per candidate judge
+                     runs/    phase 2, one directory per scored assistant
+  datasets/
     meta-eval.csv         the meta-eval set: 274 probes with replies, labels blank
     benchmark-open.csv    the main evaluation set: 191 probes, no replies, no labels
     benchmark-holdout.csv the future-gated seed set: 83 probes, no replies, no labels
@@ -141,7 +143,7 @@ A rule lands only by pull request. The pull request must attach the citation. On
 
 The benchmark uses one set of 274 probes, applied in two phases.
 
-**Phase 1 — choose the judge (meta-eval).** The file `fincom-bench/meta-eval.csv` holds 274 probes. Each probe has a pre-written reply. Human labellers mark each reply pass or fail. Five candidate judge models also mark each reply. The model with the best macro-F1 against the human labels becomes the judge.
+**Phase 1 — choose the judge (meta-eval).** The file `datasets/meta-eval.csv` holds 274 probes. Each probe has a pre-written reply. Human labellers mark each reply pass or fail. Five candidate judge models also mark each reply. The model with the best macro-F1 against the human labels becomes the judge.
 
 **Phase 2 — score the assistants (benchmark).** The same 274 probes are reused, but the reply column is removed. The runner sends each probe to each assistant. Each assistant produces a reply. The judge scores each reply pass or fail. The result is a pass/fail matrix on the leaderboard. The full benchmark set is the union of `benchmark-open.csv` and `benchmark-holdout.csv`.
 
@@ -160,12 +162,14 @@ The meta-eval set, `meta-eval.csv`, has no open/holdout split. Judge selection i
 
 ## The website
 
-The `src/` directory at the repo root is a Next.js site that publishes this benchmark — the
-leaderboard, the 15 category pages, and the methodology. It is a pure renderer over the files
-already in this repository: it reads `submissions/*/run.json` and `*/transcript.jsonl` directly (no
-duplicated sample data) and reads the real per-jurisdiction citations out of `rules/grading/*.md`
-frontmatter. `submissions/` is gitignored today, so a fresh checkout has none — the site renders that
-honestly as "no benchmark leaderboard yet" rather than failing.
+`app/` at the repo root is a Next.js site that publishes this benchmark — the leaderboard, the 15
+category pages, and the methodology. It is a pure renderer over the files already in this
+repository: the homepage leaderboard reads the small aggregate CSVs in `results/`, and the
+per-model and per-category detail pages read `submissions/judges/*/run.json`,
+`submissions/runs/*/run.json` and their `transcript.jsonl` files directly (no duplicated sample
+data), plus the real per-jurisdiction citations out of `rules/grading/*.md` frontmatter.
+`submissions/` is committed, so a fresh checkout has every run already; a checkout with neither
+still renders that honestly as "no benchmark leaderboard yet" rather than failing.
 
 ```bash
 npm install

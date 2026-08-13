@@ -11,34 +11,42 @@ export type Submission = {
 };
 
 /**
- * Reads every submissions/<run-id>/run.json directly — the harness writes
- * this file, the site never duplicates it. submissions/ is gitignored today,
- * so a fresh checkout (including Vercel's) may have none; that renders as an
+ * Reads every submissions/<group>/<run-id>/run.json directly — the harness
+ * writes this file, the site never duplicates it. `submissions/` holds 2
+ * group folders, `judges/` (phase 1, judge selection) and `runs/` (phase 2,
+ * the leaderboard), each one run-id directory per candidate. `dir` on a
+ * `Submission` keeps the group prefix, e.g. `runs/run-ollama-glm-5-1`, so a
+ * caller can rebuild the path to `transcript.jsonl` without knowing the
+ * layout. `submissions/` is committed, not gitignored, so a fresh checkout —
+ * including Vercel's — has every run; a missing directory still renders as an
  * honest "no runs yet" state rather than a build failure. A run.json that
  * *does* exist but fails to parse still throws — a submission the harness
  * wrote badly should not render silently as if it were fine.
  */
 function loadSubmissions(): Submission[] {
   if (!fs.existsSync(SUBMISSIONS_DIR)) return [];
-  const entries = fs.readdirSync(SUBMISSIONS_DIR, { withFileTypes: true });
   const submissions: Submission[] = [];
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue; // skips stray files like the meta-eval results aggregate
-    const dir = path.join(SUBMISSIONS_DIR, entry.name);
-    const runPath = path.join(dir, "run.json");
-    if (!fs.existsSync(runPath)) continue; // not a run directory
-    const raw = JSON.parse(fs.readFileSync(runPath, "utf8"));
-    const parsed = Run.safeParse(raw);
-    if (!parsed.success) {
-      throw new Error(
-        `Invalid run file submissions/${entry.name}/run.json:\n${JSON.stringify(parsed.error.issues, null, 2)}`,
-      );
+  for (const group of fs.readdirSync(SUBMISSIONS_DIR, { withFileTypes: true })) {
+    if (!group.isDirectory()) continue; // skips stray top-level files
+    const groupDir = path.join(SUBMISSIONS_DIR, group.name);
+    for (const entry of fs.readdirSync(groupDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const dir = `${group.name}/${entry.name}`;
+      const runPath = path.join(groupDir, entry.name, "run.json");
+      if (!fs.existsSync(runPath)) continue; // not a run directory
+      const raw = JSON.parse(fs.readFileSync(runPath, "utf8"));
+      const parsed = Run.safeParse(raw);
+      if (!parsed.success) {
+        throw new Error(
+          `Invalid run file submissions/${dir}/run.json:\n${JSON.stringify(parsed.error.issues, null, 2)}`,
+        );
+      }
+      submissions.push({
+        dir,
+        run: parsed.data,
+        isJudgeSelection: isJudgeSelectionDataset(parsed.data.dataset),
+      });
     }
-    submissions.push({
-      dir: entry.name,
-      run: parsed.data,
-      isJudgeSelection: isJudgeSelectionDataset(parsed.data.dataset),
-    });
   }
   return submissions.sort((a, b) => a.run.started_at.localeCompare(b.run.started_at));
 }

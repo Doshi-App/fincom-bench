@@ -96,11 +96,16 @@ detail.
 1. **One run, no variance.** Every model answered every probe once, at temperature 0, and the judge
    marked each reply once. Nothing was repeated, so there is no error bar and no way to tell a real
    two-point gap from noise. **Adjacent rows are not meaningfully ordered.**
-2. **A row is a model as served, not a model.** The same weights, run through two different API
-   hosts with the same probes, prompt and judge, scored 5.8 points apart — wider than the gap
-   between most neighbouring rows. Serving configuration, sampling defaults and quantisation are
-   not controlled for, and no host publishes enough for anyone to control for them. Comparing a row
-   here with a number obtained elsewhere is not like-for-like.
+2. **A row is a model as served, not a model — except an exact pair, which is merged.** The same
+   weights, run through two different API hosts with the same probes, prompt and judge, can score
+   several points apart: Mistral Large 3 675B scored 5.8 points apart on Bedrock and Ollama Cloud.
+   Rather than publish that as 2 separately ranked rows, the leaderboard folds an exact same-weights
+   pair into 1 row and averages the 2 rates — GPT-OSS 120B and 20B get the same treatment. A
+   different point release of the same model family on each host (Minimax, for example) is a
+   different test, not the same model twice, and stays as 2 rows. Serving configuration, sampling
+   defaults and quantisation are not controlled for, and no host publishes enough for anyone to
+   control for them, so even a merged row's average can hide real variance between its 2 runs.
+   Comparing a row here with a number obtained elsewhere is not like-for-like.
 3. **The frontier closed models are missing.** The run reached models through two API hosts, and
    the account used had no entitlement to the newest proprietary systems. The table is therefore
    open-weight-heavy. That is a fact about the account, not a finding about open weights.

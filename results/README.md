@@ -7,7 +7,7 @@ per-run audit records under `submissions/`.
 |---|---|
 | `judge_selection.csv` | 17 candidate judges scored against the 100 hand-labelled rows, plus 2 baselines. |
 | `model_outputs.csv` | 9,741 rows — one per model per probe: the probe, the reply, and the judge's verdict with its reasoning. |
-| `leaderboard.csv` | 51 models, ranked by pass rate over the probes the judge decided. |
+| `leaderboard.csv` | 48 rows, ranked by pass rate over the probes the judge decided. 3 rows each fold 2 provider runs of the same model into 1, averaged — see "Phase 2" below. |
 | `roster.json` | Every model the reachability probe tried, and why the 9 that failed did. |
 
 ## What ran
@@ -67,7 +67,9 @@ minutes without finishing and is absent from the CSV.
 ## Phase 2 — the leaderboard
 
 53 models answered the 191 open probes under `--permissions none` (the stricter
-2-condition test), and the winning judge marked every reply. 51 are on the board.
+2-condition test), and the winning judge marked every reply. 51 ran cleanly; 3
+same-model pairs across Bedrock and Ollama Cloud then fold into 1 row each (see
+below), so the board holds 48 rows.
 
 Two are not, and neither absence is a result about the model.
 
@@ -86,22 +88,30 @@ Then three things to read the board with.
 - **Pass rate uses only decided items**, and `coverage` says what share that was.
   Ranking needs coverage ≥ 0.80 so a thinly-graded model cannot outrank a fully
   graded one. Every ranked model here cleared 0.90.
-- **The same model scored 5.8 points apart on two hosts.** Mistral Large 3 675B
-  is rank 33 at 65.4 percent through Bedrock and rank 41 at 59.6 percent through
-  Ollama Cloud. Same weights, same probes, same judge, same prompt. Whatever
-  separates them — serving config, sampling defaults, quantisation — is worth
-  more than several adjacent places on this board, and it is a caution against
-  reading gaps of a few points between neighbouring rows as model quality.
+- **Same weights, 2 inference stacks, 1 row.** Mistral Large 3 675B answered
+  every probe twice — once through Bedrock, once through Ollama Cloud, same
+  probes, same judge, same prompt — and the 2 runs scored 5.8 points apart:
+  65.4 percent through Bedrock, 59.6 through Ollama Cloud. Rather than publish
+  that as 2 separately ranked rows, `meta-eval/build_outputs.py` folds an
+  exact same-model pair like this into 1 row and averages the 2 rates: rank 38
+  at 62.5 percent. Both sizes of GPT-OSS get the same treatment. The 5.8-point
+  gap the average is built from is still worth reading as a caution — whatever
+  separates 2 runs of the same weights (serving config, sampling defaults,
+  quantisation) can be wider than the gap between neighbouring rows on this
+  board, so a few adjacent places should read as noise, not a quality signal.
+  A model that is *not* an exact match across providers (Minimax, for
+  example, is a different point release on each host) stays as 2 rows, because
+  that is a different test, not the same model twice.
 
 Top of the board: `minimax.minimax-m2.1` at 76.7 percent, then
 `minimax.minimax-m2.5` at 75.1 and `moonshotai.kimi-k2.5` at 72.1. Bottom:
 `nvidia.nemotron-nano-12b-v2` at 42.0.
 
-The spread across 41 models is 42 to 77 percent, and the frontier Anthropic and
+The spread across 48 rows is 42 to 77 percent, and the frontier Anthropic and
 DeepSeek models sit mid-table rather than on top. Before that is read as a
 finding about model quality, note that it is one judge's opinion, that judge
 agrees with the human labels at kappa 0.64 — substantial, not near-perfect — and
-`fincom-bench/benchmark-open.csv` is published, so no contamination claim is
+`datasets/benchmark-open.csv` is published, so no contamination claim is
 being made. The honest summary is that the pipeline runs end to end and the
 numbers are reproducible from the transcripts, not that the ordering is settled.
 
@@ -110,16 +120,16 @@ numbers are reproducible from the transcripts, not that the ordering is settled.
 ```bash
 set -a; . "$HOME/.hermes/.op.env"; set +a
 
-op run --env-file=secrets.op.env --no-masking -- python3 meta-eval/probe_models.py
-op run --env-file=secrets.op.env --no-masking -- bash meta-eval/run_stage1.sh
-python3 meta-eval/score_judges.py submissions/judge-*/transcript.jsonl
+op run --env-file=secrets.op.env --no-masking -- python3 harness/pipeline/probe_models.py
+op run --env-file=secrets.op.env --no-masking -- bash harness/pipeline/select_judge.sh
+python3 harness/pipeline/score_judges.py submissions/judges/judge-*/transcript.jsonl
 
 op run --env-file=secrets.op.env --no-masking -- \
-  bash meta-eval/run_stage2.sh bedrock:mistral.mistral-large-3-675b-instruct
-python3 meta-eval/build_outputs.py submissions/run-*/transcript.jsonl \
+  bash harness/pipeline/score_contestants.sh bedrock:mistral.mistral-large-3-675b-instruct
+python3 harness/pipeline/build_outputs.py submissions/runs/run-*/transcript.jsonl \
   --judge bedrock:mistral.mistral-large-3-675b-instruct
 ```
 
 `secrets.op.env` holds `op://` references only, so it carries no secret. The
-human labels stay in `meta-eval/human-labels.csv`, which is gitignored — the
-README says they are never published.
+human labels stay in `harness/pipeline/human-labels.csv`, which is gitignored
+— the README says they are never published.

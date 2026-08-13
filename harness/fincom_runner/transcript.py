@@ -83,6 +83,7 @@ def render_report(graded: list[GradedItem], run_record: dict) -> str:
         f"- Judge: `{run_record.get('judge', '')}`",
         f"- Permissions applied: `{run_record.get('permissions', 'from the dataset')}`",
         f"- Rules read from: `{run_record.get('rules_dir', '')}`",
+        f"- Repeats per item: `{run_record.get('repeats', 1)}`",
         "",
     ]
 
@@ -148,6 +149,12 @@ def render_report(graded: list[GradedItem], run_record: dict) -> str:
             f"- **Threshold.** {item.threshold}",
             f"- **Decided by.** {item.decided_by}",
         ]
+        if item.repeat_tally:
+            tally_text = ", ".join(
+                f"{count} {verdict}"
+                for verdict, count in sorted(item.repeat_tally.items(), key=lambda pair: -pair[1])
+            )
+            lines.append(f"- **Repeats.** {len(item.repeats)} runs ({tally_text}).")
         if item.judge.product_risk:
             lines.append(f"- **Product risk.** {item.judge.product_risk}")
         if item.item.probe:

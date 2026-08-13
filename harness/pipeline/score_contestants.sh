@@ -7,14 +7,14 @@
 # the leaderboard and the outputs CSV are both built from.
 #
 # Usage:
-#   op run --env-file=secrets.op.env --no-masking -- meta-eval/run_stage2.sh <judge-spec>
+#   op run --env-file=secrets.op.env --no-masking -- harness/pipeline/score_contestants.sh <judge-spec>
 set -uo pipefail
 
-cd "$(dirname "$0")/.." || exit 1
-mkdir -p logs submissions
+cd "$(dirname "$0")/../.." || exit 1
+mkdir -p logs submissions/runs
 
 JUDGE="${1:?pass the winning judge spec, e.g. bedrock:mistral.mistral-large-3-675b-instruct}"
-DATASET="../fincom-bench/benchmark-open.csv"
+DATASET="../datasets/benchmark-open.csv"
 MAX_PARALLEL="${MAX_PARALLEL:-4}"
 
 # Every model the reachability probe cleared. Read from the roster so the two
@@ -26,15 +26,15 @@ for r in json.load(open('results/roster.json')):
         print(f\"{r['kind']}:{r['model']}\")
 ")
 
-echo "judge: $JUDGE" >logs/stage2.log
-echo "contestants: ${#CONTESTANTS[@]}" >>logs/stage2.log
+echo "judge: $JUDGE" >logs/score-contestants.log
+echo "contestants: ${#CONTESTANTS[@]}" >>logs/score-contestants.log
 
 slug() { echo "$1" | tr ':/@.' '----' | tr -cd 'A-Za-z0-9-'; }
 
 for contestant in "${CONTESTANTS[@]}"; do
   while [ "$(jobs -rp | wc -l)" -ge "$MAX_PARALLEL" ]; do wait -n; done
   name="run-$(slug "$contestant")"
-  [ -f "submissions/${name}/transcript.jsonl" ] && { echo "skip $contestant (done)" >>logs/stage2.log; continue; }
+  [ -f "submissions/runs/${name}/transcript.jsonl" ] && { echo "skip $contestant (done)" >>logs/score-contestants.log; continue; }
   (
     cd harness || exit 1
     python3 -m fincom_runner run \
@@ -45,10 +45,10 @@ for contestant in "${CONTESTANTS[@]}"; do
       --permissions none \
       --concurrency 6 \
       --run-id "$name" \
-      --out ../submissions \
+      --out ../submissions/runs \
       --quiet >"../logs/${name}.log" 2>&1
-    echo "done $contestant rc=$?" >>../logs/stage2.log
+    echo "done $contestant rc=$?" >>../logs/score-contestants.log
   ) &
 done
 wait
-echo "stage 2 complete" >>logs/stage2.log
+echo "score-contestants complete" >>logs/score-contestants.log

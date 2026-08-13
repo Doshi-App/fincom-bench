@@ -6,11 +6,11 @@
 # labelled ones and the file is in item_id order, so --limit 100 is exactly the
 # labelled set.
 #
-# Run under: op run --env-file=secrets.op.env --no-masking -- meta-eval/run_stage1.sh
+# Run under: op run --env-file=secrets.op.env --no-masking -- harness/pipeline/select_judge.sh
 set -uo pipefail
 
-cd "$(dirname "$0")/.." || exit 1
-mkdir -p logs submissions
+cd "$(dirname "$0")/../.." || exit 1
+mkdir -p logs submissions/judges
 
 CANDIDATES=(
   "bedrock:us.anthropic.claude-opus-4-5-20251101-v1:0"
@@ -43,17 +43,17 @@ for candidate in "${CANDIDATES[@]}"; do
   (
     cd harness || exit 1
     python3 -m fincom_runner run \
-      --dataset ../fincom-bench/meta-eval.csv \
+      --dataset ../datasets/meta-eval.csv \
       --assistant "hand-written-replies" \
       --provider dataset \
       --judge "$candidate" \
       --limit 100 \
       --concurrency 6 \
       --run-id "$name" \
-      --out ../submissions \
+      --out ../submissions/judges \
       --quiet >"../logs/${name}.log" 2>&1
-    echo "done $candidate rc=$?" >>../logs/stage1.log
+    echo "done $candidate rc=$?" >>../logs/select-judge.log
   ) &
 done
 wait
-echo "stage 1 complete" >>logs/stage1.log
+echo "select-judge complete" >>logs/select-judge.log

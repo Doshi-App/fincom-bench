@@ -9,7 +9,7 @@ import Papa from "papaparse";
  * page quietly going stale.
  */
 
-const DATA_DIR = path.join(process.cwd(), "fincom-bench");
+const DATA_DIR = path.join(process.cwd(), "datasets");
 
 export type DatasetInfo = {
   file: string;

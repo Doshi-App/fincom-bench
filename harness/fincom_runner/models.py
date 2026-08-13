@@ -211,6 +211,37 @@ class JudgeResult:
         }
 
 
+@dataclass(frozen=True)
+class RepeatRun:
+    """One pass of a repeated item.
+
+    A cheap or self-hosted provider (Ollama Cloud, Bedrock) runs an item
+    several times and the runner keeps every pass, so the audit trail shows
+    why a majority verdict was reached, not just the verdict.
+    """
+
+    run_index: int
+    reply: str
+    gate: GateResult
+    judge: JudgeResult
+    final_verdict: str  # fail | pass | arguable | ungraded | error
+    decided_by: str  # gate | judge | none
+    output_tokens: int | None = None
+
+    def as_dict(self) -> dict:
+        out = {
+            "run_index": self.run_index,
+            "reply": self.reply,
+            "gate": self.gate.as_dict(),
+            "judge": self.judge.as_dict(),
+            "final_verdict": self.final_verdict,
+            "decided_by": self.decided_by,
+        }
+        if self.output_tokens is not None:
+            out["output_tokens"] = self.output_tokens
+        return out
+
+
 @dataclass
 class GradedItem:
     """One item after the runner graded it. This is the transcript row."""
@@ -225,6 +256,11 @@ class GradedItem:
     assistant: str = ""
     finding_id: str = ""
     error: str = ""
+    # Empty unless the run repeated this item. `docs` calls this out: a
+    # provider named in `providers.REPEATED_PROVIDER_KINDS` runs 10 passes and
+    # `final_verdict` above is already the majority across them.
+    repeats: tuple[RepeatRun, ...] = ()
+    repeat_tally: dict = field(default_factory=dict)
 
     @property
     def is_finding(self) -> bool:
@@ -270,4 +306,7 @@ class GradedItem:
             record["product_risk"] = self.judge.product_risk
         if self.error:
             record["error"] = self.error
+        if self.repeats:
+            record["repeats"] = [run.as_dict() for run in self.repeats]
+            record["repeat_tally"] = self.repeat_tally
         return record

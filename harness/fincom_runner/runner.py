@@ -8,6 +8,12 @@ The order for one item is fixed.
 4. Otherwise send the rubric, the item and the gate evidence to the judge.
 5. Record the final verdict, the citation and the reasoning.
 
+`RunConfig.repeats` runs that sequence more than once for the same item and
+takes the majority verdict. `cli.py` sets it to 10 for the `ollama` and
+`bedrock` providers, and to 1 for every other provider — see
+`providers.REPEATED_PROVIDER_KINDS`. Every pass is kept on the graded item, in
+`GradedItem.repeats`, for audit.
+
 The runner never guesses. An item it cannot grade is recorded as `ungraded` or
 `error`, never as a pass.
 """
@@ -21,9 +27,16 @@ from dataclasses import dataclass
 from .figures import FigureBook
 from .gates import run_gate
 from .judge import Judge, build_prompt, threshold_for
-from .models import GateResult, GradedItem, Item, JudgeResult
+from .models import GateResult, GradedItem, Item, JudgeResult, RepeatRun, Rubric, Rule
 from .providers import Provider, ProviderError, Reply
 from .rules import RuleBook
+
+# Ties break toward `fail`, then the rest in this order. This is a deliberate
+# exception to docs/method.md, which says a false positive costs more than a
+# missed finding everywhere else in the run. A tie on a repeated item is rare
+# — an even split of the passes — and the choice here is to let it surface for
+# a person to look at, rather than let a coin flip decide it silently.
+TIE_BREAK_ORDER = ("fail", "error", "arguable", "ungraded", "pass")
 
 
 @dataclass
@@ -37,6 +50,9 @@ class RunConfig:
     include_examples: bool = False
     concurrency: int = 4
     allow_uncited: bool = False
+    # Passes per item. 1 means the old, single-pass behaviour exactly. See
+    # `providers.REPEATED_PROVIDER_KINDS` and `providers.DEFAULT_REPEATS`.
+    repeats: int = 1
 
 
 def finding_id(run_id: str, item: Item) -> str:
@@ -60,6 +76,94 @@ def _apply_permissions(item: Item, override: str) -> Item:
     return Item(**{**item.__dict__, "permissions": override})
 
 
+def _run_once(
+    item: Item,
+    config: RunConfig,
+    provider: Provider,
+    judge: Judge,
+    rubric: Rubric,
+    rule: Rule | None,
+    figure_book: FigureBook | None,
+    run_index: int,
+) -> tuple[Item, RepeatRun]:
+    """One pass over one item: get a reply, gate it, judge it.
+
+    Never raises. A provider failure becomes an `error` pass instead of an
+    exception, so one bad call among several repeats does not sink the item.
+    """
+    try:
+        reply = provider.reply_for(item)
+    except ProviderError as exc:
+        run = RepeatRun(
+            run_index=run_index,
+            reply="",
+            gate=GateResult(applied=False, detail=str(exc)),
+            judge=JudgeResult(verdict="error", model=judge.name, reasoning=str(exc)),
+            final_verdict="error",
+            decided_by="none",
+        )
+        return item, run
+
+    item = Item(**{**item.__dict__, "reply": reply.text, "output_tokens": reply.output_tokens})
+    gate = run_gate(item, reply.text, figure_book)
+
+    if gate.verdict == "fail" and not config.confirm_gate_fails:
+        run = RepeatRun(
+            run_index=run_index,
+            reply=reply.text,
+            gate=gate,
+            judge=JudgeResult(
+                verdict="skipped",
+                model=judge.name,
+                reasoning="The deterministic check failed the item, so the judge did not run.",
+            ),
+            final_verdict="fail",
+            decided_by="gate",
+            output_tokens=reply.output_tokens,
+        )
+        return item, run
+
+    prompt = build_prompt(item, reply.text, rubric, rule, gate, config.include_examples)
+    verdict = judge.mark(prompt)
+
+    if verdict.verdict in ("fail", "pass", "arguable"):
+        final = verdict.verdict
+        decided_by = "judge"
+    elif gate.verdict == "fail":
+        # The judge was asked to confirm the gate and could not answer. The gate
+        # stands, because the gate reads published data.
+        final = "fail"
+        decided_by = "gate"
+    elif gate.verdict == "pass":
+        final = "pass"
+        decided_by = "gate"
+    else:
+        final = "ungraded"
+        decided_by = "none"
+
+    run = RepeatRun(
+        run_index=run_index,
+        reply=reply.text,
+        gate=gate,
+        judge=verdict,
+        final_verdict=final,
+        decided_by=decided_by,
+        output_tokens=reply.output_tokens,
+    )
+    return item, run
+
+
+def _majority(runs: list[RepeatRun]) -> tuple[str, dict[str, int]]:
+    """The verdict most of the runs reached. Ties break toward `fail`."""
+    tally: dict[str, int] = {}
+    for run in runs:
+        tally[run.final_verdict] = tally.get(run.final_verdict, 0) + 1
+    best = max(tally.values())
+    winners = {verdict for verdict, count in tally.items() if count == best}
+    final = next(verdict for verdict in TIE_BREAK_ORDER if verdict in winners)
+    return final, tally
+
+
 def grade_item(
     item: Item,
     config: RunConfig,
@@ -68,7 +172,7 @@ def grade_item(
     rule_book: RuleBook,
     figure_book: FigureBook | None,
 ) -> GradedItem:
-    """Run one item all the way through."""
+    """Run one item all the way through, `config.repeats` times."""
     item = _apply_permissions(item, config.permissions_override)
     rule = rule_book.rule_for_item(item.rule_id, item.category, item.jurisdiction)
     rubric = rule_book.rubric_for(item.category)
@@ -121,60 +225,47 @@ def grade_item(
             finding_id=finding_id(config.run_id, item),
         )
 
-    try:
-        reply = provider.reply_for(item)
-    except ProviderError as exc:
-        return failed(str(exc))
+    passes = max(1, config.repeats)
+    runs = [
+        _run_once(item, config, provider, judge, rubric, rule, figure_book, index)[1]
+        for index in range(passes)
+    ]
+    final, tally = _majority(runs)
+    representative = next(run for run in runs if run.final_verdict == final)
 
-    item = Item(**{**item.__dict__, "reply": reply.text, "output_tokens": reply.output_tokens})
-    gate = run_gate(item, reply.text, figure_book)
+    reasoning = representative.judge.reasoning
+    if passes > 1:
+        reasoning = f"{tally[final]}/{passes} run(s) marked this `{final}`. {reasoning}"
 
-    if gate.verdict == "fail" and not config.confirm_gate_fails:
-        return GradedItem(
-            item=item,
-            rule=rule,
-            gate=gate,
-            judge=JudgeResult(
-                verdict="skipped",
-                model=judge.name,
-                reasoning="The deterministic check failed the item, so the judge did not run.",
-            ),
-            final_verdict="fail",
-            threshold=threshold,
-            decided_by="gate",
-            assistant=config.assistant,
-            finding_id=finding_id(config.run_id, item),
-        )
-
-    prompt = build_prompt(item, reply.text, rubric, rule, gate, config.include_examples)
-    verdict = judge.mark(prompt)
-
-    if verdict.verdict in ("fail", "pass", "arguable"):
-        final = verdict.verdict
-        decided_by = "judge"
-    elif gate.verdict == "fail":
-        # The judge was asked to confirm the gate and could not answer. The gate
-        # stands, because the gate reads published data.
-        final = "fail"
-        decided_by = "gate"
-    elif gate.verdict == "pass":
-        final = "pass"
-        decided_by = "gate"
-    else:
-        final = "ungraded"
-        decided_by = "none"
+    graded_item = Item(
+        **{
+            **item.__dict__,
+            "reply": representative.reply,
+            "output_tokens": representative.output_tokens,
+        }
+    )
 
     return GradedItem(
-        item=item,
+        item=graded_item,
         rule=rule,
-        gate=gate,
-        judge=verdict,
+        gate=representative.gate,
+        judge=JudgeResult(
+            verdict=representative.judge.verdict,
+            model=representative.judge.model,
+            reasoning=reasoning,
+            quoted_text=representative.judge.quoted_text,
+            product_risk=representative.judge.product_risk,
+            raw=representative.judge.raw,
+            output_tokens=representative.judge.output_tokens,
+        ),
         final_verdict=final,
         threshold=threshold,
-        decided_by=decided_by,
+        decided_by=representative.decided_by,
         assistant=config.assistant,
         finding_id=finding_id(config.run_id, item),
-        error=verdict.reasoning if verdict.verdict == "error" else "",
+        error=representative.judge.reasoning if final == "error" else "",
+        repeats=tuple(runs) if passes > 1 else (),
+        repeat_tally=dict(tally) if passes > 1 else {},
     )
 
 

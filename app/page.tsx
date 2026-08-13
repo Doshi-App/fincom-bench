@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { LEADERBOARD, JUDGES, HAS_RESULTS, WINNING_JUDGE } from "@/lib/results";
-import { CATEGORIES } from "@/data/categories";
-import { PassMeter, ActionTag } from "@/components/site";
+import { CATEGORIES } from "@/lib/categories";
+import { PassMeter, ActionTag, GithubIcon, REPO_URL } from "@/lib/site";
 
 export default function Home() {
   return (
@@ -16,6 +16,24 @@ export default function Home() {
           rules from the United Kingdom, the European Union, the United States and Australia. Every
           finding cites the clause it breaks.
         </p>
+
+        <div className="mt-7 flex flex-wrap items-center gap-3">
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg hover:opacity-90"
+          >
+            <GithubIcon className="h-4 w-4" />
+            View the repo on GitHub
+          </a>
+          <Link
+            href="/methodology"
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground hover:bg-surface"
+          >
+            Read the methodology
+          </Link>
+        </div>
       </section>
 
       <section className="mt-14 grid gap-4 sm:grid-cols-2">
@@ -54,9 +72,10 @@ export default function Home() {
             </p>
             <p className="mt-3 max-w-3xl rounded border border-border bg-bg p-3 text-sm text-muted">
               <span className="font-medium text-fg">Read the gaps with care.</span> These are one
-              judge&apos;s marks from a single run, with no repeat for variance. The same model
-              served by two hosts scored 5.8 points apart here, which is wider than most adjacent
-              rows — so neighbouring places are not a quality ranking. See{" "}
+              judge&apos;s marks from a single run, with no repeat for variance. A model run
+              through 2 inference hosts (Bedrock and Ollama Cloud) is 1 row here, averaged — and
+              the 2 runs it averages can land several points apart, wider than most gaps between
+              neighbouring rows — so neighbouring places are not a quality ranking. See{" "}
               <Link href="/methodology" className="text-accent hover:underline">
                 methodology
               </Link>{" "}

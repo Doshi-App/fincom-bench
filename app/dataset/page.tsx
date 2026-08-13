@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { META_EVAL, BENCHMARK_OPEN, BENCHMARK_HOLDOUT, type DatasetInfo } from "@/lib/datasets";
-import { getCategory } from "@/data/categories";
+import { getCategory } from "@/lib/categories";
 
 export const metadata: Metadata = { title: "Dataset" };
 
@@ -44,7 +44,7 @@ function DatasetSection({ title, description, info }: { title: string; descripti
     <section className="mt-12">
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
-        <code className="rounded border border-border bg-surface px-1.5 py-0.5 text-xs">fincom-bench/{info.file}</code>
+        <code className="rounded border border-border bg-surface px-1.5 py-0.5 text-xs">datasets/{info.file}</code>
       </div>
       <p className="mt-2 max-w-2xl text-sm text-muted">{description}</p>
       <p className="mt-3 text-sm">

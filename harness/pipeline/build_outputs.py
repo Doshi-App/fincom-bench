@@ -15,6 +15,12 @@ Two honesty rules are enforced here rather than left to the reader.
   and the column is there to say so.
 - **A model that is also the judge is flagged.** The README says no assistant
   grades its own leaderboard row. Its row carries `self_graded=yes`.
+- **The same weights on 2 inference stacks are 1 leaderboard row, not 2.**
+  `merge_cross_provider` folds each pair in `MERGE_GROUPS` — currently Mistral
+  Large 3 675B and both GPT-OSS sizes — into 1 row, averaging every rate
+  column and summing every count column. `results/model_outputs.csv` stays
+  unmerged; only the leaderboard summary combines. See `MERGE_GROUPS` for why
+  a different point release does not match and stays 2 rows.
 """
 
 from __future__ import annotations
@@ -42,6 +48,27 @@ LEADERBOARD_FIELDS = [
 # A model must have this share of its probes decided to earn a rank.
 MIN_COVERAGE = 0.80
 
+# Same weights, 2 inference stacks — these pairs fold into 1 leaderboard row.
+# Keyed by the exact `provider:model` spec each side was run under, so a
+# different point release (e.g. Minimax m2.5 on Bedrock vs m2.7 on Ollama)
+# does not match and stays 2 separate rows; that is a different test, not the
+# same model twice. See results/README.md for why the row is an average, not
+# a pooled recount.
+MERGE_GROUPS = {
+    "mistral-large-3-675b-instruct": (
+        "bedrock:mistral.mistral-large-3-675b-instruct",
+        "ollama:mistral-large-3:675b",
+    ),
+    "gpt-oss-120b": (
+        "bedrock:openai.gpt-oss-120b-1:0",
+        "ollama:gpt-oss:120b",
+    ),
+    "gpt-oss-20b": (
+        "bedrock:openai.gpt-oss-20b-1:0",
+        "ollama:gpt-oss:20b",
+    ),
+}
+
 # The behaviour axis is conduct toward the member; compliance is the rulebook.
 # `axis_of` in the runner owns the mapping — this reads it rather than restating.
 
@@ -61,6 +88,55 @@ def split_spec(assistant: str) -> tuple[str, str]:
     return (provider, model) if model else ("", assistant)
 
 
+def _avg(values: list[float]) -> float | None:
+    return round(sum(values) / len(values), 4) if values else None
+
+
+def merge_cross_provider(board: list[dict]) -> list[dict]:
+    """Fold each exact pair in `MERGE_GROUPS` into 1 row, averaged.
+
+    Rate columns (`pass_rate`, `fail_rate`, `coverage`, the 2 axis rates,
+    `avg_reply_tokens`) average the 2 providers' numbers 50/50. Count columns
+    (`items`, `decided`, `passes`, ...) sum, since they describe how much ran,
+    not how well it did. `self_graded` carries over if either side is the
+    judge. A pair with only 1 side present (the other never ran, or errored
+    out entirely) is left as its own unmerged row rather than merged with
+    nothing.
+    """
+    by_key = {f"{row['provider']}:{row['model']}": row for row in board}
+    consumed: set[str] = set()
+    merged: list[dict] = []
+    for name, members in MERGE_GROUPS.items():
+        rows = [by_key[key] for key in members if key in by_key]
+        if len(rows) < 2:
+            continue
+        consumed.update(members)
+        behaviour = [float(r["behaviour_pass_rate"]) for r in rows if r["behaviour_pass_rate"] not in ("", None)]
+        compliance = [float(r["compliance_pass_rate"]) for r in rows if r["compliance_pass_rate"] not in ("", None)]
+        tokens = [r["avg_reply_tokens"] for r in rows if r["avg_reply_tokens"] not in ("", None)]
+        merged.append({
+            "model": name,
+            "provider": "+".join(sorted({r["provider"] for r in rows})),
+            "self_graded": "yes" if any(r["self_graded"] == "yes" for r in rows) else "no",
+            "items": sum(r["items"] for r in rows),
+            "decided": sum(r["decided"] for r in rows),
+            "passes": sum(r["passes"] for r in rows),
+            "fails": sum(r["fails"] for r in rows),
+            "arguable": sum(r["arguable"] for r in rows),
+            "ungraded": sum(r["ungraded"] for r in rows),
+            "errors": sum(r["errors"] for r in rows),
+            "pass_rate": _avg([r["pass_rate"] for r in rows if r["pass_rate"] is not None]),
+            "fail_rate": _avg([r["fail_rate"] for r in rows if r["fail_rate"] is not None]),
+            "coverage": _avg([r["coverage"] for r in rows if r["coverage"] is not None]) or 0.0,
+            "behaviour_pass_rate": str(_avg(behaviour)) if behaviour else "",
+            "compliance_pass_rate": str(_avg(compliance)) if compliance else "",
+            "avg_reply_tokens": round(sum(tokens) / len(tokens)) if tokens else "",
+            "judge": rows[0]["judge"],
+        })
+    survivors = [row for row in board if f"{row['provider']}:{row['model']}" not in consumed]
+    return survivors + merged
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("transcript", nargs="+")
@@ -70,7 +146,7 @@ def main() -> int:
     args = parser.parse_args()
 
     import sys
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from fincom_runner.models import axis_of  # noqa: PLC0415
 
     rows: list[dict] = []
@@ -152,6 +228,8 @@ def main() -> int:
             "avg_reply_tokens": round(sum(tokens) / len(tokens)) if tokens else "",
             "judge": args.judge,
         })
+
+    board = merge_cross_provider(board)
 
     # A model graded on a handful of probes is not comparable to one graded on
     # all of them, however good its rate looks. Rank the ones with real

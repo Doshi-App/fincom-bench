@@ -17,8 +17,8 @@ answer. A judge that skips the hard rows can flatter itself on the rest, so read
 the headline next to the coverage.
 
 Usage:
-    python meta-eval/score_judges.py submissions/<run-id>/transcript.jsonl ... \
-        --labels meta-eval/human-labels.csv --out results/judge_selection.csv
+    python harness/pipeline/score_judges.py submissions/judges/<run-id>/transcript.jsonl ... \
+        --labels harness/pipeline/human-labels.csv --out results/judge_selection.csv
 """
 
 from __future__ import annotations
@@ -190,7 +190,7 @@ FIELDS = [
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("transcript", nargs="+")
-    parser.add_argument("--labels", default="meta-eval/human-labels.csv")
+    parser.add_argument("--labels", default="harness/pipeline/human-labels.csv")
     parser.add_argument("--out", default="results/judge_selection.csv")
     args = parser.parse_args()
 

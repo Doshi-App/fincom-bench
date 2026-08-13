@@ -12,7 +12,7 @@ The primary test type is chat — a probe sent to an assistant and the reply gra
 
 A chat test is a probe plus a reply. The probe is a realistic user message. The reply is what the assistant produced. The judge scores the reply against the rule's rubric.
 
-The dataset (`fincom-bench/meta-eval.csv`) holds 274 chat items. Each item has:
+The dataset (`datasets/meta-eval.csv`) holds 274 chat items. Each item has:
 - the probe (what the user said)
 - the reply (what the assistant said, written as a realistic breach)
 - the human label (`true` for a finding, `false` for a pass)

@@ -5,7 +5,7 @@ does not care how the provider gets it. This is what lets one runner score
 lesson content, the Doshi FCP agent, and a third-party assistant used through
 its ordinary consumer interface.
 
-Five providers ship with the runner.
+Seven providers ship with the runner.
 
 - `dataset` — the reply is already in the dataset `reply` column.
 - `replies` — the reply comes from a 2-column CSV a person filled in by hand.
@@ -14,9 +14,16 @@ Five providers ship with the runner.
   the FCP agent and for any assistant behind a service.
 - `anthropic` — the runner calls the Anthropic API.
 - `openai` — the runner calls the OpenAI API.
+- `bedrock` — the runner calls a model on AWS Bedrock.
+- `ollama` — the runner calls a model on Ollama Cloud.
 
 A provider that needs a key reads it from the environment. No key is ever
 written to a transcript.
+
+`bedrock` and `ollama` are cheap or self-hosted, so the runner repeats each
+item 10 times on them and takes the majority verdict by default. `anthropic`
+and `openai` are paid frontier keys, so the runner calls them once. See
+`REPEATED_PROVIDER_KINDS` above and `RunConfig.repeats` in `runner.py`.
 """
 
 from __future__ import annotations
@@ -33,6 +40,18 @@ from .models import Item
 
 DEFAULT_TIMEOUT = 120
 DEFAULT_MAX_TOKENS = 1024
+
+# `ollama` and `bedrock` are cheap or self-hosted, so the runner repeats each
+# item on them and takes the majority verdict — 1 flaky reply does not decide
+# a finding. `anthropic` and `openai` are paid frontier keys, so the runner
+# calls them once. See `RunConfig.repeats` in `runner.py` and `docs/next-run.md`.
+REPEATED_PROVIDER_KINDS = frozenset({"ollama", "bedrock"})
+DEFAULT_REPEATS = 10
+
+
+def provider_kind(spec: str) -> str:
+    """The provider kind named in a `kind:argument` spec, lower-cased."""
+    return spec.partition(":")[0].strip().lower()
 
 
 class ProviderError(Exception):
@@ -193,7 +212,7 @@ class OpenAiProvider(Provider):
         messages.append({"role": "user", "content": item.probe})
         response = self.client.chat.completions.create(
             model=self.model,
-            max_tokens=self.max_tokens,
+            max_completion_tokens=self.max_tokens,
             messages=messages,
         )
         output_tokens = None
@@ -263,9 +282,8 @@ def build_provider(spec: str, replies_path: Path | None = None) -> Provider:
     `anthropic:claude-opus-4`, `openai:gpt-4o`,
     `bedrock:us.anthropic.claude-opus-5`, `ollama:qwen3.5:397b`.
     """
-    kind, _, argument = spec.partition(":")
-    kind = kind.strip().lower()
-    argument = argument.strip()
+    kind = provider_kind(spec)
+    argument = spec.partition(":")[2].strip()
 
     if kind == "dataset":
         return DatasetProvider()

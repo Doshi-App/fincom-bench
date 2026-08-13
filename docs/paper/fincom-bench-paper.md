@@ -8,9 +8,9 @@ Authors: the FinCom Bench team, Doshi.
 
 ## Status of this version
 
-This is version v1.1. Sections 1 to 7 and 9 to 10 describe a built artifact. Section 8 now reports the first run: 100 of the 274 meta-eval rows are labelled by hand, a judge has been selected against them, and 51 models have been scored. Section 7's agreement statistic is reported over those 100 rows.
+This is version v1.1. Sections 1 to 7 and 9 to 10 describe a built artifact. Section 8 now reports the first run: 100 of the 274 meta-eval rows are labelled by hand, a judge has been selected against them, and 51 models have been scored, published as 48 leaderboard rows once 3 exact same-model pairs across hosts are merged into 1 row each. Section 7's agreement statistic is reported over those 100 rows.
 
-**These are preliminary numbers and section 8.4 says what they cannot carry.** In short: one judge, one pass, no repeat for variance; the frontier hosted models are absent because the account used had no entitlement to them; and the same weights served by two different hosts scored 5.8 points apart, which is wider than the gap between most adjacent rows. A reader who takes the ordering of neighbouring rows as a quality ranking is reading more than this run supports.
+**These are preliminary numbers and section 8.4 says what they cannot carry.** In short: one judge, one pass, no repeat for variance; the frontier hosted models are absent because the account used had no entitlement to them; and the same weights served by two different hosts can score several points apart — 5.8 points for the widest of the 3 merged pairs — which the leaderboard now averages into 1 row rather than publish as 2. A reader who takes the ordering of neighbouring rows as a quality ranking is reading more than this run supports.
 
 Every table in this paper that has no numbers in it says so in the table itself. No number in this paper is a placeholder dressed as a result.
 
@@ -317,7 +317,7 @@ Product recommendation is deliberately the largest category, at 36 probes. It is
 
 The same 274 probes are used twice, for two different jobs.
 
-**Pass 1 chooses the judge.** `fincom-bench/meta-eval.csv` holds all 274 probes with a **pre-written reply** in each row. Two human labellers read the rule and mark each reply pass or fail. Five candidate judge models mark the same rows with no sight of the human labels. The model whose labels agree most with the humans, by macro F1 per category, becomes the judge.
+**Pass 1 chooses the judge.** `datasets/meta-eval.csv` holds all 274 probes with a **pre-written reply** in each row. Two human labellers read the rule and mark each reply pass or fail. Five candidate judge models mark the same rows with no sight of the human labels. The model whose labels agree most with the humans, by macro F1 per category, becomes the judge.
 
 **Pass 2 scores the assistants.** The same 274 probes are reused with the reply column removed. They are split into `benchmark-open.csv` (191 rows) and `benchmark-holdout.csv` (83 rows). All three dataset files carry the structured deployment-configuration system prompt (§3.5). A recorded reply must come from the prompt recorded next to it, so when a prompt changes, the pass-1 replies are regenerated before anyone labels them. The runner sends each probe to each assistant under test, each assistant writes its own reply, and the pass-1 winning judge marks every reply against the same rules.
 
@@ -528,14 +528,14 @@ The first run, executed 2026-08-12/13. It is a run of the machinery, not the run
 
 **Phase 1 — judge selection.** 100 of the 274 meta-eval rows carry a hand label (92 fail, 8 pass). 17 candidate judges marked those rows through the `dataset` provider, so the replies and the rubric were identical across candidates and only the judge varied. `mistral-large-3-675b` won on macro-F1 at 0.8194, with Cohen's kappa 0.639 and MCC 0.640, ahead of `claude-sonnet-4-6` at 0.7606. Two degenerate baselines were scored alongside the candidates: always-fail reaches 92 per cent accuracy on this label distribution and 0.000 kappa, which is why section 7 selects on macro-F1 and reports kappa, and does not report accuracy.
 
-**Phase 2 — the leaderboard.** 53 models were sent the 191 open probes under the 2-condition test, and the phase 1 winner marked every reply. 51 are ranked; 2 are excluded for reasons that are not about the model (one billing, one rate limit). Pass rates run from 76.7 per cent to 42.0 per cent. The full per-model table is `results/leaderboard.csv`, and `results/model_outputs.csv` carries all 9,741 model-item rows with the reply and the judge's reasoning for each.
+**Phase 2 — the leaderboard.** 53 models were sent the 191 open probes under the 2-condition test, and the phase 1 winner marked every reply. 51 ran cleanly; 2 are excluded for reasons that are not about the model (one billing, one rate limit). Of the 51, 3 pairs are the same weights served through 2 different hosts (Bedrock and Ollama Cloud) and are merged into 1 row each, averaging the 2 rates — see 8.4.2 — leaving 48 ranked rows. Pass rates run from 76.7 per cent to 42.0 per cent. The full per-model table is `results/leaderboard.csv`, and `results/model_outputs.csv` carries all 9,741 model-item rows, unmerged, with the reply and the judge's reasoning for each.
 
 ### 8.4 What the v1.1 numbers cannot carry
 
 Five things, each of which would change the table if addressed.
 
 1. **One run, no variance.** Every model was sent every probe exactly once, at temperature 0, and the judge marked each reply once. There is no repeat, so there is no error bar. A gap of two or three points between adjacent rows is inside the noise this design cannot measure. Ordering claims need repeated runs; this one does not have them.
-2. **The serving host moves the score.** Mistral Large 3 675B was run twice, on two hosts, with the same weights, probes, prompt and judge. It scored 65.4 per cent on one and 59.6 on the other — 5.8 points, wider than the gap between most neighbouring rows. Whatever produces it (sampling defaults, serving configuration, quantisation) is not controlled for here, and it means **a row identifies a model *as served*, not a model.** Two people benchmarking "the same model" on different hosts should expect to disagree.
+2. **The serving host moves the score.** Mistral Large 3 675B was run twice, on two hosts, with the same weights, probes, prompt and judge. It scored 65.4 per cent on one and 59.6 on the other — 5.8 points, wider than the gap between most neighbouring rows. Whatever produces it (sampling defaults, serving configuration, quantisation) is not controlled for here, and it means **a row identifies a model *as served*, not a model.** Rather than publish the 2 hosts as 2 separately ranked rows, `results/leaderboard.csv` folds an exact same-weights pair like this into 1 row and averages the 2 rates — GPT-OSS 120B and 20B get the same treatment. A different point release of the same model family on each host is a different test, not the same model twice, and stays as 2 rows. The average hides the 5.8-point spread it is built from, so two people benchmarking "the same model" on different hosts should still expect to disagree by about that much.
 3. **The frontier hosted models are missing.** The run reached models through two API hosts. The newest closed frontier models were not available on the account used — some by entitlement, some by billing — so the leading proprietary systems are absent and the strongest results here come from open-weight models. This is a statement about the account, not about the field.
 4. **The judge agrees with people at kappa 0.64.** That is substantial agreement, not near-perfect. Every leaderboard number inherits it, and a judge that disagrees with a labeller on roughly one contested row in three will move a model's rate by more than the distance between adjacent rows.
 5. **The pass class rests on 8 rows.** Of 100 labelled rows, 8 are pass. Every pass-side precision and recall in section 7, and therefore the choice of judge itself, stands on those 8. This is the single cheapest thing to fix and the one that would firm up the most.
@@ -594,7 +594,7 @@ A second, structural caveat: PRIN 2A binds Financial Conduct Authority-authorise
 
 The benchmark reaches a model through an API host, and the host is part of what is measured. Section 8.4.2 records the case that showed it: identical weights on two hosts, 5.8 points apart, larger than the gap between most adjacent leaderboard rows.
 
-Nothing in the harness controls for serving configuration, sampling defaults or quantisation, and no host publishes enough for a submitter to control for them either. So a leaderboard row names a model, a host and a date, and a comparison against a row obtained elsewhere is not like-for-like. A future version should either fix the host per model and say so on the row, or run the same weights across several hosts and publish the spread as the measurement error it is.
+Nothing in the harness controls for serving configuration, sampling defaults or quantisation, and no host publishes enough for a submitter to control for them either. The mitigation this version takes: where 2 hosts serve the exact same weights, the leaderboard merges them into 1 row and averages the 2 rates, rather than publish the host difference as if it were a model difference. That trades one problem for a smaller one — the merged row still names a model and a date but no longer a single host, and its average hides the spread it is built from. A comparison against a row obtained elsewhere is still not like-for-like. A future version should either fix the host per model and say so on the row, or run the same weights across several hosts and publish the full spread as the measurement error it is, rather than collapse it to a mean.
 
 A second consequence: coverage of the field is a property of the account that ran it. The v1.1 run reached no frontier closed model, because the account it used had no entitlement to them. A reader should not read the resulting open-weight-heavy ordering as a finding about open weights.
 
@@ -702,9 +702,9 @@ Collected in one place so a reader does not have to assemble it from nine sectio
 | Judge macro F1 per category | Not measured | Too few rows per category to support it |
 | Judge selected | `mistral-large-3-675b` | — |
 | Judge run-to-run variance | Not measured | Repeated judge runs at the same temperature |
-| Assistant scores | 51 models, single run | Repeats, for an error bar |
+| Assistant scores | 51 models, single run, published as 48 rows after 3 same-model host pairs are merged | Repeats, for an error bar |
 | Frontier closed models | Absent | Account entitlement and billing, see 9.6 |
-| Serving-host effect | Observed once at 5.8 points, not characterised | The same weights run across several hosts |
+| Serving-host effect | Observed at 5.8 points on 1 pair, mitigated by averaging into 1 row, not characterised | The same weights run across several hosts |
 | Recall against filed corrections | None | The 500 filed corrections file |
 | Recall bar per category | Not derived | Re-derivation over the 254-request denominator |
 | Held-out split integrity | Claim dropped — all probes published, see 9.2 | Nothing — decided in v1 |

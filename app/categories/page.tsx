@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { COMPLIANCE_CATEGORIES, BEHAVIOUR_CATEGORIES } from "@/data/categories";
-import { ActionTag } from "@/components/site";
+import { COMPLIANCE_CATEGORIES, BEHAVIOUR_CATEGORIES } from "@/lib/categories";
+import { ActionTag } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Categories" };
 

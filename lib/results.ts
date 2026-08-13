@@ -5,11 +5,10 @@ import Papa from "papaparse";
 /**
  * Reads the published result CSVs in `results/`.
  *
- * The leaderboard used to be assembled from `submissions/*`, which is
- * gitignored — so a deployed build had no runs and rendered "no leaderboard
- * yet" however many had actually been scored. The transcripts are 42 MB and
- * exist to be audited, not to be read by a web page on every build, so the
- * site reads the two small CSVs the harness aggregates instead:
+ * The leaderboard used to be assembled from `submissions/*` directly. That
+ * directory is committed now, but its transcripts are tens of MB and exist to
+ * be audited, not to be read by a web page on every build, so the site reads
+ * the two small CSVs the harness aggregates instead:
  *
  *   results/leaderboard.csv       one row per model
  *   results/judge_selection.csv   one row per candidate judge

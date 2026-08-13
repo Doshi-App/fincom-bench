@@ -86,7 +86,7 @@ class BenchmarkDatasetTest(unittest.TestCase):
     """Every benchmark row carries a configuration that agrees with its columns."""
 
     def check_file(self, name: str):
-        items = load_chat_items(REPO / "fincom-bench" / name)
+        items = load_chat_items(REPO / "datasets" / name)
         for item in items:
             self.assertIn(MARKER, item.system_prompt, item.item_id)
             config = config_of(item.system_prompt)

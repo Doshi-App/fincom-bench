@@ -23,9 +23,15 @@ from .dataset import DatasetError, load_items
 from .figures import FigureBook, FigureError
 from .judge import build_judge
 from .leaderboard import leaderboard, load_corrections, miss_rate
-from .models import GateResult, GradedItem, Item, JudgeResult
+from .models import GateResult, GradedItem, Item, JudgeResult, RepeatRun
 from .prompts import PromptError, rebuild_dataset_prompts
-from .providers import ProviderError, build_provider
+from .providers import (
+    DEFAULT_REPEATS,
+    REPEATED_PROVIDER_KINDS,
+    ProviderError,
+    build_provider,
+    provider_kind,
+)
 from .rules import RuleBook, RuleError
 from .runner import RunConfig, grade_items
 from .transcript import now_stamp, run_id_for, write_transcript
@@ -136,6 +142,17 @@ def cmd_run(args) -> int:
     )
     judge = build_judge(args.judge)
 
+    # A cheap or self-hosted provider (ollama, bedrock) runs each item 10
+    # times and takes the majority verdict, because one flaky reply should
+    # not decide a finding. A paid frontier key (anthropic, openai) runs
+    # once, because each call costs real money. --repeats overrides either.
+    if args.repeats is not None:
+        repeats = args.repeats
+    elif provider_kind(args.provider) in REPEATED_PROVIDER_KINDS:
+        repeats = DEFAULT_REPEATS
+    else:
+        repeats = 1
+
     run_id = args.run_id or run_id_for(args.assistant)
     config = RunConfig(
         assistant=args.assistant,
@@ -145,6 +162,7 @@ def cmd_run(args) -> int:
         include_examples=args.include_examples,
         concurrency=args.concurrency,
         allow_uncited=args.allow_uncited,
+        repeats=repeats,
     )
 
     started_at = now_stamp()
@@ -160,8 +178,9 @@ def cmd_run(args) -> int:
             print(f"\r  graded {done}/{total}", end="", file=sys.stderr, flush=True)
 
     if not args.quiet:
+        repeat_note = f", {repeats} repeats per item" if repeats > 1 else ""
         print(
-            f"Run {run_id}: {total} items, provider `{args.provider}`, "
+            f"Run {run_id}: {total} items, provider `{args.provider}`{repeat_note}, "
             f"judge `{args.judge}`.",
             file=sys.stderr,
         )
@@ -185,6 +204,7 @@ def cmd_run(args) -> int:
         "items": total,
         "confirm_gate_fails": args.confirm_gate_fails,
         "include_examples": args.include_examples,
+        "repeats": repeats,
     }
 
     if args.corrections:
@@ -247,6 +267,29 @@ def _graded_from_transcript(path: Path) -> list[GradedItem]:
             )
             judge = record.get("judge", {})
             gate = record.get("gate", {})
+            repeats = tuple(
+                RepeatRun(
+                    run_index=raw_run.get("run_index", index),
+                    reply=raw_run.get("reply", ""),
+                    gate=GateResult(
+                        applied=bool(raw_run.get("gate", {}).get("applied")),
+                        verdict=raw_run.get("gate", {}).get("verdict", "not_applicable"),
+                        detail=raw_run.get("gate", {}).get("detail", ""),
+                        evidence=tuple(raw_run.get("gate", {}).get("evidence", ())),
+                        figure_id=raw_run.get("gate", {}).get("figure_id", ""),
+                    ),
+                    judge=JudgeResult(
+                        verdict=raw_run.get("judge", {}).get("verdict", "skipped"),
+                        model=raw_run.get("judge", {}).get("model", ""),
+                        reasoning=raw_run.get("judge", {}).get("reasoning", ""),
+                        quoted_text=raw_run.get("judge", {}).get("quoted_text", ""),
+                    ),
+                    final_verdict=raw_run.get("final_verdict", "ungraded"),
+                    decided_by=raw_run.get("decided_by", "none"),
+                    output_tokens=raw_run.get("output_tokens"),
+                )
+                for index, raw_run in enumerate(record.get("repeats", ()))
+            )
             graded.append(
                 GradedItem(
                     item=item,
@@ -272,6 +315,8 @@ def _graded_from_transcript(path: Path) -> list[GradedItem]:
                     assistant=record.get("assistant", ""),
                     finding_id=record.get("finding_id", ""),
                     error=record.get("error", ""),
+                    repeats=repeats,
+                    repeat_tally=dict(record.get("repeat_tally", {})),
                 )
             )
     return graded
@@ -363,6 +408,12 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--categories", nargs="*", help="Grade these categories only.")
     run.add_argument("--jurisdictions", nargs="*", help="Grade these jurisdictions only.")
     run.add_argument("--concurrency", type=int, default=4, help="Items in flight. Default: 4.")
+    run.add_argument(
+        "--repeats",
+        type=int,
+        help="Passes per item, decided by majority vote. Default: 10 for the "
+        "ollama and bedrock providers, 1 for every other provider.",
+    )
     run.add_argument(
         "--confirm-gate-fails",
         action="store_true",

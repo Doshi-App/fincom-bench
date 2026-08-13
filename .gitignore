@@ -8,7 +8,8 @@
 __pycache__/
 *.py[cod]
 
-.env
+*.env
+!secrets.op.env
 
 # Node / Next.js build artifacts for the website.
 node_modules/
@@ -19,7 +20,8 @@ out/
 next-env.d.ts
 
 # Human meta-eval labels are never published (see README "The dataset").
-meta-eval/human-labels.csv
+harness/pipeline/human-labels.csv
 
 # Run logs from the harness driver scripts.
 logs/
+.vercel

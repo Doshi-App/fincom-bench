@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, getCategory } from "@/data/categories";
+import { CATEGORIES, getCategory } from "@/lib/categories";
 import { jurisdictionsForCategory, probeForCategory } from "@/lib/rules";
 import { submissionsCoveringCategory, categoryTotals, exemplarsFor } from "@/lib/submissions";
-import { ActionTag, VerdictTag } from "@/components/site";
+import { ActionTag, VerdictTag } from "@/lib/site";
 
 export function generateStaticParams() {
   return CATEGORIES.map((c) => ({ id: c.id }));
