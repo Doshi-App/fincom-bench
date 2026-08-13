@@ -121,6 +121,23 @@ export function Footer() {
           Model providers have not been contacted about their inclusion on this leaderboard. If a
           provider asks for its model to be removed, it will be removed.
         </p>
+        <p className="mt-4 max-w-2xl">
+          Want a model scored?{" "}
+          <a
+            href="mailto:benji@doshi.app?subject=FinCom%20Bench%3A%20score%20request%20(model)"
+            className="text-accent hover:underline"
+          >
+            Email us
+          </a>
+          . Want your bank&apos;s own harness scored?{" "}
+          <a
+            href="mailto:benji@doshi.app?subject=FinCom%20Bench%3A%20score%20request%20(harness)"
+            className="text-accent hover:underline"
+          >
+            Email us
+          </a>
+          .
+        </p>
         <p className="mt-4">
           Not affiliated with or endorsed by the FCA, the EU, the CFPB, the FTC, or ASIC.
         </p>

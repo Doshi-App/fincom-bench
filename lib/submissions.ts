@@ -61,9 +61,20 @@ export const LEADERBOARD_RUNS = SUBMISSIONS.filter((s) => !s.isJudgeSelection);
 
 export const HAS_LEADERBOARD_DATA = LEADERBOARD_RUNS.length > 0;
 
+// "hand-written-replies" is not a model. Every judge-selection run.json sets
+// `assistant` to this literal string, because every candidate judge grades
+// the same human-written reference replies in phase 1 (see
+// harness/pipeline/select_judge.sh). It is not the candidate's own name, so
+// it cannot tell 1 judge candidate apart from another — excluded here so it
+// never gets a /models page pretending to be a benchmarked assistant.
+const NOT_A_MODEL = new Set(["hand-written-replies"]);
+
 export function allAssistants(): string[] {
   const seen = new Set<string>();
-  for (const s of SUBMISSIONS) seen.add(s.run.assistant);
+  for (const s of SUBMISSIONS) {
+    if (NOT_A_MODEL.has(s.run.assistant)) continue;
+    seen.add(s.run.assistant);
+  }
   return [...seen.values()];
 }
 
