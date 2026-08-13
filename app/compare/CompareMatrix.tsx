@@ -6,6 +6,7 @@ export type MatrixModel = {
   model: string;
   provider: string;
   rank: number | null;
+  failRate: number | null;
 };
 
 export type MatrixCategory = {
@@ -23,18 +24,35 @@ function cellStyle(rate: number | null): React.CSSProperties {
   return { backgroundColor: "var(--fail)", opacity: Math.max(0.08, Math.min(0.95, rate)) };
 }
 
-function CategoryHeader({ category }: { category: MatrixCategory }) {
+function SortArrow({ active, dir }: { active: boolean; dir: "asc" | "desc" }) {
+  if (!active) return null;
+  return <span className="text-accent">{dir === "asc" ? " ↑" : " ↓"}</span>;
+}
+
+function CategoryHeader({
+  category,
+  active,
+  dir,
+  onSort,
+}: {
+  category: MatrixCategory;
+  active: boolean;
+  dir: "asc" | "desc";
+  onSort: () => void;
+}) {
   return (
     <th
-      className="border-b border-border px-1 py-2 text-left align-bottom font-normal text-muted"
-      title={category.label}
+      className={`border-b border-border px-1 py-2 text-left align-bottom font-normal ${active ? "bg-accent/10 text-foreground" : "text-muted"}`}
     >
-      <span
-        className="inline-block whitespace-nowrap text-[11px]"
+      <button
+        onClick={onSort}
+        title={`Sort by ${category.label}`}
+        className="inline-block whitespace-nowrap text-[11px] hover:text-foreground"
         style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
       >
         {category.label}
-      </span>
+        <SortArrow active={active} dir={dir} />
+      </button>
     </th>
   );
 }
@@ -102,6 +120,8 @@ export function CompareMatrix({
 }) {
   const [pinned, setPinned] = useState<string[]>([]);
   const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState<string>("rank");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const compliance = useMemo(() => categories.filter((c) => c.axis === "compliance"), [categories]);
   const behaviour = useMemo(() => categories.filter((c) => c.axis === "behaviour"), [categories]);
@@ -113,12 +133,37 @@ export function CompareMatrix({
     return models.filter((m) => m.model.toLowerCase().includes(q) || m.provider.toLowerCase().includes(q));
   }, [models, query]);
 
+  const sorted = useMemo(() => {
+    function valueFor(m: MatrixModel): number | null {
+      if (sortKey === "rank") return m.rank;
+      if (sortKey === "overall") return m.failRate;
+      return matrix[m.model]?.[sortKey] ?? null;
+    }
+    return [...filtered].sort((a, b) => {
+      const va = valueFor(a);
+      const vb = valueFor(b);
+      if (va === null && vb === null) return 0;
+      if (va === null) return 1; // no data for this column always sorts last
+      if (vb === null) return -1;
+      return sortDir === "asc" ? va - vb : vb - va;
+    });
+  }, [filtered, sortKey, sortDir, matrix]);
+
   function togglePin(model: string) {
     setPinned((prev) => {
       if (prev.includes(model)) return prev.filter((m) => m !== model);
       if (prev.length >= 2) return [prev[1], model];
       return [...prev, model];
     });
+  }
+
+  function handleSort(key: string) {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
   }
 
   return (
@@ -153,8 +198,20 @@ export function CompareMatrix({
         <table className="w-full min-w-max border-collapse text-xs">
           <thead>
             <tr>
-              <th rowSpan={2} className="sticky left-0 z-10 border-b border-border bg-surface px-3 py-2 text-left align-bottom">
-                Model
+              <th rowSpan={2} className="sticky left-0 z-10 w-56 border-b border-border bg-surface px-3 py-2 text-left align-bottom">
+                <button onClick={() => handleSort("rank")} className="hover:text-foreground" title="Sort by rank">
+                  Model
+                  <SortArrow active={sortKey === "rank"} dir={sortDir} />
+                </button>
+              </th>
+              <th
+                rowSpan={2}
+                className={`sticky left-56 z-10 border-b border-l border-border px-2 py-2 text-center align-bottom ${sortKey === "overall" ? "bg-accent/10 text-foreground" : "bg-surface text-muted"}`}
+              >
+                <button onClick={() => handleSort("overall")} className="hover:text-foreground" title="Sort by overall fail rate">
+                  Overall
+                  <SortArrow active={sortKey === "overall"} dir={sortDir} />
+                </button>
               </th>
               <th
                 colSpan={compliance.length}
@@ -171,24 +228,35 @@ export function CompareMatrix({
             </tr>
             <tr>
               {ordered.map((c) => (
-                <CategoryHeader key={c.id} category={c} />
+                <CategoryHeader
+                  key={c.id}
+                  category={c}
+                  active={sortKey === c.id}
+                  dir={sortDir}
+                  onSort={() => handleSort(c.id)}
+                />
               ))}
             </tr>
           </thead>
           <tbody>
-            {filtered.map((m) => {
+            {sorted.map((m) => {
               const isPinned = pinned.includes(m.model);
               return (
                 <tr key={m.model} className={`border-b border-border last:border-0 ${isPinned ? "bg-accent/10" : ""}`}>
-                  <td className={`sticky left-0 z-10 px-1 py-1 ${isPinned ? "bg-accent/10" : "bg-background"}`}>
+                  <td className={`sticky left-0 z-10 w-56 px-1 py-1 ${isPinned ? "bg-accent/10" : "bg-background"}`}>
                     <button
                       onClick={() => togglePin(m.model)}
-                      className="flex w-full items-center gap-2 rounded px-2 py-1 text-left font-mono hover:bg-surface"
-                      title="Click to pin for head-to-head comparison"
+                      className="flex w-full min-w-0 items-center gap-2 rounded px-2 py-1 text-left font-mono hover:bg-surface"
+                      title={`Click to pin ${m.model} for head-to-head comparison`}
                     >
-                      {m.rank && <span className="text-muted">#{m.rank}</span>}
-                      <span className="truncate">{m.model}</span>
+                      {m.rank && <span className="shrink-0 text-muted">#{m.rank}</span>}
+                      <span className="min-w-0 truncate">{m.model}</span>
                     </button>
+                  </td>
+                  <td
+                    className={`sticky left-56 z-10 border-l border-border px-2 py-1 text-center font-mono font-semibold tabular-nums ${isPinned ? "bg-accent/10" : "bg-background"}`}
+                  >
+                    {m.failRate === null ? "—" : Math.round(m.failRate * 100)}
                   </td>
                   {ordered.map((c) => {
                     const rate = matrix[m.model]?.[c.id] ?? null;
@@ -206,7 +274,10 @@ export function CompareMatrix({
       </div>
       <p className="mt-2 text-xs text-muted">
         Each cell is the fail rate (%) that model earned on that category — lower is better. Darker
-        red is a higher fail rate. Filtered to {filtered.length} of {models.length} models.
+        red is a higher fail rate. &ldquo;Overall&rdquo; is the same fail rate as the homepage
+        leaderboard, pinned so it stays visible while you sort by any category. Click a column
+        header to sort by it, click again to reverse. Filtered to {filtered.length} of{" "}
+        {models.length} models.
       </p>
     </div>
   );

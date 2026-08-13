@@ -19,6 +19,7 @@ export default function ComparePage() {
     model: row.model,
     provider: row.provider,
     rank: row.rank,
+    failRate: row.passRate === null ? null : 1 - row.passRate,
   }));
 
   return (
