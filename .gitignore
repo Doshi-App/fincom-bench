@@ -9,7 +9,6 @@ __pycache__/
 *.py[cod]
 
 *.env
-!secrets.op.env
 
 # Node / Next.js build artifacts for the website.
 node_modules/
