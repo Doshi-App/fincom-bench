@@ -38,6 +38,11 @@ export type LeaderboardRow = {
   behaviourPassRate: number | null;
   compliancePassRate: number | null;
   judge: string;
+  /** Completion tokens for 1 pass. Null if the column is absent or blank. */
+  avgReplyTokens: number | null;
+  /** USD, normalized to 1 pass per item. See results/README.md "Phase 4" before quoting. */
+  estCostUsd1Pass: number | null;
+  avgTimeS1Pass: number | null;
 };
 
 export type JudgeRow = {
@@ -83,6 +88,18 @@ function need(row: Record<string, string>, column: string, file: string): string
   return row[column] ?? "";
 }
 
+/**
+ * Same as `need`, but for columns a page can do without: cost and token
+ * counts, added retrospectively (see `results/README.md`, "Phase 4"), are
+ * blank for some rows on purpose (3 Bedrock rows have no published price) and
+ * absent altogether from any leaderboard.csv older than that addition. A
+ * missing optional column degrades the page to not showing that number,
+ * rather than breaking the whole build the way a missing `pass_rate` would.
+ */
+function optional(row: Record<string, string>, column: string): string {
+  return row[column] ?? "";
+}
+
 /** "" and "None" both mean the harness had nothing to divide by. */
 function num(value: string): number | null {
   const trimmed = (value ?? "").trim();
@@ -109,6 +126,9 @@ function loadLeaderboard(): LeaderboardRow[] {
     behaviourPassRate: num(need(row, "behaviour_pass_rate", "leaderboard.csv")),
     compliancePassRate: num(need(row, "compliance_pass_rate", "leaderboard.csv")),
     judge: need(row, "judge", "leaderboard.csv"),
+    avgReplyTokens: num(optional(row, "avg_reply_tokens")),
+    estCostUsd1Pass: num(optional(row, "est_cost_usd_1pass")),
+    avgTimeS1Pass: num(optional(row, "avg_time_s_1pass")),
   }));
 }
 
@@ -151,6 +171,9 @@ export const CATEGORY_BREAKDOWN: CategoryBreakdownRow[] = loadCategoryBreakdown(
 
 export const HAS_RESULTS = LEADERBOARD.length > 0;
 
+/** True once at least one row carries a real cost figure — some rows are blank on purpose. */
+export const HAS_COST_DATA = LEADERBOARD.some((row) => row.estCostUsd1Pass !== null);
+
 /** The judge every leaderboard row was marked by, taken from the rows themselves. */
 export const WINNING_JUDGE: string = LEADERBOARD[0]?.judge ?? "";
 
@@ -161,6 +184,72 @@ export const WINNING_JUDGE: string = LEADERBOARD[0]?.judge ?? "";
  * cross-provider pairs, which `category_breakdown.csv` merges the same way
  * `leaderboard.csv` does (see harness/pipeline/build_outputs.py).
  */
+export type KeyFindings = {
+  modelCount: number;
+  /** Fail rate = 1 − pass rate, over ranked rows only (coverage ≥ 0.80 — see methodology). */
+  failRateSpread: { minPct: number; maxPct: number; minModel: string; maxModel: string } | null;
+  winningJudge: { judge: string; macroF1: number; kappa: number } | null;
+  /** Rank of the winning judge's own leaderboard row, when it is also a contestant. */
+  selfGradedRank: number | null;
+  /** Cheapest model, by est_cost_usd_1pass, among ranked rows in the top quartile by pass rate. */
+  cheapestInTopQuartile: { model: string; costUsd: number; passRatePct: number } | null;
+};
+
+/**
+ * One page's worth of headline numbers, computed once here rather than in
+ * JSX, so the homepage's summary section and the reliability block on
+ * `/methodology` read the same values. Every field is null, not a guess,
+ * when the input it needs is missing — a summary that quietly drops a
+ * number is worse than one that admits it has nothing to show.
+ */
+export function keyFindings(): KeyFindings {
+  const ranked = LEADERBOARD.filter((r) => r.ranked && r.passRate !== null);
+
+  let failRateSpread: KeyFindings["failRateSpread"] = null;
+  if (ranked.length > 0) {
+    const byFailRate = [...ranked].sort((a, b) => (a.passRate ?? 0) - (b.passRate ?? 0));
+    const worst = byFailRate[0];
+    const best = byFailRate[byFailRate.length - 1];
+    failRateSpread = {
+      minPct: (1 - (best.passRate ?? 0)) * 100,
+      maxPct: (1 - (worst.passRate ?? 0)) * 100,
+      minModel: best.model,
+      maxModel: worst.model,
+    };
+  }
+
+  const winnerJudgeRow = JUDGES.find((j) => j.judge === WINNING_JUDGE && !j.isBaseline);
+  const winningJudge = winnerJudgeRow
+    ? { judge: winnerJudgeRow.judge, macroF1: winnerJudgeRow.macroF1, kappa: winnerJudgeRow.kappa }
+    : null;
+
+  const selfGradedRow = LEADERBOARD.find((r) => r.selfGraded);
+  const selfGradedRank = selfGradedRow?.rank ?? null;
+
+  let cheapestInTopQuartile: KeyFindings["cheapestInTopQuartile"] = null;
+  const rankedByPass = ranked.filter((r) => r.rank !== null).sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
+  const quartileSize = Math.max(1, Math.ceil(rankedByPass.length / 4));
+  const topQuartile = rankedByPass.slice(0, quartileSize).filter((r) => r.estCostUsd1Pass !== null);
+  if (topQuartile.length > 0) {
+    const cheapest = topQuartile.reduce((min, r) =>
+      (r.estCostUsd1Pass ?? Infinity) < (min.estCostUsd1Pass ?? Infinity) ? r : min,
+    );
+    cheapestInTopQuartile = {
+      model: cheapest.model,
+      costUsd: cheapest.estCostUsd1Pass ?? 0,
+      passRatePct: (cheapest.passRate ?? 0) * 100,
+    };
+  }
+
+  return {
+    modelCount: LEADERBOARD.length,
+    failRateSpread,
+    winningJudge,
+    selfGradedRank,
+    cheapestInTopQuartile,
+  };
+}
+
 export function categoryMatrix(): Record<string, Record<string, number | null>> {
   const matrix: Record<string, Record<string, number | null>> = {};
   for (const row of CATEGORY_BREAKDOWN) {

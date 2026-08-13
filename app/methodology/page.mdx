@@ -92,6 +92,41 @@ test, graded by the pass-1 winner.
 - **Model providers have not been contacted.** No provider on this leaderboard has been told about
   its inclusion yet. If a provider asks for its model to be removed, it will be removed.
 
+## Reliability
+
+A benchmark whose grader is a model, and which does not report how often that grader agrees with a
+human expert, is asking to be taken on faith. This is that report, in the main flow rather than
+buried in the caveats below it.
+
+**Phase-1 winner: `bedrock:mistral.mistral-large-3-675b-instruct`** — macro-F1 0.8194, Cohen's κ
+0.639, MCC 0.640, coverage 0.97, against 100 hand-labelled rows. Read κ 0.64 as **substantial
+agreement, not near-perfect**: a κ of 1 would mean the judge marks every disputed row exactly the
+way the human labeller did; 0.64 means it does not, on roughly 1 contested row in 3. Every number on
+the leaderboard below inherits that ceiling.
+
+**Inter-labeller agreement is not yet measured, because only 1 person has labelled these 100 rows.**
+The design calls for 2 independent labellers with disagreements resolved by discussion — see
+`docs/paper/fincom-bench-paper.md` §7.3 — so this page is missing the second half of its own
+reliability layer: not just "does the judge agree with a labeller," but "does the judge agree with
+2 labellers about as often as they agree with each other." That second pass is the single change
+most likely to move this section — see the `labelling` issue label linked below.
+
+## What this benchmark does not claim
+
+The full account is `docs/paper/fincom-bench-paper.md` §9. In plain terms:
+
+- **We sell a product that could appear on this leaderboard.** Disclosed above, not in a footnote.
+- **There is no held-out split yet.** Every published probe is, in principle, something a future
+  assistant could have been trained on.
+- **Citation strength is not uniform.** Some category-to-authority links are direct clause quotes;
+  a few are conceptual, and the paper says which.
+- **This dataset does not test a real deployment.** No multi-turn conversation, no tool use, no
+  retrieval — one probe, one reply, graded once.
+- **The judge is a model too.** It can share a blind spot with the models it grades, and phase 1
+  cannot detect that, because it only measures agreement with human-written replies.
+- **A score belongs to a model as served, not to the model as a general artifact.** See caveat 2
+  below — same weights, different host, several points apart.
+
 ## Status
 
 A judge has been chosen and a first leaderboard has been run. Both are on the homepage. Coverage is
@@ -118,10 +153,12 @@ detail.
 3. **The frontier closed models are missing.** The run reached models through two API hosts, and
    the account used had no entitlement to the newest proprietary systems. The table is therefore
    open-weight-heavy. That is a fact about the account, not a finding about open weights.
-4. **The judge agrees with people at κ 0.64.** Substantial, not near-perfect. Every number on the
-   leaderboard inherits that disagreement.
+4. **The judge agrees with people at κ 0.64.** See "Reliability" above for what that number means
+   and what is still missing.
 5. **The pass class rests on 8 rows.** 100 rows are hand-labelled and only 8 of them are pass, so
-   every pass-side statistic — and the judge choice itself — stands on those 8.
+   every pass-side statistic — and the judge choice itself — stands on those 8. Growing this class
+   is also how a future run could report a false-positive rate (how often the judge wrongly fails a
+   compliant reply) as its own number, the way this benchmark reports macro-F1 and κ today.
 
 ### What is queued next
 

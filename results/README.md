@@ -34,6 +34,18 @@ per-run audit records under `submissions/`.
 | `category_breakdown.csv` | 810 rows (54 models × 15 categories), long format: the fail rate 1 model earned on 1 category. Same 3-row merge as `leaderboard.csv`, same rule — averaged, not pooled. Backs the website's model-by-category matrix. |
 | `roster.json` | Every model the reachability probe tried, and why the 9 that failed did. |
 
+### `leaderboard.csv` — the columns "Phase 4" adds, defined once
+
+The cost and length columns are described in prose in "Phase 4" below; this table is the exact
+definition, so a reader does not have to reconstruct it from that section on every visit.
+
+| Column | Meaning | Caveat |
+|---|---|---|
+| `avg_reply_tokens` | Completion tokens for 1 reply, averaged over the model's decided probes. | From the runner's own token count for that call, not a third-party count — see `harness/README.md` for how the runner records it. |
+| `est_cost_usd_1pass` | Estimated USD cost of 1 pass over the item set, at the pricing named in "Phase 4". | Confidence varies by row — real for OpenAI, list-price for Anthropic and most of Bedrock, a market-rate stand-in for Ollama Cloud, blank (not $0) for 3 Bedrock rows with no published rate. |
+| `avg_time_s_1pass` | Wall-clock seconds ÷ (items × repeats), at the run's `--concurrency`. | Throughput at that concurrency, not 1 call's latency — see "Phase 4" for the arithmetic. |
+| `self_graded` | `yes` if this row's model is also the judge that marked it. | A self-graded row is self-reported; the README's rule is that no assistant grades its own leaderboard row, so treat this flag as a caveat, not a disqualifier. |
+
 ## What ran
 
 Both phases went through the existing runner (`harness/fincom_runner`). Two
