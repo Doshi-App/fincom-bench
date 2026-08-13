@@ -133,6 +133,23 @@ export default function Home() {
             </div>
           </>
         )}
+
+        {HAS_RESULTS && (
+          <div className="mt-6 flex flex-wrap gap-3 border-t border-border pt-6">
+            <Link
+              href="/compare"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-fg hover:opacity-90"
+            >
+              Compare 2 models by category →
+            </Link>
+            <Link
+              href="/categories"
+              className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground hover:bg-surface"
+            >
+              Browse the 15 categories →
+            </Link>
+          </div>
+        )}
       </section>
 
       {JUDGES.length > 0 && (
