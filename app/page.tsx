@@ -78,7 +78,7 @@ export default function Home() {
             <p className="mt-3 max-w-3xl rounded border border-border bg-bg p-3 text-sm text-muted">
               <span className="font-medium text-fg">Read the gaps with care.</span> These are one
               judge&apos;s marks from a single run, with no repeat for variance. A model run
-              through 2 inference hosts (Bedrock and Ollama Cloud) is 1 row here, averaged — and
+              through 2 inference providers (Bedrock and Ollama Cloud) is 1 row here, averaged — and
               the 2 runs it averages can land several points apart, wider than most gaps between
               neighbouring rows — so neighbouring places are not a quality ranking. See{" "}
               <Link href="/methodology" className="text-accent hover:underline">
