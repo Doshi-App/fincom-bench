@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { LEADERBOARD, JUDGES, HAS_RESULTS, WINNING_JUDGE } from "@/lib/results";
+import { LEADERBOARD, JUDGES, HAS_RESULTS, HAS_COST_DATA, WINNING_JUDGE, keyFindings } from "@/lib/results";
 import { CATEGORIES } from "@/lib/categories";
 import { PassMeter, ActionTag, GithubIcon, REPO_URL } from "@/lib/site";
+import { KeyFindingsPanel } from "@/lib/key-findings-panel";
+import { CostAndEffortCharts } from "@/lib/cost-effort-charts";
 
 export default function Home() {
   return (
@@ -35,6 +37,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {HAS_RESULTS && <KeyFindingsPanel />}
 
       <section className="mt-14 grid gap-4 sm:grid-cols-2">
         <div className="rounded-lg border border-border p-5">
@@ -176,6 +180,8 @@ export default function Home() {
           </div>
         )}
       </section>
+
+      {HAS_COST_DATA && <CostAndEffortCharts />}
 
       {JUDGES.length > 0 && (
         <section className="mt-16 rounded-lg border border-border bg-surface p-6">
