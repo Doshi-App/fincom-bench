@@ -1,0 +1,99 @@
+export const metadata = { title: "KYC side study" };
+
+<div className="mx-auto max-w-4xl px-6 py-14">
+<div className="prose-doc">
+
+<span className="mb-4 inline-block rounded border border-border bg-surface px-1.5 py-0.5 align-middle text-[11px] font-medium text-muted">
+  side study — not a FinCom Bench result
+</span>
+
+# Which LLM is the best KYC analyst?
+
+<div className="not-prose my-6 rounded border border-border bg-surface px-4 py-3 text-sm text-muted">
+<p className="m-0">
+This page summarises a study run by <a href="https://getsteward.ai/?utm_source=fincom-bench&amp;utm_medium=referral&amp;utm_campaign=kyc-llm-study" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Steward</a> in July 2026, on its own pipeline and its own material, and is published here alongside the benchmark rather than inside it. It did not use the FinCom Bench harness, it is not a leaderboard row, and its scores cannot be compared with any number elsewhere on this site. The full report is <a href="https://getsteward.ai/resources/whitepaper/which-ai-can-do-kyc?utm_source=fincom-bench&amp;utm_medium=referral&amp;utm_campaign=kyc-llm-study" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Which LLM is the best KYC analyst?</a> and the method is documented in <code>docs/kyc-llm-review.md</code> in this repository.
+</p>
+</div>
+
+## Read this before you quote a number
+
+This copies the shape of `results/README.md`: the limits come before the figures.
+
+1. **n=1.** One onboarding pack, one review per model, temperature zero. A recall of twelve is a single draw, not a capability.
+2. **Steward wrote the defects.** The pack is synthetic and the defect key is the study's own. A model cannot be scored against defects it was never given the chance to find, and there is no key on a live file.
+3. **Two graders, two different jobs.** Recall — did a model catch a given defect — is a countable credit decision, made by two independent AI judges from different labs (Grok 4.3, DeepSeek v4-pro), both chosen from outside the seven contestants so no model grades itself or a sibling. Reasoning quality is the job of two blinded human experts. Both columns are reported below; they are not collapsed.
+4. **The roster is pinned to 1 July 2026.** Five of the seven have never been run on FinCom Bench. Two have — see [Two models appear on both](#two-models-appear-on-both).
+
+## The study in one paragraph
+
+Seven frontier models — Claude Opus 4.8, GPT-5.5, Gemini 3.1 Pro, Mistral Large 2512, Qwen3.7-plus, Llama 4 Maverick, MiniMax M3 — each received an identical corporate onboarding pack of 22 source documents, with an identical prompt. The pack carried 14 planted defects (5 Critical, 9 Material) and 2 clean controls: facts built to look suspicious that a correct review clears rather than flags. Only the model differed.
+
+## Results
+
+Recall is out of 14 planted defects. The two judge columns agree almost everywhere — of 98 credit decisions (7 models × 14 defects) the judges agreed on 95, a Cohen's κ of 0.93, and their recall rankings correlate at Spearman 0.95 — so the recall numbers do not depend on which judge produced them. The human columns are the two blinded experts' reasoning ratings out of 10.
+
+| Model | Recall (Grok 4.3) | Recall (DeepSeek v4-pro) | Human 1 /10 | Human 2 /10 |
+|---|---|---|---|---|
+| Claude Opus 4.8 | 12 | 12 | 8.5 | 7.5 |
+| GPT-5.5 | 12 | 12 | 8.0 | 6.0 |
+| MiniMax M3 | 11 | 11 | 9.0 | 6.0 |
+| Gemini 3.1 Pro | 8 | 9 | 5.0 | 7.0 |
+| Qwen3.7-plus | 8 | 7 | 5.0 | 5.0 |
+| Mistral Large 2512 | 7 | 7 | 6.0 | 5.0 |
+| Llama 4 Maverick | 7 | 6 | 2.0 | 3.0 |
+
+What the study found, in the order it matters:
+
+- **All seven rejected the file at High risk.** The verdict that reaches the analyst is identical whether the model saw half the file's problems or nearly all of them.
+- **Recall ran 7 to 12 of 14.** On the 5 Critical defects, models caught 3 to 4 of 5, led by Claude Opus 4.8, GPT-5.5 and MiniMax M3.
+- **Two defects no model caught.** D6, Critical: a trust deed dated 5 June 2015 settling shares in a company not incorporated until 9 August 2017. D14, Material: two registered 10% holders with no passport or proof of address on file.
+- **Zero false positives on the clean controls** — 0 of 7 models flagged either legitimate fact. Only Claude Opus 4.8 wrote out its clearance reasoning in full.
+- **Cost did not predict judgment.** One review ran from $0.002 (Llama 4 Maverick) to $0.20 (GPT-5.5) — a 15× spread — and MiniMax M3 at $0.013 outscored every model except the two leaders.
+- **The two human graders disagreed on the winner.** Human 1 ranked MiniMax M3 first; Human 2 ranked Claude Opus 4.8 first; their rankings correlate at Spearman 0.64 and agree only on last place (Llama 4 Maverick). That is the limit of what one blinded read can settle.
+
+### The two that ran later
+
+After the scored results were recorded, two later flagships — Claude Fable 5 and GPT-5.6 Sol — ran the identical pack and prompt. Judge-graded only, no human grader; they are not in the scorecard and not ranked against the seven.
+
+| Model | Recall (Grok 4.3) | Recall (DeepSeek v4-pro) |
+|---|---|---|
+| Claude Fable 5 | 14 | 14 |
+| GPT-5.6 Sol | 13 | 13 |
+
+Both caught D6 and D14, the two defects none of the seven found. Both also returned Reject at High risk, as all seven did.
+
+### Robustness
+
+A vision variant of the same pack was also run: six of the seven models produced a comparable review; Mistral Large 2512 did not.
+
+## Two models appear on both
+
+`minimax-m3` and `us.meta.llama4-maverick-17b-instruct-v1:0` are on the FinCom Bench leaderboard and in this study. Side by side:
+
+| Model | FinCom Bench | This study |
+|---|---|---|
+| `us.meta.llama4-maverick-17b-instruct-v1:0` | rank 13, 69.5% | 7th of 7, 7/14 |
+| `minimax-m3` | rank 35, 65.5% | 3rd of 7, 11/14 |
+
+The order inverts. Holding conduct rules in a chat reply did not predict finding defects in a file — which is why this study sits beside the benchmark rather than inside it. Two models is not a general rule; it is enough to say a score on one task should not be read as a score on the other.
+
+<div className="not-prose mt-12 border-t border-border pt-6">
+<a href="https://getsteward.ai/?utm_source=fincom-bench&amp;utm_medium=referral&amp;utm_campaign=kyc-llm-study" target="_blank" rel="noopener noreferrer" aria-label="Steward" className="inline-block">
+<svg role="img" aria-label="Steward" height="22" viewBox="0 0 1000 231" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-muted">
+<path d="M261.511 92.4416V70.4482H216.853V28.1749H191.583V184.037C191.583 211.93 205.634 225.465 232.589 225.465H261.511V203.471H235.399C223.597 203.471 216.853 195.576 216.853 181.782V92.4416H261.511Z" fill="currentColor"/>
+<path d="M408.975 156.427H288.185C291.276 188.267 310.384 207.441 336.778 207.441C357.572 207.441 374.13 195.598 380.312 177.856H407.549C401.085 207.723 373.568 229.434 336.756 229.434C291.816 229.434 261.467 197.03 261.467 147.989C261.467 98.9488 292.357 66.5443 336.756 66.5443C378.324 66.5443 408.954 96.4111 408.954 136.168V156.47L408.975 156.427ZM288.487 133.869H383.425C380.615 107.386 362.911 88.4943 336.799 88.4943C310.687 88.4943 291.578 108.514 288.487 133.869Z" fill="currentColor"/>
+<path d="M611.781 70.4698L569.652 225.486H541.01L510.964 103.156L480.918 225.486H451.995L409.866 70.4698H435.978L466.305 194.47L495.509 70.4698H526.96L556.163 194.47L586.49 70.4698H611.781Z" fill="currentColor"/>
+<path d="M755.048 203.493V225.486H739.873C721.327 225.486 711.513 214.49 711.513 198.157V194.774C703.645 217.895 683.153 229.716 658.424 229.716C628.097 229.716 603.649 213.08 603.649 179.266C603.649 147.425 626.13 131.071 663.201 131.071H678.095C701.699 131.071 709.265 124.304 709.265 113.025C709.265 97.7989 695.496 88.5157 675.285 88.5157C652.523 88.5157 637.089 100.076 634.841 120.638H609.55C611.798 87.9518 633.436 66.5223 675.285 66.5223C717.133 66.5223 735.399 89.0797 735.399 120.356V193.928C735.399 200.131 737.928 203.515 743.548 203.515H755.069L755.048 203.493ZM710.108 133.587H709.827C706.736 145.994 694.09 153.043 672.755 153.043H663.763C638.472 153.043 630.064 165.731 630.064 179.244C630.064 193.624 639.618 207.701 662.639 207.701C687.93 207.701 710.108 191.065 710.108 153.303V133.565V133.587Z" fill="currentColor"/>
+<path d="M766.29 70.4699H791.019V97.517H791.581C798.887 82.5727 812.937 66.5223 837.645 66.5223H852.538V88.5157H834.273C808.42 88.5157 791.581 105.716 791.581 138.12V225.486H766.29V70.4699Z" fill="currentColor"/>
+<path d="M975.271 196.726H974.709C963.75 217.027 944.101 229.412 919.091 229.412C880.615 229.412 848.018 200.391 848.018 147.121C848.018 93.8515 880.593 66.5224 919.091 66.5224C944.079 66.5224 963.75 78.9289 974.709 99.2088H975.271C974.709 92.7236 974.709 87.6482 974.709 81.7269V0H1000V225.486H974.709V214.208C974.709 208.287 974.709 203.211 975.271 196.726ZM974.99 146.839C974.99 112.743 955.039 88.7761 924.992 88.4941C895.227 88.2121 874.432 111.897 874.432 147.121C874.432 182.346 895.227 207.723 924.992 207.441C955.039 207.159 974.99 182.367 974.99 146.839Z" fill="currentColor"/>
+<path d="M75.4935 151.442H90.5969C90.5969 151.442 90.8193 151.442 90.9182 151.442V124.742H90.5969C47.5611 124.742 35.3499 113.805 35.3499 92.9207C35.3499 67.8294 53.3453 50.1616 87.7047 50.1616C122.064 50.1616 143.916 69.4626 146.487 102.249H177.632C174.419 56.5705 141.988 24.1053 87.68 24.1053C33.3724 24.1053 4.1792 57.8573 4.1792 92.9207C4.1792 127.984 36.2892 151.442 75.4935 151.442Z" fill="currentColor"/>
+<path d="M101.496 97.3248H90.8918V124.024C135.93 124.074 150.638 136.62 150.638 160.672C150.638 184.723 129.107 204.074 94.1053 204.074C59.1031 204.074 32.7527 181.556 31.1459 148.769H0C1.60674 196.032 39.8223 230.13 94.1053 230.13C148.388 230.13 181.784 194.77 181.784 160.672C181.784 123.381 151.28 97.3248 101.472 97.3248H101.496Z" fill="currentColor"/>
+</svg>
+</a>
+<p className="mt-3 max-w-2xl text-sm text-muted">
+Study run by Steward, July 2026. The pack, the defect key, the blinding procedure and the grading pipeline are documented in <code>docs/kyc-llm-review.md</code> in this repository.
+</p>
+</div>
+
+</div>
+</div>
