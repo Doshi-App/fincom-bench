@@ -101,6 +101,7 @@ fincom-bench/
   docs/
     method.md        how a run is scored
     rubric.md        the finding categories, the two axes, and the grading scheme
+    kyc-llm-review.md  method for the /kyc side study — a Steward document-review study published alongside the benchmark, not scored by it
   submissions/       one directory per run, holding the transcript
                      judges/  phase 1, one directory per candidate judge
                      runs/    phase 2, one directory per scored assistant
