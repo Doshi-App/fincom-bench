@@ -49,17 +49,16 @@ function SortButton({
 }
 
 /**
- * The flagship leaderboard: rows are the 15 finding categories (grouped by
+ * The flagship leaderboard: rows are the 15 failure categories (grouped by
  * axis), columns are models — scrollable horizontally rather than rotated,
  * since a readable name needs real width. Headers stack maker / name /
  * rank, matching every other model reference on the site. Each cell mixes
  * the one fail-rate hue toward the surface by that model's fail rate on
  * that category (sequential encoding — dataviz color-formula.md) — the
- * printed number is the pass rate (the positive framing readers expect on
- * a leaderboard), while the color still encodes risk, so a risky cell
- * reads as risky even though the number on it is "how often it passed."
- * Click a category's row label to re-sort every model column by that
- * category instead of overall rank.
+ * printed number is the failure rate (lower is better), and the color
+ * tracks the same risk, so a risky cell reads as risky in both the number
+ * and the shade. Click a category's row label to re-sort every model
+ * column by that category instead of overall rank.
  */
 export function HeatmapMatrix({
   models,
@@ -134,7 +133,7 @@ export function HeatmapMatrix({
             active={sortKey === category.id}
             dir={sortDir}
             label={category.label}
-            title={`Sort models by pass rate on ${category.label}`}
+            title={`Sort models by failure rate on ${category.label}`}
             onClick={() => handleSort(category.id)}
           />
         </th>
@@ -146,11 +145,11 @@ export function HeatmapMatrix({
           const label =
             rate === null
               ? `${d.maker} ${d.name} — ${category.label}: no data`
-              : `${d.maker} ${d.name} — ${category.label}: ${pct(1 - rate)} pass rate${counts ? ` (${counts.decided}/${counts.items} decided)` : ""}`;
+              : `${d.maker} ${d.name} — ${category.label}: ${pct(rate)} failure rate${counts ? ` (${counts.decided}/${counts.items} decided)` : ""}`;
           return (
             <td key={m.model} title={label} className="p-[2px] text-center align-middle" style={{ width: MODEL_COL_WIDTH }}>
               <div className="flex h-10 items-center justify-center rounded-sm text-[13px] tabular" style={style}>
-                {rate === null ? "" : `${Math.round((1 - rate) * 100)}%`}
+                {rate === null ? "" : `${Math.round(rate * 100)}%`}
               </div>
             </td>
           );
@@ -170,7 +169,7 @@ export function HeatmapMatrix({
           className="w-64 rounded-lg border border-border bg-surface-1 px-3.5 py-2 text-sm outline-none focus:border-accent"
         />
         <div className="flex items-center gap-2.5 text-xs text-muted">
-          <span>Pass rate shown · color = fail risk</span>
+          <span>Failure rate shown · color = fail risk</span>
           <div
             className="h-2.5 w-24 rounded-full"
             style={{ background: "linear-gradient(to right, color-mix(in oklch, var(--fail) 6%, var(--surface-2)), var(--fail))" }}
@@ -219,7 +218,7 @@ export function HeatmapMatrix({
                   active={sortKey === "overall"}
                   dir={sortDir}
                   label="Overall"
-                  title="Sort models by overall pass rate"
+                  title="Sort models by overall failure rate"
                   onClick={() => handleSort("overall")}
                 />
               </th>
@@ -232,7 +231,7 @@ export function HeatmapMatrix({
                     style={{ width: MODEL_COL_WIDTH }}
                   >
                     <div className="flex h-10 items-center justify-center rounded-sm text-[13px] font-semibold tabular" style={style}>
-                      {m.failRate === null ? "—" : `${Math.round((1 - m.failRate) * 100)}%`}
+                      {m.failRate === null ? "—" : `${Math.round(m.failRate * 100)}%`}
                     </div>
                   </td>
                 );
@@ -266,8 +265,8 @@ export function HeatmapMatrix({
         </table>
       </div>
       <p className="mt-3 text-sm text-muted">
-        Each cell is the pass rate (%) that model earned on that category — higher is better; the
-        tile&apos;s color still tracks fail risk, darker being worse. Hover a cell for the exact
+        Each cell is the failure rate (%) that model earned on that category — lower is better; the
+        tile&apos;s color tracks the same risk, darker being worse. Hover a cell for the exact
         count. Click a row label (or &ldquo;Overall&rdquo;) to sort model columns by it. Showing{" "}
         {sorted.length} of {models.length} models.
       </p>

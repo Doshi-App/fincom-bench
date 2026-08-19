@@ -95,9 +95,9 @@ export function CompareTool({ models, categories, matrix }: { models: Model[]; c
 
       <div className="mt-6 space-y-2">
         {rows.map((r) => {
-          const passA = r.a === null ? null : 1 - r.a;
-          const passB = r.b === null ? null : 1 - r.b;
-          const max = Math.max(passA ?? 0, passB ?? 0, 0.05);
+          const failA = r.a;
+          const failB = r.b;
+          const max = Math.max(failA ?? 0, failB ?? 0, 0.05);
           const aWorse = (r.a ?? 0) >= (r.b ?? 0);
           return (
             <div key={r.id} className="rounded-lg border border-border p-3">
@@ -115,13 +115,13 @@ export function CompareTool({ models, categories, matrix }: { models: Model[]; c
                   <div
                     className="h-full rounded-r-sm"
                     style={{
-                      width: `${Math.max(1.5, ((passA ?? 0) / max) * 100)}%`,
+                      width: `${Math.max(1.5, ((failA ?? 0) / max) * 100)}%`,
                       background: aWorse ? "var(--fail)" : "var(--muted)",
                       opacity: aWorse ? 1 : 0.55,
                     }}
                   />
                 </div>
-                <span className="text-right tabular text-muted">{pct(passA)}</span>
+                <span className="text-right tabular text-muted">{pct(failA)}</span>
                 <span className="truncate text-muted" title={displayB}>
                   B
                 </span>
@@ -129,19 +129,19 @@ export function CompareTool({ models, categories, matrix }: { models: Model[]; c
                   <div
                     className="h-full rounded-r-sm"
                     style={{
-                      width: `${Math.max(1.5, ((passB ?? 0) / max) * 100)}%`,
+                      width: `${Math.max(1.5, ((failB ?? 0) / max) * 100)}%`,
                       background: !aWorse ? "var(--fail)" : "var(--muted)",
                       opacity: !aWorse ? 1 : 0.55,
                     }}
                   />
                 </div>
-                <span className="text-right tabular text-muted">{pct(passB)}</span>
+                <span className="text-right tabular text-muted">{pct(failB)}</span>
               </div>
             </div>
           );
         })}
       </div>
-      <p className="mt-3 text-xs text-muted">Bars show pass rate — longer and paler is better. The highlighted (fail-colored) side is whichever model is worse on that category.</p>
+      <p className="mt-3 text-xs text-muted">Bars show failure rate — shorter and paler is better. The highlighted (fail-colored) side is whichever model is worse on that category.</p>
     </div>
   );
 }

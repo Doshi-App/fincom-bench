@@ -27,7 +27,7 @@ export default function LeaderboardPage() {
     model: r.model,
     provider: r.provider,
     rank: r.rank,
-    failRate: r.passRate === null ? null : 1 - r.passRate,
+    failRate: r.failRate,
   }));
   const categories = CATEGORIES.map((c) => ({ id: c.id, label: c.label, axis: c.axis }));
   const matrix = categoryMatrix();
@@ -36,11 +36,11 @@ export default function LeaderboardPage() {
   const ranked = LEADERBOARD.filter((r) => r.ranked && r.rank !== null).sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
   const quartileSize = Math.max(1, Math.ceil(ranked.length / 4));
   const topQuartileModels = new Set(ranked.slice(0, quartileSize).map((r) => r.model));
-  const scatterPoints: ScatterPoint[] = LEADERBOARD.filter((r) => r.passRate !== null && r.estCostUsd1Pass !== null && r.estCostUsd1Pass! > 0).map(
+  const scatterPoints: ScatterPoint[] = LEADERBOARD.filter((r) => r.failRate !== null && r.estCostUsd1Pass !== null && r.estCostUsd1Pass! > 0).map(
     (r) => ({
       model: r.model,
       provider: r.provider,
-      passRate: r.passRate ?? 0,
+      failRate: r.failRate ?? 0,
       costUsd: r.estCostUsd1Pass ?? 0,
       topQuartile: topQuartileModels.has(r.model),
     }),
@@ -56,8 +56,8 @@ export default function LeaderboardPage() {
         <span className="font-medium text-fg">
           {judge.maker} {judge.name}
         </span>
-        , the judge that agreed most with the human labels in phase 1. Every cell below is a pass
-        rate for 1 model on 1 finding category — the same shape as the rubric itself, not a single
+        , the judge that agreed most with the human labels in phase 1. Every cell below is a failure
+        rate for 1 model on 1 failure category — the same shape as the rubric itself, not a single
         overall score.
       </p>
       <p className="mt-3 max-w-3xl rounded-lg border border-border bg-surface-1 p-3 text-sm text-muted">
@@ -76,11 +76,11 @@ export default function LeaderboardPage() {
 
       {HAS_COST_DATA && scatterPoints.length > 0 && (
         <div className="mt-14 rounded-lg border border-border p-6">
-          <h2 className="text-lg font-semibold tracking-tight">Cost vs. pass rate</h2>
+          <h2 className="text-lg font-semibold tracking-tight">Cost vs. failure rate</h2>
           <p className="mt-2 max-w-2xl text-sm text-muted">
-            Estimated cost of 1 pass over the item set against pass rate. The top quartile of ranked
+            Estimated cost of 1 pass over the item set against failure rate. The top quartile of ranked
             models is highlighted — the models that are both accurate and cheap sit toward the
-            top-left.
+            bottom-left.
           </p>
           <div className="mt-4 flex items-center gap-4 text-xs text-muted">
             <span className="flex items-center gap-1.5">

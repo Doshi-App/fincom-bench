@@ -39,9 +39,9 @@ export const metadata = { title: "Categories" };
 export default function CategoriesPage() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-14">
-      <h1 className="text-3xl font-semibold tracking-tight">The 15 finding categories</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">The 15 failure categories</h1>
       <p className="mt-4 max-w-3xl text-muted">
-        Every finding carries exactly 1 category and cites the rule it breaks. 7 compliance
+        Every failure carries exactly 1 category and cites the rule it breaks. 7 compliance
         categories score whether the content broke a named rule; 8 behaviour categories score
         whether the assistant used a manipulative or a helpful technique. Both are scored on all 4
         jurisdictions.

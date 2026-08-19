@@ -34,6 +34,7 @@ export type LeaderboardRow = {
   passes: number;
   fails: number;
   passRate: number | null;
+  failRate: number | null;
   coverage: number;
   behaviourPassRate: number | null;
   compliancePassRate: number | null;
@@ -122,6 +123,7 @@ function loadLeaderboard(): LeaderboardRow[] {
     passes: num(need(row, "passes", "leaderboard.csv")) ?? 0,
     fails: num(need(row, "fails", "leaderboard.csv")) ?? 0,
     passRate: num(need(row, "pass_rate", "leaderboard.csv")),
+    failRate: num(need(row, "fail_rate", "leaderboard.csv")),
     coverage: num(need(row, "coverage", "leaderboard.csv")) ?? 0,
     behaviourPassRate: num(need(row, "behaviour_pass_rate", "leaderboard.csv")),
     compliancePassRate: num(need(row, "compliance_pass_rate", "leaderboard.csv")),
@@ -178,7 +180,7 @@ export const HAS_COST_DATA = LEADERBOARD.some((row) => row.estCostUsd1Pass !== n
 export const WINNING_JUDGE: string = LEADERBOARD[0]?.judge ?? "";
 
 /**
- * `model` × `category` -> fail rate, for the compare page. Keyed off
+ * `model` × `category` -> failure rate, for the compare page. Keyed off
  * `LEADERBOARD`'s own `model` field so a row here always matches a row a
  * reader already sees on the homepage — including the 3 merged
  * cross-provider pairs, which `category_breakdown.csv` merges the same way
@@ -186,13 +188,13 @@ export const WINNING_JUDGE: string = LEADERBOARD[0]?.judge ?? "";
  */
 export type KeyFindings = {
   modelCount: number;
-  /** Fail rate = 1 − pass rate, over ranked rows only (coverage ≥ 0.80 — see methodology). */
+  /** Failure-rate spread = max − min fail rate, over ranked rows only (coverage ≥ 0.80 — see methodology). */
   failRateSpread: { minPct: number; maxPct: number; minModel: string; maxModel: string } | null;
   winningJudge: { judge: string; macroF1: number; kappa: number } | null;
   /** Rank of the winning judge's own leaderboard row, when it is also a contestant. */
   selfGradedRank: number | null;
-  /** Cheapest model, by est_cost_usd_1pass, among ranked rows in the top quartile by pass rate. */
-  cheapestInTopQuartile: { model: string; costUsd: number; passRatePct: number } | null;
+  /** Cheapest model, by est_cost_usd_1pass, among ranked rows in the top quartile (lowest failure rate). */
+  cheapestInTopQuartile: { model: string; costUsd: number; failRatePct: number } | null;
 };
 
 /**
@@ -207,14 +209,14 @@ export function keyFindings(): KeyFindings {
 
   let failRateSpread: KeyFindings["failRateSpread"] = null;
   if (ranked.length > 0) {
-    const byFailRate = [...ranked].sort((a, b) => (a.passRate ?? 0) - (b.passRate ?? 0));
-    const worst = byFailRate[0];
-    const best = byFailRate[byFailRate.length - 1];
+    const byFailRate = [...ranked].sort((a, b) => (a.failRate ?? 1) - (b.failRate ?? 1));
+    const lowest = byFailRate[0];
+    const highest = byFailRate[byFailRate.length - 1];
     failRateSpread = {
-      minPct: (1 - (best.passRate ?? 0)) * 100,
-      maxPct: (1 - (worst.passRate ?? 0)) * 100,
-      minModel: best.model,
-      maxModel: worst.model,
+      minPct: (lowest.failRate ?? 0) * 100,
+      maxPct: (highest.failRate ?? 0) * 100,
+      minModel: lowest.model,
+      maxModel: highest.model,
     };
   }
 
@@ -237,7 +239,7 @@ export function keyFindings(): KeyFindings {
     cheapestInTopQuartile = {
       model: cheapest.model,
       costUsd: cheapest.estCostUsd1Pass ?? 0,
-      passRatePct: (cheapest.passRate ?? 0) * 100,
+      failRatePct: (cheapest.failRate ?? 0) * 100,
     };
   }
 

@@ -83,7 +83,7 @@ export function submissionsForAssistant(assistant: string): Submission[] {
 }
 
 /**
- * Fail rate for one category across a run's leaderboard entries (a run may
+ * Failure rate for one category across a run's leaderboard entries (a run may
  * carry more than one leaderboard row, e.g. one per threshold tested).
  */
 export function categoryTotals(run: Run, categoryId: string) {

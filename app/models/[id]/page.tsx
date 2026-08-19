@@ -71,7 +71,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[id]">) {
 
       <div className="mt-8">
         <KpiRow>
-          <StatTile label="Pass rate" value={pct(row.passRate)} note={`${row.passes} of ${row.decided} decided probes.`} />
+          <StatTile label="Failure rate" value={pct(row.failRate)} note={`${row.fails} of ${row.decided} decided probes failed.`} />
           <StatTile label="Coverage" value={pct(row.coverage)} note="Share of probes the judge actually decided." />
           <StatTile label="Compliance / behaviour" value={`${pct(row.compliancePassRate)} / ${pct(row.behaviourPassRate)}`} />
           <StatTile
@@ -83,7 +83,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[id]">) {
       </div>
 
       <div className="mt-12">
-        <h2 className="text-lg font-semibold tracking-tight">Fail rate by category</h2>
+        <h2 className="text-lg font-semibold tracking-tight">Failure rate by category</h2>
         <p className="mt-1 text-sm text-muted">Lower is better. The count beside each bar is decided/total probes for that category.</p>
         <div className="mt-5 rounded-lg border border-border p-5">
           <BarChart data={bars} tone="fail" max={100} formatValue={(v) => `${Math.round(v)}%`} />

@@ -27,7 +27,7 @@ export default function ComparePage() {
     <div className="mx-auto max-w-5xl px-6 py-14">
       <h1 className="text-3xl font-semibold tracking-tight">Compare 2 models</h1>
       <p className="mt-4 max-w-2xl text-muted">
-        Pick any 2 models to see where they actually differ — the pass rate on each of the 15
+        Pick any 2 models to see where they actually differ — the failure rate on each of the 15
         categories, biggest gap first. A model that ranks a few places above another can still lose
         badly on 1 specific category.
       </p>

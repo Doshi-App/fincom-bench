@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { LEADERBOARD, HAS_RESULTS, notableFindings } from "@/lib/results";
 import { getCategory } from "@/lib/categories";
 import { GithubCTA } from "./components/site-chrome";
@@ -6,10 +7,32 @@ import { StatTile, KpiRow } from "./components/stat-tile";
 import { BarChart, type BarDatum } from "./components/bar-chart";
 import { describeModel, iconForMaker } from "./components/model-names";
 
+/** A small inline icon for stat tiles that don't have a model maker badge. */
+function TileIcon({ kind }: { kind: "warn" | "check" }) {
+  const color = kind === "warn" ? "var(--fail)" : "var(--pass)";
+  return (
+    <span
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border"
+      style={{ color }}
+      aria-hidden
+    >
+      {kind === "warn" ? (
+        <svg viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4">
+          <path d="M8 1L0 15h16L8 1zm0 5v5M8 12.5v.5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4">
+          <path d="M3 8.5l3.5 3.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+    </span>
+  );
+}
+
 /**
- * The simple, whole-model view for the homepage: 1 number per model (pass
+ * The simple, whole-model view for the homepage: 1 number per model (failure
  * rate), not the 15-category breakdown — that detail lives on /leaderboard.
- * The actual top 10 by rank, in rank order.
+ * The actual top 10 by rank, in rank order (lowest failure rate first).
  */
 function homepageOverview(): BarDatum[] {
   const shortlist = LEADERBOARD.filter((r) => r.ranked && r.rank !== null)
@@ -20,7 +43,7 @@ function homepageOverview(): BarDatum[] {
     return {
       key: r.model,
       label: d.name,
-      value: (r.passRate ?? 0) * 100,
+      value: (r.failRate ?? 0) * 100,
       meta: r.rank ? `#${r.rank}` : undefined,
       icon: iconForMaker(d.maker),
     };
@@ -58,14 +81,14 @@ export default function Home() {
 
       {HAS_RESULTS && (
         <section className="mx-auto max-w-4xl px-6 py-10">
-          <h2 className="text-center text-2xl font-semibold tracking-tight">How they did</h2>
-          <p className="mt-2 text-center text-muted">Percent of answers that passed. Higher is better. Top 10 of 54, by rank.</p>
+          <h2 className="text-center text-2xl font-semibold tracking-tight">Lowest failure rates</h2>
+          <p className="mt-2 text-center text-muted">Failure rate. Lower is better. The 10 lowest of 54 models.</p>
           <div className="mt-8 rounded-lg border border-border p-6">
-            <BarChart data={homepageOverview()} tone="pass" max={100} formatValue={(v) => `${Math.round(v)}%`} />
+            <BarChart data={homepageOverview()} tone="fail" max={100} formatValue={(v) => `${Math.round(v)}%`} />
           </div>
           <p className="mt-4 text-center text-sm">
             <Link href="/leaderboard" className="text-accent hover:underline">
-              See all 54 models, broken down by category →
+              See all 54 models, broken down by failure category →
             </Link>
           </p>
         </section>
@@ -104,6 +127,7 @@ export default function Home() {
                     <StatTile
                       label="What trips up every model"
                       value={`${Math.round(findings.hardestCategory.avgFailRatePct)}%`}
+                      icon={<TileIcon kind="warn" />}
                       note={
                         <>
                           <strong className="text-fg">{c?.label ?? findings.hardestCategory.categoryId}:</strong> {c?.description}
@@ -119,6 +143,7 @@ export default function Home() {
                     <StatTile
                       label="What every model gets right"
                       value={`${Math.round(100 - findings.cleanestCategory.avgFailRatePct)}%`}
+                      icon={<TileIcon kind="check" />}
                       note={
                         <>
                           <strong className="text-fg">{c?.label ?? findings.cleanestCategory.categoryId}:</strong> {c?.description}
@@ -135,6 +160,7 @@ export default function Home() {
                     <StatTile
                       label="Ranking well can still hide a weak spot"
                       value={`${Math.round(findings.biggestBlindSpot.failRatePct)}%`}
+                      icon={<Image src={iconForMaker(d.maker)} alt="" width={32} height={32} className="h-8 w-8 rounded-full border border-border" />}
                       note={
                         <>
                           {d.maker} {d.name} ranks #{findings.biggestBlindSpot.rank} of 54 overall, but keeps getting{" "}
@@ -152,6 +178,7 @@ export default function Home() {
                     <StatTile
                       label="Being right isn't the same as being fair"
                       value={`${Math.round(findings.biggestAxisGap.gapPct)}%`}
+                      icon={<Image src={iconForMaker(d.maker)} alt="" width={32} height={32} className="h-8 w-8 rounded-full border border-border" />}
                       note={`${d.maker} ${d.name} is far better at ${AXIS_PLAIN[better]} than at ${AXIS_PLAIN[findings.biggestAxisGap.worseAxis]}.`}
                     />
                   );

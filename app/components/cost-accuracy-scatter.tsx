@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { describeModel } from "./model-names";
 
-export type ScatterPoint = { model: string; provider: string; passRate: number; costUsd: number; topQuartile: boolean };
+export type ScatterPoint = { model: string; provider: string; failRate: number; costUsd: number; topQuartile: boolean };
 
 const W = 640;
 const H = 360;
 const PAD = { top: 16, right: 16, bottom: 36, left: 56 };
 
 /**
- * Cost vs pass rate. The story is "these few models are both cheap and
+ * Cost vs failure rate. The story is "these few models are both cheap and
  * accurate," not "54 identities" — so this is the emphasis pattern (one
  * accent hue for the top quartile, gray for the rest), never 54 categorical
  * colors. Log scale on cost because the range spans 3+ orders of magnitude;
@@ -36,7 +36,7 @@ export function CostAccuracyScatter({ points }: { points: ScatterPoint[] }) {
   // digits, and the unrounded float can serialize 1 bit differently between
   // Node's V8 and the browser's, which reads as a hydration mismatch.
   const round2 = (n: number) => Math.round(n * 100) / 100;
-  const x = (passRate: number) => round2(PAD.left + passRate * plotW);
+  const x = (failRate: number) => round2(PAD.left + failRate * plotW);
   const y = (cost: number) => {
     const t = (Math.log10(cost) - minLog) / (maxLog - minLog || 1);
     return round2(PAD.top + (1 - t) * plotH);
@@ -48,7 +48,7 @@ export function CostAccuracyScatter({ points }: { points: ScatterPoint[] }) {
 
   return (
     <div className="relative">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Cost per pass versus pass rate, one dot per model">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Cost per pass versus failure rate, one dot per model">
         {yTicks.map((t) => (
           <g key={t}>
             <line x1={PAD.left} x2={W - PAD.right} y1={y(t)} y2={y(t)} stroke="var(--border)" strokeWidth="1" />
@@ -64,7 +64,7 @@ export function CostAccuracyScatter({ points }: { points: ScatterPoint[] }) {
         ))}
         <line x1={PAD.left} x2={W - PAD.right} y1={H - PAD.bottom} y2={H - PAD.bottom} stroke="var(--muted)" strokeWidth="1" />
         <text x={W / 2} y={H - 4} textAnchor="middle" className="fill-muted" fontSize="10">
-          Pass rate
+          Failure rate
         </text>
         <text x={16} y={12} textAnchor="start" className="fill-muted" fontSize="10">
           Cost / pass (log)
@@ -72,7 +72,7 @@ export function CostAccuracyScatter({ points }: { points: ScatterPoint[] }) {
         {points.map((p) => (
           <circle
             key={p.model}
-            cx={x(p.passRate)}
+            cx={x(p.failRate)}
             cy={y(p.costUsd)}
             r={p.topQuartile ? 5 : 4}
             fill={p.topQuartile ? "var(--accent)" : "var(--muted)"}
@@ -85,14 +85,14 @@ export function CostAccuracyScatter({ points }: { points: ScatterPoint[] }) {
           />
         ))}
         {hover && (
-          <circle cx={x(hover.passRate)} cy={y(hover.costUsd)} r={8} fill="none" stroke="var(--fg)" strokeWidth={1.5} pointerEvents="none" />
+          <circle cx={x(hover.failRate)} cy={y(hover.costUsd)} r={8} fill="none" stroke="var(--fg)" strokeWidth={1.5} pointerEvents="none" />
         )}
       </svg>
       {hover && (
         <div
           className="pointer-events-none absolute rounded-md border border-border bg-surface-1 px-2.5 py-1.5 text-xs shadow-sm"
           style={{
-            left: `${(x(hover.passRate) / W) * 100}%`,
+            left: `${(x(hover.failRate) / W) * 100}%`,
             top: `${(y(hover.costUsd) / H) * 100}%`,
             transform: "translate(-50%, -130%)",
           }}
@@ -105,7 +105,7 @@ export function CostAccuracyScatter({ points }: { points: ScatterPoint[] }) {
                   {d.maker} {d.name}
                 </p>
                 <p className="text-muted">
-                  via {d.host} · {Math.round(hover.passRate * 100)}% pass · ${hover.costUsd.toFixed(4)}/pass
+                  via {d.host} · {Math.round(hover.failRate * 100)}% fail · ${hover.costUsd.toFixed(4)}/pass
                 </p>
               </>
             );

@@ -30,8 +30,8 @@ per-run audit records under `submissions/`.
 |---|---|
 | `judge_selection.csv` | 17 candidate judges scored against the 100 hand-labelled rows, plus 2 baselines. |
 | `model_outputs.csv` | 10,887 rows — one per model per probe: the probe, the reply, and the judge's verdict with its reasoning. |
-| `leaderboard.csv` | 54 rows, ranked by pass rate over the probes the judge decided. 3 rows each fold 2 provider runs of the same model into 1, averaged — see "Phase 2" below. 2 added columns, `est_cost_usd_1pass` and `avg_time_s_1pass`, are estimates — see "Phase 4" below before quoting either. |
-| `category_breakdown.csv` | 810 rows (54 models × 15 categories), long format: the fail rate 1 model earned on 1 category. Same 3-row merge as `leaderboard.csv`, same rule — averaged, not pooled. Backs the website's model-by-category matrix. |
+| `leaderboard.csv` | 54 rows, ranked by failure rate over the probes the judge decided (lowest failure rate = rank 1). 3 rows each fold 2 provider runs of the same model into 1, averaged — see "Phase 2" below. 2 added columns, `est_cost_usd_1pass` and `avg_time_s_1pass`, are estimates — see "Phase 4" below before quoting either. |
+| `category_breakdown.csv` | 810 rows (54 models × 15 failure categories), long format: the failure rate 1 model earned on 1 category. Same 3-row merge as `leaderboard.csv`, same rule — averaged, not pooled. Backs the website's model-by-category matrix. |
 | `roster.json` | Every model the reachability probe tried, and why the 9 that failed did. |
 
 ### `leaderboard.csv` — the columns "Phase 4" adds, defined once
@@ -125,7 +125,8 @@ Then three things to read the board with.
   the shape self-preference would take.
 - **Pass rate uses only decided items**, and `coverage` says what share that was.
   Ranking needs coverage ≥ 0.80 so a thinly-graded model cannot outrank a fully
-  graded one. Every ranked model here cleared 0.90.
+  graded one. Every ranked model here cleared 0.90. The leaderboard ranks by
+  failure rate (1 − pass rate); the lowest failure rate is rank 1.
 - **Same weights, 2 inference stacks, 1 row.** Mistral Large 3 675B answered
   every probe twice — once through Bedrock, once through Ollama Cloud, same
   probes, same judge, same prompt — and the 2 runs scored 5.8 points apart:

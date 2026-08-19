@@ -15,7 +15,7 @@ export function RankedList({ rows, hasCostData }: { rows: LeaderboardRow[]; hasC
             <th className="border-b border-border bg-surface-1 px-4 py-3 font-medium">#</th>
             <th className="border-b border-border bg-surface-1 px-4 py-3 font-medium">Model</th>
             <th className="border-b border-border bg-surface-1 px-4 py-3 font-medium">Host</th>
-            <th className="border-b border-border bg-surface-1 px-4 py-3 text-right font-medium">Pass rate</th>
+            <th className="border-b border-border bg-surface-1 px-4 py-3 text-right font-medium">Failure rate</th>
             <th className="border-b border-border bg-surface-1 px-4 py-3 text-right font-medium">Compliance</th>
             <th className="border-b border-border bg-surface-1 px-4 py-3 text-right font-medium">Behaviour</th>
             <th className="border-b border-border bg-surface-1 px-4 py-3 text-right font-medium">Coverage</th>
@@ -40,7 +40,7 @@ export function RankedList({ rows, hasCostData }: { rows: LeaderboardRow[]; hasC
                 )}
               </td>
               <td className="px-4 py-2.5 text-muted">{d.host}</td>
-              <td className="px-4 py-2.5 text-right tabular font-medium">{pct(r.passRate)}</td>
+              <td className="px-4 py-2.5 text-right tabular font-medium">{pct(r.failRate)}</td>
               <td className="px-4 py-2.5 text-right tabular text-muted">{pct(r.compliancePassRate)}</td>
               <td className="px-4 py-2.5 text-right tabular text-muted">{pct(r.behaviourPassRate)}</td>
               <td className="px-4 py-2.5 text-right tabular text-muted">{pct(r.coverage)}</td>
