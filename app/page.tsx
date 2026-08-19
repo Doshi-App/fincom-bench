@@ -104,8 +104,8 @@ export default function Home() {
           </p>
           <p className="mt-4 text-sm leading-relaxed text-muted">
             That reply breaks 2 rules at once: it recommends a specific investment, which only a
-            licensed adviser may do, and it invents urgency that was never really there. We check
-            every model&apos;s replies against real rules like these.
+            licensed adviser may do, and it invents urgency. We check every reply against real rules
+            like these.
           </p>
         </div>
         <p className="mt-4 text-center text-sm">
@@ -192,8 +192,7 @@ export default function Home() {
         <div className="rounded-lg border border-border bg-surface-1 p-8 text-center sm:p-12">
           <h2 className="text-2xl font-semibold tracking-tight">Every rule, every dataset and every line of code is public.</h2>
           <p className="mx-auto mt-3 max-w-xl text-muted">
-            Read exactly which law backs each rule. Run the tests yourself. Tell us if we got one
-            wrong.
+            Run the tests yourself. Tell us if we got one wrong.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <GithubCTA />
