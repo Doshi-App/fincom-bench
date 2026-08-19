@@ -36,15 +36,21 @@ export function GithubCTA({ variant = "primary" }: { variant?: "primary" | "seco
 function Wordmark() {
   return (
     <Link href="/" className="flex items-center gap-2.5 shrink-0">
-      <svg viewBox="0 0 32 32" className="h-6 w-6" aria-hidden="true">
-        <path d="M16 2 L28 6.5 V15 C28 22.5 22.7 27.7 16 30 C9.3 27.7 4 22.5 4 15 V6.5 Z" fill="var(--accent)" />
+      <svg viewBox="0 0 49 50" className="h-6 w-6" aria-hidden="true">
+        <defs>
+          <linearGradient id="doshi-grad-header" x1="2" y1="4" x2="47" y2="47" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#58D09E" />
+            <stop offset="28%" stopColor="#49A3E4" />
+            <stop offset="55%" stopColor="#FFC451" />
+            <stop offset="78%" stopColor="#FD6E65" />
+            <stop offset="100%" stopColor="#8B7AF6" />
+          </linearGradient>
+        </defs>
         <path
-          d="M10.5 16.3 L14.5 20.3 L21.5 12"
-          stroke="var(--accent-fg)"
-          strokeWidth="2.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
+          fillRule="evenodd"
+          clipRule="evenodd"
+          fill="url(#doshi-grad-header)"
+          d="M24.4649 49.0372C37.7402 49.0372 48.502 38.2754 48.502 25C48.502 11.7247 37.7402 0.962891 24.4649 0.962891C11.1895 0.962891 0.427734 11.7247 0.427734 25C0.427734 38.2754 11.1895 49.0372 24.4649 49.0372ZM13.561 28.5122L16.0996 25.9735C16.6381 25.4351 16.6405 24.5629 16.107 24.0196L13.4611 21.3347C11.3902 19.2638 11.4268 15.8798 13.5756 13.8576C15.6514 11.9012 18.9623 12.1059 20.9796 14.1232L23.5085 16.6545C24.0494 17.1954 24.9289 17.1954 25.4698 16.6545L28.1571 13.9697C30.2279 11.8988 33.612 11.9353 35.6342 14.0842C37.5905 16.1599 37.3859 19.4709 35.3686 21.4882L32.8299 24.0269C32.2915 24.5653 32.2866 25.4375 32.8226 25.9808L35.4685 28.6656C37.5394 30.7365 37.5028 34.1206 35.354 36.1428C33.2782 38.0991 29.9673 37.8945 27.95 35.8772L25.4186 33.3458C24.8778 32.805 23.9982 32.805 23.4574 33.3458L20.7725 36.0307C18.7017 38.1016 15.3176 38.065 13.2954 35.9162C11.3391 33.8404 11.5437 30.5294 13.561 28.5122Z"
         />
       </svg>
       <span className="font-semibold tracking-tight text-fg">Fincon Bench</span>
