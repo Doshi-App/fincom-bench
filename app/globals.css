@@ -1,116 +1,206 @@
 @import "tailwindcss";
 
+/*
+ * Tokens are OKLCH throughout (perceptually uniform — see design-foundations
+ * color-and-contrast.md). Neutrals carry a tiny teal chroma (0.006-0.01) so
+ * they read as part of the same family as the accent instead of dead gray.
+ *
+ * --fail is the one hue the whole site uses for "this earned a finding" —
+ * every heatmap cell mixes it toward --surface-2 by the fail rate
+ * (color-mix), which is exactly the sequential-ramp rule (one hue,
+ * light -> dark, lightest step recedes to the surface) implemented with two
+ * theme-aware variables instead of 7 hand-picked stops.
+ */
+
 :root {
-  --background: #ffffff;
-  --surface: #f7f8f8;
-  --foreground: #0b0f14;
-  --muted: #5a6672;
-  --border: #e2e6ea;
-  --accent: #0f5a4a;
-  --accent-fg: #ffffff;
-  --pass: #146c43;
-  --fail: #a3341f;
-  --critical: #8b1a1a;
+  --bg: oklch(98.3% 0.004 175);
+  --surface-1: oklch(96.2% 0.006 175);
+  --surface-2: oklch(92.5% 0.009 175);
+  --fg: oklch(19% 0.012 175);
+  --muted: oklch(46% 0.018 175);
+  --border: oklch(87% 0.012 175);
+
+  --accent: oklch(38% 0.085 165);
+  --accent-strong: oklch(30% 0.075 165);
+  --accent-fg: oklch(99% 0.004 165);
+  --accent-soft: oklch(93% 0.03 165);
+
+  --pass: oklch(46% 0.13 148);
+  --fail: oklch(54% 0.17 26);
+  --arguable: oklch(58% 0.13 75);
+  --ungraded: oklch(62% 0.012 175);
+  --error: oklch(38% 0.15 22);
+  --on-strong: oklch(99% 0 0);
+
+  --shadow-color: 175 8% 20%;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b0f14;
-    --surface: #131920;
-    --foreground: #e8ecef;
-    --muted: #93a1ad;
-    --border: #232c36;
-    --accent: #4fd1b0;
-    --accent-fg: #06231d;
-    --pass: #5ed39b;
-    --fail: #f08a6f;
-    --critical: #ff7a7a;
+    --bg: oklch(16% 0.012 175);
+    --surface-1: oklch(20% 0.014 175);
+    --surface-2: oklch(25% 0.016 175);
+    --fg: oklch(94% 0.008 175);
+    --muted: oklch(72% 0.016 175);
+    --border: oklch(32% 0.016 175);
+
+    --accent: oklch(78% 0.12 168);
+    --accent-strong: oklch(85% 0.12 168);
+    --accent-fg: oklch(15% 0.02 168);
+    --accent-soft: oklch(28% 0.045 168);
+
+    --pass: oklch(68% 0.15 150);
+    --fail: oklch(66% 0.17 25);
+    --arguable: oklch(75% 0.13 80);
+    --ungraded: oklch(55% 0.012 175);
+    --error: oklch(68% 0.19 22);
+    --on-strong: oklch(12% 0 0);
   }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
   --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
   --color-pass: var(--pass);
   --color-fail: var(--fail);
-  --color-critical: var(--critical);
+  --color-arguable: var(--arguable);
+  --color-ungraded: var(--ungraded);
+  --color-error: var(--error);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: light dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Long tables and code must scroll inside their own container, never the page. */
+/* Long tables, matrices and code scroll inside their own box — never the page. */
 .scroll-x {
   overflow-x: auto;
+  scrollbar-gutter: stable;
 }
 
+/* Sentence-case, no filler adverbs — but keep tabular alignment for real number columns. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- MDX / long-form prose (methodology) --- */
 .prose-doc {
-  max-width: 70ch;
+  max-width: 72ch;
 }
 .prose-doc h1 {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 600;
   letter-spacing: -0.02em;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 .prose-doc h1 + p {
   font-size: 1.0625rem;
+  color: var(--muted);
 }
 .prose-doc h2 {
-  font-size: 1.375rem;
+  font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  margin-top: 2.5rem;
+  margin-top: 3rem;
   margin-bottom: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+.prose-doc h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
 }
 .prose-doc h3 {
   font-size: 1.0625rem;
   font-weight: 600;
-  margin-top: 1.75rem;
+  margin-top: 2rem;
   margin-bottom: 0.5rem;
 }
-.prose-doc p,
-.prose-doc li {
-  color: var(--muted);
+.prose-doc p {
   line-height: 1.7;
+  margin-top: 0.9rem;
 }
-.prose-doc p,
 .prose-doc ul,
 .prose-doc ol {
-  margin-bottom: 1rem;
+  margin-top: 0.9rem;
+  padding-left: 1.4rem;
+  line-height: 1.7;
+}
+.prose-doc li {
+  margin-top: 0.35rem;
 }
 .prose-doc ul {
   list-style: disc;
-  padding-left: 1.25rem;
 }
 .prose-doc ol {
   list-style: decimal;
-  padding-left: 1.25rem;
-}
-.prose-doc strong {
-  color: var(--foreground);
-  font-weight: 600;
 }
 .prose-doc a {
   color: var(--accent);
-  text-decoration: underline;
+  text-decoration-line: underline;
+  text-decoration-color: var(--border);
   text-underline-offset: 2px;
+}
+.prose-doc a:hover {
+  text-decoration-color: currentColor;
 }
 .prose-doc code {
   font-family: var(--font-mono), monospace;
   font-size: 0.875em;
-  background: var(--surface);
+  background: var(--surface-2);
+  border-radius: 0.25rem;
+  padding: 0.1rem 0.35rem;
+}
+.prose-doc table {
+  margin-top: 1.25rem;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.prose-doc th,
+.prose-doc td {
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.1em 0.35em;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-doc th {
+  background: var(--surface-1);
+  font-weight: 600;
+}
+.prose-doc blockquote {
+  margin-top: 1.25rem;
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--muted);
+}
+.prose-doc hr {
+  margin: 2.5rem 0;
+  border-color: var(--border);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .transition-standard {
+    transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease, transform 150ms ease;
+  }
 }

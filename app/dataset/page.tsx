@@ -1,114 +1,104 @@
-import type { Metadata } from "next";
-import Link from "next/link";
 import { META_EVAL, BENCHMARK_OPEN, BENCHMARK_HOLDOUT, type DatasetInfo } from "@/lib/datasets";
-import { getCategory } from "@/lib/categories";
+import { CATEGORIES } from "@/lib/categories";
+import { StatTile, KpiRow } from "../components/stat-tile";
+import { BarChart, type BarDatum } from "../components/bar-chart";
+import { REPO_URL } from "../components/site-chrome";
 
-export const metadata: Metadata = { title: "Dataset" };
+const JURISDICTION_LABEL: Record<string, string> = { uk: "United Kingdom", eu: "European Union", us: "United States", au: "Australia" };
 
-const JURISDICTION_NAMES: Record<string, string> = {
-  uk: "United Kingdom",
-  eu: "European Union",
-  us: "United States",
-  au: "Australia",
-};
-
-function BreakdownTable({ counts, labelFor }: { counts: Record<string, number>; labelFor?: (key: string) => string }) {
-  const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  return (
-    <table className="w-full min-w-[26rem] border-collapse text-left">
-      <tbody>
-        {entries.map(([key, n]) => (
-          <tr key={key} className="border-b border-border last:border-0">
-            <td className="px-4 py-2 text-sm">{labelFor ? labelFor(key) : key}</td>
-            <td className="px-4 py-2">
-              <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-24 overflow-hidden rounded-full bg-border" aria-hidden>
-                  <span
-                    className="block h-full rounded-full bg-accent"
-                    style={{ width: `${total > 0 ? (n / total) * 100 : 0}%` }}
-                  />
-                </span>
-                <span className="font-mono text-xs tabular-nums text-muted">{n}</span>
-              </span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+function jurisdictionBars(info: DatasetInfo): BarDatum[] {
+  return Object.entries(info.byJurisdiction)
+    .sort((a, b) => b[1] - a[1])
+    .map(([j, n]) => ({ key: j, label: JURISDICTION_LABEL[j] ?? j, value: n }));
 }
 
-function DatasetSection({ title, description, info }: { title: string; description: string; info: DatasetInfo }) {
-  return (
-    <section className="mt-12">
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
-        <code className="rounded border border-border bg-surface px-1.5 py-0.5 text-xs">datasets/{info.file}</code>
-      </div>
-      <p className="mt-2 max-w-2xl text-sm text-muted">{description}</p>
-      <p className="mt-3 text-sm">
-        <span className="font-mono text-lg tabular-nums">{info.rows}</span>{" "}
-        <span className="text-muted">rows · {info.columns.length} columns</span>
-      </p>
-      {info.shortRows > 0 && (
-        <p className="mt-2 text-sm text-critical">
-          {info.shortRows} of {info.rows} rows have fewer fields than the header declares — the
-          header was updated without regenerating the row data. jurisdiction and category are still
-          positionally correct, so the counts below are not affected, but later columns may not line
-          up with their header name for these rows.
-        </p>
-      )}
+function categoryBars(info: DatasetInfo): BarDatum[] {
+  const order = new Map(CATEGORIES.map((c, i) => [c.id, i]));
+  return Object.entries(info.byCategory)
+    .sort((a, b) => (order.get(a[0]) ?? 99) - (order.get(b[0]) ?? 99))
+    .map(([id, n]) => ({ key: id, label: CATEGORIES.find((c) => c.id === id)?.label ?? id, value: n }));
+}
 
+function DatasetSection({ title, file, purpose, info }: { title: string; file: string; purpose: string; info: DatasetInfo }) {
+  return (
+    <div className="rounded-lg border border-border p-6">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
+        <a href={`${REPO_URL}/blob/main/datasets/${file}`} target="_blank" rel="noopener noreferrer" className="font-mono text-xs text-accent hover:underline">
+          {file}
+        </a>
+      </div>
+      <p className="mt-1.5 text-sm text-muted">{purpose}</p>
+      <p className="mt-3 text-2xl font-semibold tracking-tight">{info.rows} rows</p>
       <div className="mt-5 grid gap-6 sm:grid-cols-2">
         <div>
-          <h3 className="text-xs font-medium uppercase tracking-wide text-muted">By jurisdiction</h3>
-          <div className="mt-2 scroll-x rounded-lg border border-border">
-            <BreakdownTable counts={info.byJurisdiction} labelFor={(k) => JURISDICTION_NAMES[k] ?? k} />
+          <p className="text-xs font-medium uppercase tracking-wide text-muted">By jurisdiction</p>
+          <div className="mt-3">
+            <BarChart data={jurisdictionBars(info)} tone="accent" />
           </div>
         </div>
         <div>
-          <h3 className="text-xs font-medium uppercase tracking-wide text-muted">By category</h3>
-          <div className="mt-2 scroll-x rounded-lg border border-border">
-            <BreakdownTable counts={info.byCategory} labelFor={(k) => getCategory(k)?.label ?? k} />
+          <p className="text-xs font-medium uppercase tracking-wide text-muted">By category</p>
+          <div className="mt-3">
+            <BarChart data={categoryBars(info)} tone="accent" />
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
+
+export const metadata = { title: "Dataset" };
 
 export default function DatasetPage() {
   return (
-    <div className="mx-auto max-w-4xl px-6 py-14">
-      <h1 className="text-3xl font-semibold tracking-tight">Dataset</h1>
+    <div className="mx-auto max-w-6xl px-6 py-14">
+      <h1 className="text-3xl font-semibold tracking-tight">The dataset</h1>
       <p className="mt-4 max-w-2xl text-muted">
-        One set of 274 probes, applied in two phases. The counts and breakdowns below are computed
-        from the actual CSV files in the repository at build time, not typed by hand.
+        1 set of 274 probes, applied in 2 phases. Phase 1 picks the judge on the meta-eval set,
+        where every reply already exists. Phase 2 reuses the same probes with the reply column
+        removed, sends each one to every assistant under test, and scores what comes back.
       </p>
 
-      <DatasetSection
-        title="Phase 1 — meta-eval (choose the judge)"
-        description="274 probes, each with a pre-written reply. Two human labellers mark each reply pass or fail; candidate judge models mark the same rows with no sight of the human labels. The model that agrees most with the humans becomes the judge. The human labels are never published."
-        info={META_EVAL}
-      />
+      <div className="mt-8">
+        <KpiRow>
+          <StatTile label="Meta-eval set" value={META_EVAL.rows} note="Judge selection only — never scores an assistant." />
+          <StatTile label="Benchmark, open" value={BENCHMARK_OPEN.rows} note="Anyone may run a submission on these probes." />
+          <StatTile label="Benchmark, holdout" value={BENCHMARK_HOLDOUT.rows} note="Seed of a future gated split." />
+          <StatTile label="Open / holdout split" value="70 / 30" note="Stratified by category — both halves cover all 15." />
+        </KpiRow>
+      </div>
 
-      <DatasetSection
-        title="Phase 2 — benchmark, open split"
-        description="The primary evaluation set. Anyone may run a submission on these probes. Reply and label columns are empty — the runner sends each probe to an assistant and the chosen judge grades what comes back."
-        info={BENCHMARK_OPEN}
-      />
+      <div className="mt-10 space-y-6">
+        <DatasetSection
+          title="Meta-eval set"
+          file="meta-eval.csv"
+          purpose="Picks the judge. Human labellers and 5 candidate judge models mark the same pre-written replies; whichever model agrees most becomes the judge for phase 2."
+          info={META_EVAL}
+        />
+        <DatasetSection
+          title="Benchmark, open"
+          file="benchmark-open.csv"
+          purpose="The primary evaluation set. The reply column is empty — each assistant under test writes its own."
+          info={BENCHMARK_OPEN}
+        />
+        <DatasetSection
+          title="Benchmark, holdout"
+          file="benchmark-holdout.csv"
+          purpose="Reserved as the seed of a future gated split. Reported separately per submission, not folded into the open-set leaderboard."
+          info={BENCHMARK_HOLDOUT}
+        />
+      </div>
 
-      <DatasetSection
-        title="Phase 2 — benchmark, holdout split"
-        description="Reserved as the seed of a future gated split; reported separately per submission. Published today alongside the open split — the benchmark makes no contamination-resistance claim either way."
-        info={BENCHMARK_HOLDOUT}
-      />
-
-      <p className="mt-10 text-sm text-muted">
-        See <Link href="/methodology" className="text-accent hover:underline">methodology</Link> for how
-        a phase-1 run picks the judge, and how phase 2 scores an assistant against it.
-      </p>
+      <div className="mt-10 rounded-lg border border-border bg-surface-1 p-5 text-sm text-muted">
+        <p className="font-medium text-fg">No contamination-resistance claim.</p>
+        <p className="mt-1.5 leading-relaxed">
+          Both benchmark files are published, so a model may have seen these probes or text like
+          them. The open/holdout split is kept so a future gated split can reuse it, and so a
+          submission can report the 2 halves separately — it is not a claim that today&apos;s
+          numbers are contamination-free.
+        </p>
+      </div>
     </div>
   );
 }
