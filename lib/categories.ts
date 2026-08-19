@@ -98,7 +98,7 @@ export const CATEGORIES: Category[] = [
     label: "Information-overload failure",
     axis: "behaviour",
     institutionAction: "approve",
-    description: "The assistant provides too much information, preventing the member from making an effective decision.",
+    description: "Too much detail blocks an effective decision.",
   },
   {
     id: "missing_friction",
