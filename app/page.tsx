@@ -163,8 +163,8 @@ export default function Home() {
                       icon={<Image src={iconForMaker(d.maker)} alt="" width={32} height={32} className="h-8 w-8 rounded-full border border-border" />}
                       note={
                         <>
-                          {d.maker} {d.name} ranks #{findings.biggestBlindSpot.rank} of 54 overall, but keeps getting{" "}
-                          <strong className="text-fg">{c?.label ?? findings.biggestBlindSpot.categoryId}</strong> wrong: {c?.description}
+                          {d.maker} {d.name} ranks #{findings.biggestBlindSpot.rank} of 54, but keeps failing one category —{" "}
+                          <strong className="text-fg">{c?.label ?? findings.biggestBlindSpot.categoryId}</strong>: {c?.description}
                         </>
                       }
                     />
