@@ -258,3 +258,93 @@ export function categoryMatrix(): Record<string, Record<string, number | null>> 
   }
   return matrix;
 }
+
+export type NotableFindings = {
+  /** The category with the highest mean fail rate across every model that has one. */
+  hardestCategory: { categoryId: string; avgFailRatePct: number } | null;
+  /** The category with the lowest. */
+  cleanestCategory: { categoryId: string; avgFailRatePct: number } | null;
+  /**
+   * The worst single (model, category) fail rate among models ranked in the
+   * top half overall — the point of this one is that a model doing well
+   * overall can still be badly exposed on 1 specific category.
+   */
+  biggestBlindSpot: { model: string; provider: string; rank: number | null; categoryId: string; failRatePct: number; decided: number; items: number } | null;
+  /** The model with the largest gap between its compliance and behaviour pass rates. */
+  biggestAxisGap: {
+    model: string;
+    provider: string;
+    rank: number | null;
+    compliancePct: number;
+    behaviourPct: number;
+    gapPct: number;
+    worseAxis: "compliance" | "behaviour";
+  } | null;
+};
+
+/**
+ * Cross-cutting findings computed from `CATEGORY_BREAKDOWN` and
+ * `LEADERBOARD`, rather than the leaderboard's own headline numbers — the
+ * point is to surface something a reader would not see just from the rank
+ * column. Every field is null, not a guess, when the run has nothing to
+ * support it (see `keyFindings` above for the same rule).
+ */
+export function notableFindings(): NotableFindings {
+  const byCategory = new Map<string, { sum: number; n: number }>();
+  for (const row of CATEGORY_BREAKDOWN) {
+    if (row.failRate === null) continue;
+    const acc = byCategory.get(row.category) ?? { sum: 0, n: 0 };
+    acc.sum += row.failRate;
+    acc.n += 1;
+    byCategory.set(row.category, acc);
+  }
+  let hardestCategory: NotableFindings["hardestCategory"] = null;
+  let cleanestCategory: NotableFindings["cleanestCategory"] = null;
+  for (const [categoryId, { sum, n }] of byCategory) {
+    if (n === 0) continue;
+    const avgFailRatePct = (sum / n) * 100;
+    if (!hardestCategory || avgFailRatePct > hardestCategory.avgFailRatePct) hardestCategory = { categoryId, avgFailRatePct };
+    if (!cleanestCategory || avgFailRatePct < cleanestCategory.avgFailRatePct) cleanestCategory = { categoryId, avgFailRatePct };
+  }
+
+  const rankedByRank = LEADERBOARD.filter((r) => r.ranked && r.rank !== null).sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0));
+  const topHalf = new Set(rankedByRank.slice(0, Math.ceil(rankedByRank.length / 2)).map((r) => r.model));
+  let biggestBlindSpot: NotableFindings["biggestBlindSpot"] = null;
+  for (const row of CATEGORY_BREAKDOWN) {
+    if (row.failRate === null || row.decided < 5 || !topHalf.has(row.model)) continue;
+    const failRatePct = row.failRate * 100;
+    if (!biggestBlindSpot || failRatePct > biggestBlindSpot.failRatePct) {
+      const lbRow = LEADERBOARD.find((r) => r.model === row.model);
+      biggestBlindSpot = {
+        model: row.model,
+        provider: row.provider,
+        rank: lbRow?.rank ?? null,
+        categoryId: row.category,
+        failRatePct,
+        decided: row.decided,
+        items: row.items,
+      };
+    }
+  }
+
+  let biggestAxisGap: NotableFindings["biggestAxisGap"] = null;
+  for (const r of LEADERBOARD) {
+    if (r.compliancePassRate === null || r.behaviourPassRate === null) continue;
+    const compliancePct = r.compliancePassRate * 100;
+    const behaviourPct = r.behaviourPassRate * 100;
+    const gapPct = Math.abs(compliancePct - behaviourPct);
+    if (!biggestAxisGap || gapPct > biggestAxisGap.gapPct) {
+      biggestAxisGap = {
+        model: r.model,
+        provider: r.provider,
+        rank: r.rank,
+        compliancePct,
+        behaviourPct,
+        gapPct,
+        worseAxis: compliancePct < behaviourPct ? "compliance" : "behaviour",
+      };
+    }
+  }
+
+  return { hardestCategory, cleanestCategory, biggestBlindSpot, biggestAxisGap };
+}
